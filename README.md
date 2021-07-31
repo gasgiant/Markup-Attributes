@@ -47,7 +47,7 @@ Markup Attributes is MIT licensed and relatively small, focusing exclusively on 
 
 ## Installation
 
-Download the .unitypackage and import it into your project. Package Manager version is in the works. 
+Download the [.unitypackage](https://github.com/gasgiant/MarkupAttributes/releases/tag/v0.2.0) and import it into your project.
 
 ## Usage
 
