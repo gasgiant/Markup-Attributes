@@ -81,7 +81,7 @@ internal class MarkedUpScriptableObjectEditor : MarkedUpEditor
 
 #### Serializable classes and structs
 
-To make the attributes work inside serialized classes or structs you need to add `MarkedUpField` attribute to the fields containing them:
+To make the attributes work inside serialized classes or structs you need to add `MarkedUpField` attribute to the fields representing them:
 
 ```c#
 [System.Serializable]
@@ -101,7 +101,7 @@ Note, that the attributes will work in marked up fields only inside `MarkedUpEdi
 
 #### Shaders
 
-To apply attributes to the materials with a certain `Shader ` you should tell Unity to use `MarkedUpShaderGUI`:
+To apply attributes to the materials with a certain `Shader` you should tell Unity to use `MarkedUpShaderGUI`:
 
 ```javascript
 Shader "Unlit/MyShader"
@@ -457,7 +457,7 @@ Closes the topmost group. If provided with a name, closes the named group and al
 
 _C# only_
 
-Makes attributes work inside serializable classes and structs. See [Usage: Serializable classes and structs](serializable-classes-and-structs). Can be used on serialized fields of serializable classes and structs. Can optionally hide the target's control (foldout) and remove indent from target's children. 
+Makes attributes work inside serializable classes and structs. See [Usage: Serializable classes and structs](#serializable-classes-and-structs). Can optionally hide the target's control (foldout) and remove indent from target's children. 
 
 ```c#
 [MarkedUpField]
@@ -474,7 +474,7 @@ public SomeClass three;
 
 _C# only_
 
-Shows inspector of some `Unity.Object` (`MonoBehaviour`, `ScripatableObject` and `Material` are `Unity.Object`s, for instance) "inline" — embeds it in the current inspector. Can be used on an object reference field. Works in `MarkedUpEditor`s and `MarkedUpProperty`s inside them. By default shows an object field with the foldable inspector body in a box. If `stripped` only draws inspector body (provided that object reference isn't null).
+Shows inspector of some `Unity.Object` (`MonoBehaviour`, `ScripatableObject` and `Material` are `Unity.Object`s, for instance) "inline" — embeds it in the current inspector. Can be used on an object reference field. Works in `MarkedUpEditor`s and `MarkedUpField`s inside them. By default shows an object field with the foldable inspector body in a box. If `stripped` only draws inspector body (provided that object reference isn't null).
 
 ![](./ReadmeImages/InlineEditor.png)
 
