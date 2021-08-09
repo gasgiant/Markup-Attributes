@@ -101,7 +101,7 @@ namespace MarkupAttributes.Editor
                     GUIStyle style = GUIStyle.none;
                     if (isBoxed)
                     {
-                        style = ExtraEditorStyles.GroupBox;
+                        style = MarkupStyles.GroupBox;
                         group.cachedHierarchyMode = EditorGUIUtility.hierarchyMode;
                         float labelWidth = EditorGUIUtility.labelWidth;
                         EditorGUIUtility.hierarchyMode = false;
@@ -111,11 +111,11 @@ namespace MarkupAttributes.Editor
                     if (group.data.Type == GroupType.TabScope)
                     {
                         if (isBoxed)
-                            style = ExtraEditorStyles.TabsBox;
+                            style = MarkupStyles.TabsBox;
                         EditorGUILayout.BeginVertical(style);
                         string prefsName = GetPrefsName();
                         int activeTab;
-                        activeTab = ExtraEditorGUI.TabsControl(MarkupAttributesPrefs.GetInt(prefsName), group.data.Tabs, isBoxed);
+                        activeTab = MarkupGUI.TabsControl(MarkupAttributesPrefs.GetInt(prefsName), group.data.Tabs, isBoxed);
                         MarkupAttributesPrefs.SetInt(prefsName, activeTab);
                         group.cachedActiveTab = activeTabName;
                         activeTabName = group.data.Tabs[activeTab];
@@ -146,8 +146,8 @@ namespace MarkupAttributes.Editor
                         {
                             if (!isFoldable)
                                 isExpanded = group.data.togglableValueWrapper.GetValue();
-                            headerRect = ExtraEditorGUI.HeaderBase(group.data.Style, isExpanded);
-                            bool value = ExtraEditorGUI.ToggleGroupHeader(
+                            headerRect = MarkupGUI.HeaderBase(group.data.Style, isExpanded);
+                            bool value = MarkupGUI.ToggleGroupHeader(
                                 headerRect, group.data.togglableValueWrapper, 
                                 new GUIContent(group.name), ref isExpanded, isFoldable);
                             if (isFoldable)
@@ -163,15 +163,15 @@ namespace MarkupAttributes.Editor
                             if (isFoldable)
                             {
                                 isExpanded = MarkupAttributesPrefs.GetBool(prefsName);
-                                headerRect = ExtraEditorGUI.HeaderBase(group.data.Style, isExpanded);
-                                isExpanded = EditorGUI.Foldout(headerRect, isExpanded, group.name, true, ExtraEditorStyles.BoldFoldout);
+                                headerRect = MarkupGUI.HeaderBase(group.data.Style, isExpanded);
+                                isExpanded = EditorGUI.Foldout(headerRect, isExpanded, group.name, true, MarkupStyles.BoldFoldout);
                                 MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
                             }
                             else
                             {
                                 using (new EditorGUI.DisabledScope(!ScopeEnabled))
                                 {
-                                    headerRect = ExtraEditorGUI.HeaderBase(group.data.Style, true);
+                                    headerRect = MarkupGUI.HeaderBase(group.data.Style, true);
                                     EditorGUI.LabelField(headerRect, group.name, EditorStyles.boldLabel);
                                 }
                             }
@@ -309,7 +309,7 @@ namespace MarkupAttributes.Editor
                         {
                             if (groupsStack.Count <= 0
                                 || groupsStack.Peek().data.Type != GroupType.Horizontal)
-                                EditorGUILayout.Space(ExtraEditorGUI.SpaceAfterGroup);
+                                EditorGUILayout.Space(MarkupGUI.SpaceAfterGroup);
                         }
                     }
 
@@ -331,9 +331,9 @@ namespace MarkupAttributes.Editor
                         EditorGUIUtility.hierarchyMode = group.cachedHierarchyMode.Value;
 
                     group.cachedPrefsPrefix = null;
+                    group.cachedActiveTab = null;
                     group.cachedIndent = null;
                     group.cachedLabelWidth = null;
-                    group.cachedActiveTab = null;
                     group.cachedHierarchyMode = null;
                 }
             }

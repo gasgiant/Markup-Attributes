@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public static class ExtraEditorGUI
+    public static class MarkupGUI
     {
         internal const float SpaceAfterBoxedHeader = 2;
         internal const float SpaceAfterGroup = 5;
@@ -53,7 +53,7 @@ namespace MarkupAttributes.Editor
             MaterialEditor materialEditor = editor as MaterialEditor;
             if (!stripped)
             {
-                EditorGUILayout.BeginVertical(ExtraEditorStyles.GroupBox);
+                EditorGUILayout.BeginVertical(MarkupStyles.GroupBox);
                 float labelWidth = EditorGUIUtility.labelWidth;
                 EditorGUIUtility.hierarchyMode = false;
                 EditorGUIUtility.labelWidth = labelWidth;
@@ -96,7 +96,7 @@ namespace MarkupAttributes.Editor
         {
             bool box = style.HasFlag(GroupStyle.Box);
             bool line = style.HasFlag(GroupStyle.LabelUnderline);
-            var padding = ExtraEditorStyles.GroupBox.padding;
+            var padding = MarkupStyles.GroupBox.padding;
 
             if (!box)
                 EditorGUILayout.Space(SpaceAfterBoxedHeader);
@@ -105,7 +105,7 @@ namespace MarkupAttributes.Editor
             if (box)
             {
                 Rect boxRect = padding.Add(rect);
-                GUI.Box(boxRect, GUIContent.none, ExtraEditorStyles.HeaderBox(expanded));
+                GUI.Box(boxRect, GUIContent.none, MarkupStyles.HeaderBox(expanded));
             }
 
             if (expanded)
@@ -150,7 +150,7 @@ namespace MarkupAttributes.Editor
             else
                 EditorGUI.LabelField(position, label);
 
-            float xOffset = EditorGUIUtility.labelWidth - 0.5f * ExtraEditorStyles.GroupBox.padding.left;
+            float xOffset = EditorGUIUtility.labelWidth - 0.5f * MarkupStyles.GroupBox.padding.left;
             var propertyRect = new Rect(position.x + xOffset,
                 position.y, position.width - xOffset, EditorGUIUtility.singleLineHeight);
             EditorGUI.ObjectField(propertyRect, property, GUIContent.none);
@@ -190,7 +190,7 @@ namespace MarkupAttributes.Editor
                 isExpanded = EditorGUI.Foldout(smallRect, isExpanded, GUIContent.none);
 
                 Rect controlRect = rectFoldout;
-                var padding = ExtraEditorStyles.GroupBox.padding;
+                var padding = MarkupStyles.GroupBox.padding;
                 controlRect.y -= padding.top;
                 controlRect.height += padding.top + padding.bottom;
                 isExpanded = EditorGUI.Foldout(controlRect, isExpanded, 
@@ -212,7 +212,7 @@ namespace MarkupAttributes.Editor
             if (isBoxed)
             {
                 Rect position = EditorGUILayout.GetControlRect(false);
-                var padding = ExtraEditorStyles.GroupBox.padding;
+                var padding = MarkupStyles.GroupBox.padding;
                 position.x -= padding.left;
                 position.width += padding.right + padding.left;
                 position.width -= 1;

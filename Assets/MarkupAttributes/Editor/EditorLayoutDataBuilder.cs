@@ -32,7 +32,7 @@ namespace MarkupAttributes.Editor
             inlineEditors = new Dictionary<SerializedProperty, InlineEditorData>();
             Type targetType = serializedObject.targetObject.GetType();
 
-            firstLevelProps = ExtraEditorUtils.GetSerializedObjectProperties(serializedObject);
+            firstLevelProps = MarkupEditorUtils.GetSerializedObjectProperties(serializedObject);
             GetLayoutDataForSiblings(null, firstLevelProps, targetType, serializedObject.targetObject,
                 props, layoutData, inlineEditors);
             allProps = props.ToArray();
@@ -53,7 +53,7 @@ namespace MarkupAttributes.Editor
                     groups.Add(scopeGroup);
                 }
 
-                FieldInfo fieldInfo = targetType.GetField(sibling.name, ExtraEditorUtils.DefaultBindingFlags);
+                FieldInfo fieldInfo = targetType.GetField(sibling.name, MarkupEditorUtils.DefaultBindingFlags);
 
                 PropertyLayoutData data = null;
                 if (fieldInfo != null)
@@ -91,11 +91,11 @@ namespace MarkupAttributes.Editor
                     var markedUp = fieldInfo.GetCustomAttribute<MarkedUpFieldAttribute>();
                     if (markedUp != null)
                     {
-                        var subTarget = ExtraEditorUtils.GetTargetObjectOfProperty(sibling);
+                        var subTarget = MarkupEditorUtils.GetTargetObjectOfProperty(sibling);
                         var subTargetType = subTarget.GetType();
                         if (subTargetType != targetType)
                         {
-                            var children = ExtraEditorUtils.GetChildrenOfProperty(sibling).ToArray();
+                            var children = MarkupEditorUtils.GetChildrenOfProperty(sibling).ToArray();
                             if (children != null && children.Length > 0)
                             {
                                 data.includeChildren = false;

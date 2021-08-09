@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MarkupAttributes
 {
-    public static class ExtraEditorStyles
+    public static class MarkupStyles
     {
         private static GUIStyle boldFoldout;
         public static GUIStyle BoldFoldout

@@ -70,7 +70,7 @@ namespace MarkupAttributes.Editor
             {
                 if (allProps[i].name.Equals("m_Script"))
                 {
-                    if (ExtraEditorGUI.DrawScriptProperty)
+                    if (MarkupGUI.DrawScriptProperty)
                     {
                         using (new EditorGUI.DisabledScope(true))
                         {
@@ -112,7 +112,7 @@ namespace MarkupAttributes.Editor
                     if (inlineEditors.ContainsKey(prop))
                     {
                         InlineEditorData data = inlineEditors[prop];
-                        ExtraEditorGUI.DrawEditorInline(prop, data.editor, data.stripped, data.enabled);
+                        MarkupGUI.DrawEditorInline(prop, data.editor, data.stripped, data.enabled);
                     }
                     else
                     {

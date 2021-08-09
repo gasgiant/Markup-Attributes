@@ -26,19 +26,19 @@ namespace MarkupAttributes.Editor
             if (targetObject != null)
             {
                 Type type = targetObject.GetType();
-                FieldInfo fieldInfo = type.GetField(condition, ExtraEditorUtils.DefaultBindingFlags);
+                FieldInfo fieldInfo = type.GetField(condition, MarkupEditorUtils.DefaultBindingFlags);
                 if (fieldInfo != null && fieldInfo.FieldType == typeof(bool))
                 {
                     return new ConditionWrapper(inverted, targetObject, fieldInfo, null, null);
                 }
 
-                PropertyInfo propertyInfo = type.GetProperty(condition, ExtraEditorUtils.DefaultBindingFlags);
+                PropertyInfo propertyInfo = type.GetProperty(condition, MarkupEditorUtils.DefaultBindingFlags);
                 if (propertyInfo != null && propertyInfo.PropertyType == typeof(bool))
                 {
                     return new ConditionWrapper(inverted, targetObject, null, propertyInfo, null);
                 }
 
-                MethodInfo methodInfo = type.GetMethod(condition, ExtraEditorUtils.DefaultBindingFlags);
+                MethodInfo methodInfo = type.GetMethod(condition, MarkupEditorUtils.DefaultBindingFlags);
                 if (methodInfo != null && methodInfo.ReturnType == typeof(bool)
                     && methodInfo.GetParameters().Length == 0)
                 {
