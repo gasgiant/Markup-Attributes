@@ -47,7 +47,7 @@ Markup Attributes is MIT licensed and relatively small, focusing exclusively on 
 
 ## Installation
 
-Download the [.unitypackage](https://github.com/gasgiant/MarkupAttributes/releases/tag/v0.2.0) and import it into your project. Installation via UPM will be available later.
+Download the [.unitypackage](https://github.com/gasgiant/Markup-Attributes/releases/tag/v0.2.1) and import it into your project. Installation via UPM will be available later.
 
 ## Usage
 
