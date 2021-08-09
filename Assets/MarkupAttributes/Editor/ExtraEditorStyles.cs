@@ -66,9 +66,11 @@ namespace MarkupAttributes
         private static GUIStyle CreateBoxStyle(Texture2D texture)
         {
             var style = new GUIStyle(EditorStyles.helpBox);
-            style.normal.background = Texture2D.whiteTexture;
             if (texture != null)
+            {
+                style.normal.background = texture;
                 style.normal.scaledBackgrounds = new Texture2D[] { texture };
+            }
             return style;
         }
 
