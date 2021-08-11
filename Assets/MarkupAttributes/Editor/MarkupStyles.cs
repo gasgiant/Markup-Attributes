@@ -69,7 +69,7 @@ namespace MarkupAttributes
             if (texture != null)
             {
                 style.normal.background = texture;
-                style.normal.scaledBackgrounds = new Texture2D[] { texture };
+                style.normal.scaledBackgrounds = new Texture2D[0];// new Texture2D[] { texture };
             }
             return style;
         }
