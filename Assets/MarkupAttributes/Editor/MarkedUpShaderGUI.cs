@@ -52,6 +52,7 @@ namespace MarkupAttributes.Editor
             {
                 EditorGUILayout.Space();
                 materialEditor.RenderQueueField();
+                materialEditor.EnableInstancingField();
                 materialEditor.DoubleSidedGIField();
             }
         }
