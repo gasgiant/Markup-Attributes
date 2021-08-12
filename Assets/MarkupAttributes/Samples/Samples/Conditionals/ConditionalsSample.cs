@@ -18,6 +18,7 @@ namespace MarkupAttributes.Samples
         [SerializeField] private int five;
         [SerializeField] private int six;
         [SerializeField] private int seven;
+        [EndGroup]
 
         [Space(20)]
         [SerializeField] private bool boolean;

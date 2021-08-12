@@ -95,10 +95,10 @@ namespace MarkupAttributes.Editor
             MaterialPropertiesWrapper allProperties, Material targetMaterial)
         {
             ConditionWrapper conditionWrapper = null;
-            if (attribute.NeedsCondition)
+            if (attribute.HasCondition)
             {
                 conditionWrapper = ConditionWrapper.Create(attribute.Condition,
-                    attribute.ConditionInverted, allProperties, targetMaterial);
+                    attribute.IsConditionInverted, allProperties, targetMaterial);
                 if (conditionWrapper == null) return null;
             }
 
@@ -237,7 +237,7 @@ namespace MarkupAttributes.Editor
             {
                 if (args.Length < 2)
                     return new FoldoutAttribute(GetPath(args[0]));
-                return new FoldoutAttribute(GetPath(args[0]), GetBool(args[1]));
+                return new FoldoutAttribute(GetPath(args[0]), GetEnum<MarkupBodyStyle>(args[1]));
             }
             return null;
         }
@@ -295,6 +295,17 @@ namespace MarkupAttributes.Editor
         private static float GetFloat(string arg) => float.Parse(arg, CultureInfo.InvariantCulture.NumberFormat);
 
         private static bool GetBool(string arg) => arg == "true";
+
+        private static T GetEnum<T>(string arg) where T : Enum
+        {
+            var values = Enum.GetValues(typeof(T)).Cast<T>();
+            foreach (var value in values)
+            {
+                if (Enum.GetName(typeof(T), value) == arg)
+                    return value;
+            }
+            return values.First();
+        }
 
         private static bool ParseAttribute(string attribute, string attributeName)
         {

@@ -8,10 +8,10 @@ namespace MarkupAttributes
         public BoxAttribute(string path, bool labeled = false)
         {
             Path = path;
-            Type = GroupType.Vertical;
-            Style = GroupStyle.Box;
+            Type = LayoutGroupType.Vertical;
             if (labeled)
-                Style |= GroupStyle.Label;
+                HeaderStyle = MarkupHeaderStyle.Label;
+            BodyStyle = MarkupBodyStyle.OutlinedBox;
         }
     }
 }

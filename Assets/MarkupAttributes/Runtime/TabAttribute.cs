@@ -8,7 +8,7 @@ namespace MarkupAttributes
         public TabAttribute(string path)
         {
             Path = path;
-            Type = GroupType.Tab;
+            Type = LayoutGroupType.Tab;
         }
     }
 }

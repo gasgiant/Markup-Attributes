@@ -8,7 +8,7 @@ namespace MarkupAttributes
         public HideIfGroupAttribute(string path, string condition)
         {
             Path = path;
-            Type = GroupType.HideIf;
+            Type = LayoutGroupType.HideIf;
             Condition = condition;
         }
     }
@@ -18,7 +18,7 @@ namespace MarkupAttributes
     {
         public ShowIfGroupAttribute(string path, string condition) : base(path, condition)
         {
-            ConditionInverted = true;
+            IsConditionInverted = true;
         }
     }
 }

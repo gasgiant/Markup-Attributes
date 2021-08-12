@@ -7,7 +7,7 @@ Shader "MarkupAttributes/FoldoutSample"
         _Two("Two", Float) = 0
         _Three("Three", Float) = 0
 
-        [Foldout(Foldout, false)]
+        [Foldout(Foldout, SimpleBox)]
         _Four("Four", Float) = 0
         _Five("Five", Float) = 0
         _Six("Six", Float) = 0

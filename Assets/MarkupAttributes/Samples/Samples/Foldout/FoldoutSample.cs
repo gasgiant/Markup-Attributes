@@ -9,7 +9,7 @@ namespace MarkupAttributes.Samples
         public int two;
         public int three;
 
-        [Foldout("Foldout", boxed: false)]
+        [Foldout("Foldout", bodyStyle: MarkupBodyStyle.SimpleBox)]
         public int four;
         public int five;
         public int six;

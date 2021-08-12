@@ -20,7 +20,7 @@ namespace MarkupAttributes.Editor
 
         public int Order()
         {
-            if (data.Type == GroupType.LocalScope)
+            if (data.Type == LayoutGroupType.LocalScope)
                 return pathArray.Length - 1000;
             if (pathArray.Length > 0 && (pathArray[0] == "." || pathArray[0] == ".."))
                 return pathArray.Length + 1000;
@@ -44,7 +44,7 @@ namespace MarkupAttributes.Editor
 
         private InspectorLayoutGroup(string path, LocalScopeData scopeData)
         {
-            data = new Params(path, GroupType.LocalScope);
+            data = new Params(path, LayoutGroupType.LocalScope);
             localScope = scopeData;
             SetNameAndPathArray(path, out pathArray, out name);
         }
@@ -70,8 +70,9 @@ namespace MarkupAttributes.Editor
         public class Params
         {
             public string Path => path;
-            public GroupType Type => type;
-            public GroupStyle Style => style;
+            public LayoutGroupType Type => type;
+            public MarkupHeaderStyle HeaderStyle => headerStyle;
+            public MarkupBodyStyle BodyStyle => bodyStyle;
             public bool Toggle => toggle;
             public float LabelWidth => labelWidth;
             public string[] Tabs => tabs;
@@ -79,8 +80,9 @@ namespace MarkupAttributes.Editor
             public readonly ConditionWrapper conditionWrapper;
             public readonly TogglableValueWrapper togglableValueWrapper;
             private readonly string path;
-            private readonly GroupType type;
-            private readonly GroupStyle style;
+            private readonly LayoutGroupType type;
+            private readonly MarkupHeaderStyle headerStyle;
+            private readonly MarkupBodyStyle bodyStyle;
             private readonly bool toggle = false;
             private readonly float labelWidth;
             private readonly string[] tabs;
@@ -90,7 +92,8 @@ namespace MarkupAttributes.Editor
             {
                 path = attribute.Path;
                 type = attribute.Type;
-                style = attribute.Style;
+                headerStyle = attribute.HeaderStyle;
+                bodyStyle = attribute.BodyStyle;
                 toggle = attribute.Toggle;
                 labelWidth = attribute.LabelWidth;
                 tabs = attribute.Tabs;
@@ -98,7 +101,7 @@ namespace MarkupAttributes.Editor
                 this.togglableValueWrapper = togglableValueWrapper;
             }
 
-            public Params(string path, GroupType type)
+            public Params(string path, LayoutGroupType type)
             {
                 this.path = path;
                 this.type = type;

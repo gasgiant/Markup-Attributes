@@ -8,7 +8,7 @@ namespace MarkupAttributes
         public HorizontalGroupAttribute(string path, float labelWidth)
         {
             Path = path;
-            Type = GroupType.Horizontal;
+            Type = LayoutGroupType.Horizontal;
             LabelWidth = labelWidth;
         }
     }

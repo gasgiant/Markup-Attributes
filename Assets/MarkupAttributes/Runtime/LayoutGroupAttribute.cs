@@ -5,20 +5,21 @@ namespace MarkupAttributes
     public abstract class LayoutGroupAttribute : Attribute
     {
         public string Path { get; protected set; }
-        public GroupType Type { get; protected set; }
-        public GroupStyle Style { get; protected set; }
+        public LayoutGroupType Type { get; protected set; }
+        public MarkupHeaderStyle HeaderStyle { get; protected set; } 
+        public MarkupBodyStyle BodyStyle { get; protected set; } 
         public bool Toggle { get; protected set; }
         public float LabelWidth { get; protected set; }
         public string[] Tabs { get; protected set; }
         public string Condition { get; protected set; }
-        public bool ConditionInverted { get; protected set; }
+        public bool IsConditionInverted { get; protected set; }
         public string ShaderKeyword { get; protected set; }
 
-        public bool NeedsCondition => Type == GroupType.DisableIf
-            || Type == GroupType.HideIf;
+        public bool HasCondition => Type == LayoutGroupType.DisableIf
+            || Type == LayoutGroupType.HideIf;
     }
 
-    public enum GroupType
+    public enum LayoutGroupType
     {
         LocalScope,
         Vertical,
@@ -30,15 +31,19 @@ namespace MarkupAttributes
     }
 
     [Flags]
-    public enum GroupStyle
+    public enum MarkupHeaderStyle
     {
         None = 0,
         Label = 1,
-        Box = 2,
         Foldable = 4,
-        LabelUnderline = 8,
+        Underline = 8
+    }
 
-        Foldout = Label | Foldable
+    public enum MarkupBodyStyle
+    {
+        None,
+        SimpleBox,
+        OutlinedBox
     }
 }
 

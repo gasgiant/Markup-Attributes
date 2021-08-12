@@ -8,8 +8,8 @@ namespace MarkupAttributes
         public TitleGroupAttribute(string path)
         {
             Path = path;
-            Type = GroupType.Vertical;
-            Style = GroupStyle.Label | GroupStyle.LabelUnderline;
+            Type = LayoutGroupType.Vertical;
+            HeaderStyle = MarkupHeaderStyle.Label | MarkupHeaderStyle.Underline;
         }
     }
 }

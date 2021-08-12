@@ -8,7 +8,7 @@ namespace MarkupAttributes
         public DisableIfGroupAttribute(string path, string condition)
         {
             Path = path;
-            Type = GroupType.DisableIf;
+            Type = LayoutGroupType.DisableIf;
             Condition = condition;
         }
     }
@@ -18,7 +18,7 @@ namespace MarkupAttributes
     {
         public EnableIfGroupAttribute(string path, string condition) : base(path, condition)
         {
-            ConditionInverted = true;
+            IsConditionInverted = true;
         }
     }
 }

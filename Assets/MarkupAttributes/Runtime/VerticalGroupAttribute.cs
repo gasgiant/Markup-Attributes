@@ -8,7 +8,7 @@ namespace MarkupAttributes
         public VerticalGroupAttribute(string path)
         {
             Path = path;
-            Type = GroupType.Vertical;
+            Type = LayoutGroupType.Vertical;
         }
     }
 }

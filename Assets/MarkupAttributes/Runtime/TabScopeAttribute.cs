@@ -8,11 +8,10 @@ namespace MarkupAttributes
         public TabScopeAttribute(string path, string tabs, bool boxed = false)
         {
             Path = path;
-            Type = GroupType.TabScope;
+            Type = LayoutGroupType.TabScope;
             Tabs = tabs.Split('|');
-            Style = GroupStyle.None;
             if (boxed)
-                Style |= GroupStyle.Box;
+                BodyStyle = MarkupBodyStyle.OutlinedBox;
         }
     }
 }

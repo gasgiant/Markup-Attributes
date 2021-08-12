@@ -54,11 +54,12 @@ namespace MarkupAttributes.Editor
             MaterialEditor materialEditor = editor as MaterialEditor;
             if (!stripped)
             {
-                EditorGUILayout.BeginVertical(MarkupStyles.GroupBox);
+                EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
                 EditorGUIUtility.hierarchyMode = false;
                 EditorGUIUtility.labelWidth = labelWidth;
 
-                Rect headerRect = HeaderBase(GroupStyle.Box, expanded);
+                Rect headerRect = HeaderBase(MarkupHeaderStyle.None,
+                    MarkupBodyStyle.OutlinedBox, expanded);
                 property.isExpanded = FoldoutWithObjectField(headerRect, property);
                 if (expanded)
                     EditorGUILayout.Space(SpaceAfterBoxedHeader);
@@ -93,17 +94,17 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        internal static Rect HeaderBase(GroupStyle style, bool expanded)
+        internal static Rect HeaderBase(MarkupHeaderStyle header, 
+            MarkupBodyStyle body, bool expanded)
         {
-            bool box = style.HasFlag(GroupStyle.Box);
-            bool line = style.HasFlag(GroupStyle.LabelUnderline);
-            var padding = MarkupStyles.GroupBox.padding;
+            bool line = header.HasFlag(MarkupHeaderStyle.Underline);
+            var padding = MarkupStyles.OutlinedBox.padding;
 
-            if (!box)
-                EditorGUILayout.Space(SpaceAfterBoxedHeader);
+            //if (!box)
+            //    EditorGUILayout.Space(SpaceAfterBoxedHeader);
 
             Rect rect = EditorGUILayout.GetControlRect();
-            if (box)
+            if (body == MarkupBodyStyle.OutlinedBox)
             {
                 Rect boxRect = padding.Add(rect);
                 GUI.Box(boxRect, GUIContent.none, MarkupStyles.HeaderBox(expanded));
@@ -111,7 +112,7 @@ namespace MarkupAttributes.Editor
 
             if (expanded)
             {
-                if (box)
+                if (body == MarkupBodyStyle.OutlinedBox)
                     EditorGUILayout.Space(SpaceAfterBoxedHeader);
                 if (line)
                     HorizontalLine();
@@ -151,7 +152,7 @@ namespace MarkupAttributes.Editor
             else
                 EditorGUI.LabelField(position, label);
 
-            float xOffset = EditorGUIUtility.labelWidth - 0.5f * MarkupStyles.GroupBox.padding.left;
+            float xOffset = EditorGUIUtility.labelWidth - 0.5f * MarkupStyles.OutlinedBox.padding.left;
             var propertyRect = new Rect(position.x + xOffset,
                 position.y, position.width - xOffset, EditorGUIUtility.singleLineHeight);
             EditorGUI.ObjectField(propertyRect, property, GUIContent.none);
@@ -191,7 +192,7 @@ namespace MarkupAttributes.Editor
                 isExpanded = EditorGUI.Foldout(smallRect, isExpanded, GUIContent.none);
 
                 Rect controlRect = rectFoldout;
-                var padding = MarkupStyles.GroupBox.padding;
+                var padding = MarkupStyles.OutlinedBox.padding;
                 controlRect.y -= padding.top;
                 controlRect.height += padding.top + padding.bottom;
                 isExpanded = EditorGUI.Foldout(controlRect, isExpanded, 
@@ -213,7 +214,7 @@ namespace MarkupAttributes.Editor
             if (isBoxed)
             {
                 Rect position = EditorGUILayout.GetControlRect(false);
-                var padding = MarkupStyles.GroupBox.padding;
+                var padding = MarkupStyles.OutlinedBox.padding;
                 position.x -= padding.left;
                 position.width += padding.right + padding.left;
                 position.width -= 1;

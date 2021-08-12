@@ -20,7 +20,8 @@ namespace MarkupAttributes
         }
 
 
-        public static GUIStyle GroupBox => EditorStyles.helpBox;
+        public static GUIStyle OutlinedBox => EditorStyles.helpBox;
+        public static GUIStyle SimpleBox => GUI.skin.box;
 
         private static GUIStyle frameBox;
         public static GUIStyle TabsBox
@@ -69,7 +70,7 @@ namespace MarkupAttributes
             if (texture != null)
             {
                 style.normal.background = texture;
-                style.normal.scaledBackgrounds = new Texture2D[0];// new Texture2D[] { texture };
+                style.normal.scaledBackgrounds = new Texture2D[0];
             }
             return style;
         }

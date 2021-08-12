@@ -119,10 +119,10 @@ namespace MarkupAttributes.Editor
             LayoutGroupAttribute attribute, SerializedProperty property, object targetObject)
         {
             ConditionWrapper conditionWrapper = null;
-            if (attribute.NeedsCondition)
+            if (attribute.HasCondition)
             {
                 conditionWrapper = ConditionWrapper.Create(
-                    attribute.Condition, attribute.ConditionInverted, targetObject);
+                    attribute.Condition, attribute.IsConditionInverted, targetObject);
                 if (conditionWrapper == null)
                     return null;
             }
