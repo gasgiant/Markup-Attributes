@@ -50,11 +50,11 @@ namespace MarkupAttributes.Editor
             stripped &= editor != null;
             bool expanded = property.isExpanded && editor != null && !property.hasMultipleDifferentValues;
             bool hierarchyMode = EditorGUIUtility.hierarchyMode;
+            float labelWidth = EditorGUIUtility.labelWidth;
             MaterialEditor materialEditor = editor as MaterialEditor;
             if (!stripped)
             {
                 EditorGUILayout.BeginVertical(MarkupStyles.GroupBox);
-                float labelWidth = EditorGUIUtility.labelWidth;
                 EditorGUIUtility.hierarchyMode = false;
                 EditorGUIUtility.labelWidth = labelWidth;
 
@@ -89,6 +89,7 @@ namespace MarkupAttributes.Editor
                     EditorGUILayout.Space(SpaceAfterBoxedHeader);
                 EditorGUILayout.EndVertical();
                 EditorGUIUtility.hierarchyMode = hierarchyMode;
+                EditorGUIUtility.labelWidth = labelWidth;
             }
         }
 
