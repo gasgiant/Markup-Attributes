@@ -7,7 +7,7 @@ namespace MarkupAttributes.Editor
     public static class MarkupGUI
     {
         internal const float SpaceAfterBoxedHeader = 2;
-        internal const float SpaceAfterGroup = 5;
+        internal const float SpaceBeforeHeader = 3;
 
         public static bool DrawScriptProperty => drawScriptProperty;
         private static bool drawScriptProperty = true;
@@ -55,43 +55,56 @@ namespace MarkupAttributes.Editor
 
         internal static Rect BeginVertical(MarkupBodyStyle style, bool hasHeader, bool isExpanded)
         {
-            bool verticalStarted = false;
             Rect headerRect = Rect.zero;
-
-            if (style == MarkupBodyStyle.FullBox)
+            switch (style)
             {
-                EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
-                verticalStarted = true;
+                case MarkupBodyStyle.SeparatorLine:
+                    EditorGUILayout.BeginVertical();
+                    if (hasHeader)
+                    {
+                        GUILayout.Space(SpaceBeforeHeader);
+                        headerRect = EditorGUILayout.GetControlRect();
+                        if (isExpanded)
+                        {
+                            HorizontalLine();
+                        }
+                    }
+                    break;
+
+                case MarkupBodyStyle.ContentBox:
+                    // Inlined editors create unwanted padding, 
+                    // if there is an empty GUIStyle.none vertical scope
+                    // (which can happen, for example, in unexpanded foldouts).
+                    // I don't know if it's a bug or an intended behaviour.
+                    if (!isExpanded)
+                        EditorGUILayout.BeginVertical();
+                    if (hasHeader)
+                    {
+                        GUILayout.Space(SpaceBeforeHeader);
+                        headerRect = EditorGUILayout.GetControlRect();
+                    }
+                    if (isExpanded)
+                        EditorGUILayout.BeginVertical(MarkupStyles.Box);
+                    break;
+
+                case MarkupBodyStyle.FullBox:
+                    EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
+                    if (hasHeader)
+                    {
+                        headerRect = EditorGUILayout.GetControlRect();
+                        Rect headerBoxRect = MarkupStyles.OutlinedBox.padding.Add(headerRect);
+                        GUI.Box(headerBoxRect, GUIContent.none, MarkupStyles.OutlinedHeaderBox(isExpanded));
+                        if (isExpanded)
+                        {
+                            EditorGUILayout.Space(SpaceAfterBoxedHeader);
+                        }
+                    }
+                    break;
+
+                default:
+                    EditorGUILayout.BeginVertical();
+                    break;
             }
-
-            if (hasHeader)
-            {
-                headerRect = EditorGUILayout.GetControlRect();
-
-                if (style == MarkupBodyStyle.FullBox)
-                {
-                    Rect headerBoxRect = MarkupStyles.OutlinedBox.padding.Add(headerRect);
-                    GUI.Box(headerBoxRect, GUIContent.none, MarkupStyles.OutlinedHeaderBox(isExpanded));
-                }
-
-                if (isExpanded)
-                {
-                    if (style == MarkupBodyStyle.FullBox)
-                        EditorGUILayout.Space(SpaceAfterBoxedHeader);
-                    if (style == MarkupBodyStyle.SeparatorLine)
-                        HorizontalLine();
-                }
-            }
-
-            if (isExpanded && style == MarkupBodyStyle.ContentBox)
-            {
-                EditorGUILayout.BeginVertical(MarkupStyles.Box);
-                verticalStarted = true;
-            }
-
-            if (!verticalStarted)
-                EditorGUILayout.BeginVertical();
-
             return headerRect;
         }
 

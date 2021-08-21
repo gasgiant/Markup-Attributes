@@ -123,13 +123,10 @@ namespace MarkupAttributes.Editor
                     {
                         bool hasHeader = group.data.HeaderStyle != MarkupHeaderStyle.None;
                         bool isFoldable = group.data.HeaderStyle == MarkupHeaderStyle.Foldable;
-                        
 
                         string prefsName = GetPrefsName();
                         bool isExpanded = !isFoldable || MarkupAttributesPrefs.GetBool(prefsName);
                         Rect headerRect = MarkupGUI.BeginVertical(group.data.BodyStyle, hasHeader, isExpanded);
-                        //Rect headerRect = EditorGUILayout.GetControlRect();
-                        //EditorGUILayout.BeginVertical(MarkupStyles.Box);
 
                         if (group.data.BodyStyle == MarkupBodyStyle.FullBox)
                         {
