@@ -17,5 +17,7 @@ namespace MarkupAttributes.Samples
             else
                 shader = null;
         }
+
+        
     }
 }

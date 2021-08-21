@@ -97,98 +97,85 @@ namespace MarkupAttributes.Editor
                         isVisible &= (activeTabName == null || activeTabName == group.name);
                     }
 
-                    bool isBoxed = group.data.BodyStyle == MarkupBodyStyle.OutlinedBox
-                        || group.data.BodyStyle == MarkupBodyStyle.SimpleBox;
-
-                    GUIStyle style = GUIStyle.none;
-                    switch (group.data.BodyStyle)
-                    {
-                        case MarkupBodyStyle.SimpleBox:
-                            style = MarkupStyles.SimpleBox;
-                            break;
-                        case MarkupBodyStyle.OutlinedBox:
-                            style = MarkupStyles.OutlinedBox;
-                            break;
-                    }
-
-                    if (isBoxed)
-                    {
-                        group.cachedHierarchyMode = EditorGUIUtility.hierarchyMode;
-                        float labelWidth = EditorGUIUtility.labelWidth;
-                        EditorGUIUtility.hierarchyMode = false;
-                        EditorGUIUtility.labelWidth = labelWidth;
-                    }
-
                     if (group.data.Type == LayoutGroupType.TabScope)
                     {
-                        if (isBoxed)
-                            style = MarkupStyles.TabsBox;
-                        EditorGUILayout.BeginVertical(style);
+                        bool boxed = group.data.BodyStyle == MarkupBodyStyle.FullBox;
+                        if (boxed)
+                            EditorGUILayout.BeginVertical(MarkupStyles.TabsBox);
+                        else
+                            EditorGUILayout.BeginVertical(GUIStyle.none);
                         string prefsName = GetPrefsName();
                         int activeTab;
-                        activeTab = MarkupGUI.TabsControl(MarkupAttributesPrefs.GetInt(prefsName), group.data.Tabs, isBoxed);
+                        activeTab = MarkupGUI.TabsControl(MarkupAttributesPrefs.GetInt(prefsName), group.data.Tabs, boxed);
                         MarkupAttributesPrefs.SetInt(prefsName, activeTab);
                         group.cachedActiveTab = activeTabName;
                         activeTabName = group.data.Tabs[activeTab];
                     }
 
-                    
-
-                    bool hasLabel = group.data.HeaderStyle.HasFlag(MarkupHeaderStyle.Label);
-                    bool isFoldable = group.data.HeaderStyle.HasFlag(MarkupHeaderStyle.Foldable);
-
-                    if (group.data.Type == LayoutGroupType.Vertical)
-                        EditorGUILayout.BeginVertical(style);
                     if (group.data.Type == LayoutGroupType.Horizontal)
                     {
                         group.cachedLabelWidth = EditorGUIUtility.labelWidth;
                         EditorGUIUtility.labelWidth = group.data.LabelWidth;
                         EditorGUILayout.BeginHorizontal(GUIStyle.none);
                     }
-                    
-                    if (hasLabel)
-                    {
-                        string prefsName = GetPrefsName();
-                        
-                        bool isExpanded = !isFoldable || MarkupAttributesPrefs.GetBool(prefsName);
-                        Rect headerRect;
 
-                        if (group.data.Toggle)
+                    if (group.data.Type == LayoutGroupType.Vertical)
+                    {
+                        bool hasHeader = group.data.HeaderStyle != MarkupHeaderStyle.None;
+                        bool isFoldable = group.data.HeaderStyle == MarkupHeaderStyle.Foldable;
+                        
+
+                        string prefsName = GetPrefsName();
+                        bool isExpanded = !isFoldable || MarkupAttributesPrefs.GetBool(prefsName);
+                        Rect headerRect = MarkupGUI.BeginVertical(group.data.BodyStyle, hasHeader, isExpanded);
+                        //Rect headerRect = EditorGUILayout.GetControlRect();
+                        //EditorGUILayout.BeginVertical(MarkupStyles.Box);
+
+                        if (group.data.BodyStyle == MarkupBodyStyle.FullBox)
                         {
-                            if (!isFoldable)
-                                isExpanded = group.data.togglableValueWrapper.GetValue();
-                            headerRect = MarkupGUI.HeaderBase(group.data.HeaderStyle, group.data.BodyStyle, isExpanded);
-                            bool value = MarkupGUI.ToggleGroupHeader(
-                                headerRect, group.data.togglableValueWrapper, 
-                                new GUIContent(group.name), ref isExpanded, isFoldable);
-                            if (isFoldable)
-                            {
-                                MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
-                                isEnabled &= value;
-                            }
-                            else
-                                isVisible &= value;
+                            group.cachedHierarchyMode = MarkupGUI.StartNonHierarchyScope();
                         }
-                        else
+
+                        if (hasHeader)
                         {
-                            if (isFoldable)
+                            if (group.data.Toggle)
                             {
-                                isExpanded = MarkupAttributesPrefs.GetBool(prefsName);
-                                headerRect = MarkupGUI.HeaderBase(group.data.HeaderStyle, group.data.BodyStyle, isExpanded);
-                                isExpanded = EditorGUI.Foldout(headerRect, isExpanded, group.name, true, MarkupStyles.BoldFoldout);
-                                MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
+                                if (!isFoldable)
+                                    isExpanded = group.data.togglableValueWrapper.GetValue();
+                                bool value = MarkupGUI.ToggleGroupHeader(
+                                    headerRect, group.data.togglableValueWrapper,
+                                    new GUIContent(group.name), ref isExpanded, isFoldable);
+                                if (isFoldable)
+                                {
+                                    MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
+                                    isEnabled &= value;
+                                }
+                                else
+                                    isVisible &= value;
                             }
                             else
                             {
-                                using (new EditorGUI.DisabledScope(!ScopeEnabled))
+                                if (isFoldable)
                                 {
-                                    headerRect = MarkupGUI.HeaderBase(group.data.HeaderStyle, group.data.BodyStyle, true);
-                                    EditorGUI.LabelField(headerRect, group.name, EditorStyles.boldLabel);
+                                    isExpanded = EditorGUI.Foldout(headerRect, isExpanded, group.name, true, MarkupStyles.BoldFoldout);
+                                    MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
+                                }
+                                else
+                                {
+                                    using (new EditorGUI.DisabledScope(!ScopeEnabled))
+                                    {
+                                        EditorGUI.LabelField(headerRect, group.name, EditorStyles.boldLabel);
+                                    }
                                 }
                             }
+
+                            isVisible &= isExpanded;
                         }
 
-                        isVisible &= isExpanded;
+                        if (group.data.BodyStyle == MarkupBodyStyle.ContentBox)
+                        {
+                            group.cachedHierarchyMode = MarkupGUI.StartNonHierarchyScope();
+                        }
                     }
                 }
 
@@ -314,15 +301,7 @@ namespace MarkupAttributes.Editor
                 if (ScopeVisible)
                 {
                     if (group.data.Type == LayoutGroupType.Vertical)
-                    {
                         EditorGUILayout.EndVertical();
-                        //if (!group.data.Style.HasFlag(LayoutGroupStyle.Box))
-                        //{
-                        //    if (groupsStack.Count <= 0
-                        //        || groupsStack.Peek().data.Type != LayoutGroupType.Horizontal)
-                        //        EditorGUILayout.Space(MarkupGUI.SpaceAfterGroup);
-                        //}
-                    }
 
                     if (group.data.Type == LayoutGroupType.Horizontal)
                         EditorGUILayout.EndHorizontal();

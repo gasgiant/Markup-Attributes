@@ -30,20 +30,19 @@ namespace MarkupAttributes
         HideIf
     }
 
-    [Flags]
     public enum MarkupHeaderStyle
     {
-        None = 0,
-        Label = 1,
-        Foldable = 4,
-        Underline = 8
+        None,
+        Label,
+        Foldable
     }
 
     public enum MarkupBodyStyle
     {
         None,
-        SimpleBox,
-        OutlinedBox
+        SeparatorLine,
+        ContentBox,
+        FullBox
     }
 }
 

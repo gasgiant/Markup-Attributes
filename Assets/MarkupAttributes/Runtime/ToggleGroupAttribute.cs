@@ -10,10 +10,11 @@ namespace MarkupAttributes
             Path = path;
             Toggle = true;
             Type = LayoutGroupType.Vertical;
-            HeaderStyle = MarkupHeaderStyle.Label;
             if (foldable)
-                HeaderStyle |= MarkupHeaderStyle.Foldable;
-            BodyStyle = MarkupBodyStyle.OutlinedBox;
+                HeaderStyle = MarkupHeaderStyle.Foldable;
+            else
+                HeaderStyle = MarkupHeaderStyle.Label;
+            BodyStyle = MarkupBodyStyle.FullBox;
         }
 
         public static ToggleGroupAttribute CreateForShader(string path, bool foldable, string shaderKeyword)

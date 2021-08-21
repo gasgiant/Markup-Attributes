@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Idvig Manhunter
   race: 0
-  _class: 2
+  characterClass: 2
   alignment: 4
   level: 14
   strength: 10

@@ -237,7 +237,7 @@ namespace MarkupAttributes.Editor
             {
                 if (args.Length < 2)
                     return new FoldoutAttribute(GetPath(args[0]));
-                return new FoldoutAttribute(GetPath(args[0]), GetEnum<MarkupBodyStyle>(args[1]));
+                return new FoldoutAttribute(GetPath(args[0]), GetBool(args[1]));
             }
             return null;
         }

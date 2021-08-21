@@ -44,80 +44,55 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        internal static void DrawEditorInline(SerializedProperty property, 
-            UnityEditor.Editor editor, bool stripped = false, bool enabled = true)
+        public static bool StartNonHierarchyScope()
         {
-            stripped &= editor != null;
-            bool expanded = property.isExpanded && editor != null && !property.hasMultipleDifferentValues;
-            bool hierarchyMode = EditorGUIUtility.hierarchyMode;
+            bool previous = EditorGUIUtility.hierarchyMode;
             float labelWidth = EditorGUIUtility.labelWidth;
-            MaterialEditor materialEditor = editor as MaterialEditor;
-            if (!stripped)
-            {
-                EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
-                EditorGUIUtility.hierarchyMode = false;
-                EditorGUIUtility.labelWidth = labelWidth;
-
-                Rect headerRect = HeaderBase(MarkupHeaderStyle.None,
-                    MarkupBodyStyle.OutlinedBox, expanded);
-                property.isExpanded = FoldoutWithObjectField(headerRect, property);
-                if (expanded)
-                    EditorGUILayout.Space(SpaceAfterBoxedHeader);
-            }
-
-            if (expanded || stripped)
-            {
-                // begin dummy vertical group,
-                // because MaterialEditor interrupts one in OnInspectorGUI
-                if (materialEditor)
-                    EditorGUILayout.BeginVertical();
-                using (new EditorGUI.DisabledScope(!enabled))
-                {
-                    using (new DrawScriptPropertyScope(false))
-                    {
-                        if (materialEditor)
-                            editor.DrawHeader();
-                        editor.OnInspectorGUI();
-                    }
-                }
-                if (materialEditor)
-                    EditorGUILayout.EndVertical();
-            }
-
-            if (!stripped)
-            {
-                if (expanded)
-                    EditorGUILayout.Space(SpaceAfterBoxedHeader);
-                EditorGUILayout.EndVertical();
-                EditorGUIUtility.hierarchyMode = hierarchyMode;
-                EditorGUIUtility.labelWidth = labelWidth;
-            }
+            EditorGUIUtility.hierarchyMode = false;
+            EditorGUIUtility.labelWidth = labelWidth;
+            return previous;
         }
 
-        internal static Rect HeaderBase(MarkupHeaderStyle header, 
-            MarkupBodyStyle body, bool expanded)
+        internal static Rect BeginVertical(MarkupBodyStyle style, bool hasHeader, bool isExpanded)
         {
-            bool line = header.HasFlag(MarkupHeaderStyle.Underline);
-            var padding = MarkupStyles.OutlinedBox.padding;
+            bool verticalStarted = false;
+            Rect headerRect = Rect.zero;
 
-            //if (!box)
-            //    EditorGUILayout.Space(SpaceAfterBoxedHeader);
-
-            Rect rect = EditorGUILayout.GetControlRect();
-            if (body == MarkupBodyStyle.OutlinedBox)
+            if (style == MarkupBodyStyle.FullBox)
             {
-                Rect boxRect = padding.Add(rect);
-                GUI.Box(boxRect, GUIContent.none, MarkupStyles.HeaderBox(expanded));
+                EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
+                verticalStarted = true;
             }
 
-            if (expanded)
+            if (hasHeader)
             {
-                if (body == MarkupBodyStyle.OutlinedBox)
-                    EditorGUILayout.Space(SpaceAfterBoxedHeader);
-                if (line)
-                    HorizontalLine();
+                headerRect = EditorGUILayout.GetControlRect();
+
+                if (style == MarkupBodyStyle.FullBox)
+                {
+                    Rect headerBoxRect = MarkupStyles.OutlinedBox.padding.Add(headerRect);
+                    GUI.Box(headerBoxRect, GUIContent.none, MarkupStyles.OutlinedHeaderBox(isExpanded));
+                }
+
+                if (isExpanded)
+                {
+                    if (style == MarkupBodyStyle.FullBox)
+                        EditorGUILayout.Space(SpaceAfterBoxedHeader);
+                    if (style == MarkupBodyStyle.SeparatorLine)
+                        HorizontalLine();
+                }
             }
-            return rect;
+
+            if (isExpanded && style == MarkupBodyStyle.ContentBox)
+            {
+                EditorGUILayout.BeginVertical(MarkupStyles.Box);
+                verticalStarted = true;
+            }
+
+            if (!verticalStarted)
+                EditorGUILayout.BeginVertical();
+
+            return headerRect;
         }
 
         internal static void HorizontalLine(float height = 1)
@@ -159,6 +134,7 @@ namespace MarkupAttributes.Editor
             EditorGUI.EndProperty();
             return result;
         }
+
 
         internal static bool ToggleGroupHeader(Rect position,
             TogglableValueWrapper wrapper, GUIContent label, ref bool isExpanded, bool foldable)
@@ -238,40 +214,77 @@ namespace MarkupAttributes.Editor
 
             return selected;
         } 
-
-        private static GUIStyle s_TabOnlyOne;
-        private static GUIStyle s_TabFirst;
-        private static GUIStyle s_TabMiddle;
-        private static GUIStyle s_TabLast;
+        
         private static Rect GetTabRect(Rect rect, int tabIndex, int tabCount, out GUIStyle tabStyle)
         {
-            if (s_TabOnlyOne == null)
-            {
-                s_TabOnlyOne = "Tab onlyOne";
-                s_TabFirst = "Tab first";
-                s_TabMiddle = "Tab middle";
-                s_TabLast = "Tab last";
-            }
-
-            tabStyle = s_TabMiddle;
+            tabStyle = MarkupStyles.TabMiddle;
 
             if (tabCount == 1)
             {
-                tabStyle = s_TabOnlyOne;
+                tabStyle = MarkupStyles.TabOnlyOne;
             }
             else if (tabIndex == 0)
             {
-                tabStyle = s_TabFirst;
+                tabStyle = MarkupStyles.TabFirst;
             }
             else if (tabIndex == (tabCount - 1))
             {
-                tabStyle = s_TabLast;
+                tabStyle = MarkupStyles.TabLast;
             }
 
             float tabWidth = rect.width / tabCount;
             int left = Mathf.RoundToInt(tabIndex * tabWidth);
             int right = Mathf.RoundToInt((tabIndex + 1) * tabWidth);
             return new Rect(rect.x + left, rect.y, right - left, rect.height);
+        }
+
+        internal static void DrawEditorInline(SerializedProperty property,
+            UnityEditor.Editor editor, bool stripped = false, bool enabled = true)
+        {
+            stripped &= editor != null;
+            bool expanded = property.isExpanded && editor != null && !property.hasMultipleDifferentValues;
+            bool hierarchyMode = EditorGUIUtility.hierarchyMode;
+            float labelWidth = EditorGUIUtility.labelWidth;
+            MaterialEditor materialEditor = editor as MaterialEditor;
+            if (!stripped)
+            {
+                Rect headerRect = BeginVertical(MarkupBodyStyle.FullBox, true, property.isExpanded);
+                StartNonHierarchyScope();
+                property.isExpanded = FoldoutWithObjectField(headerRect, property);
+                if (expanded)
+                    EditorGUILayout.Space(SpaceAfterBoxedHeader);
+            }
+
+            if (expanded || stripped)
+            {
+                // begin dummy vertical group,
+                // because MaterialEditor interrupts one in OnInspectorGUI
+                if (materialEditor)
+                {
+                    EditorGUILayout.BeginVertical();
+                }
+
+                using (new EditorGUI.DisabledScope(!enabled))
+                {
+                    using (new DrawScriptPropertyScope(false))
+                    {
+                        if (materialEditor)
+                            editor.DrawHeader();
+                        editor.OnInspectorGUI();
+                    }
+                }
+                if (materialEditor)
+                    EditorGUILayout.EndVertical();
+            }
+
+            if (!stripped)
+            {
+                if (expanded)
+                    EditorGUILayout.Space(SpaceAfterBoxedHeader);
+                EditorGUILayout.EndVertical();
+                EditorGUIUtility.hierarchyMode = hierarchyMode;
+                EditorGUIUtility.labelWidth = labelWidth;
+            }
         }
     }
 }

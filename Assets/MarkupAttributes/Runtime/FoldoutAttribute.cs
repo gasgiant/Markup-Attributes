@@ -5,14 +5,12 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class FoldoutAttribute : LayoutGroupAttribute
     {
-        public FoldoutAttribute(string path, MarkupBodyStyle bodyStyle = MarkupBodyStyle.OutlinedBox)
+        public FoldoutAttribute(string path, bool boxed = true)
         {
             Path = path;
             Type = LayoutGroupType.Vertical;
-            HeaderStyle = MarkupHeaderStyle.Label | MarkupHeaderStyle.Foldable;
-            if (bodyStyle != MarkupBodyStyle.OutlinedBox)
-                HeaderStyle |= MarkupHeaderStyle.Underline;
-            BodyStyle = bodyStyle;
+            HeaderStyle = MarkupHeaderStyle.Foldable;
+            BodyStyle = boxed ? MarkupBodyStyle.FullBox : MarkupBodyStyle.ContentBox;
         }
     }
 }

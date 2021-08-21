@@ -9,7 +9,8 @@ namespace MarkupAttributes
         {
             Path = path;
             Type = LayoutGroupType.Vertical;
-            HeaderStyle = MarkupHeaderStyle.Label | MarkupHeaderStyle.Underline;
+            HeaderStyle = MarkupHeaderStyle.Label;
+            BodyStyle = MarkupBodyStyle.SeparatorLine;
         }
     }
 }

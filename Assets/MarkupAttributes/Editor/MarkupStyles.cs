@@ -5,7 +5,9 @@ namespace MarkupAttributes
 {
     public static class MarkupStyles
     {
-        private static GUIStyle boldFoldout;
+        public static GUIStyle OutlinedBox => EditorStyles.helpBox;
+        public static GUIStyle Box => GUI.skin.box;
+
         public static GUIStyle BoldFoldout
         {
             get
@@ -19,11 +21,19 @@ namespace MarkupAttributes
             }
         }
 
+        public static GUIStyle OutlinedHeaderBox(bool opened)
+        {
+            InitializeHeaderStyles();
+            if (opened)
+                return EditorGUIUtility.isProSkin ? headerBoxOpenedDark : headerBoxOpenedLight;
+            else
+                return EditorGUIUtility.isProSkin ? headerBoxClosedDark : headerBoxClosedLight;
+        }
 
-        public static GUIStyle OutlinedBox => EditorStyles.helpBox;
-        public static GUIStyle SimpleBox => GUI.skin.box;
-
-        private static GUIStyle frameBox;
+        public static GUIStyle TabOnlyOne = "Tab onlyOne";
+        public static GUIStyle TabFirst = "Tab first";
+        public static GUIStyle TabMiddle = "Tab middle";
+        public static GUIStyle TabLast = "Tab last";
         public static GUIStyle TabsBox
         {
             get
@@ -37,16 +47,8 @@ namespace MarkupAttributes
             }
         }
 
-        public static GUIStyle HeaderBox(bool opened)
-        {
-            InitializeHeaderStyles();
-            if (opened)
-                return EditorGUIUtility.isProSkin ? headerBoxOpenedDark : headerBoxOpenedLight;
-            else
-                return EditorGUIUtility.isProSkin ? headerBoxClosedDark : headerBoxClosedLight;
-        } 
-
-        private static bool headerStylesInitialized;
+        private static GUIStyle boldFoldout;
+        private static GUIStyle frameBox;
         private static GUIStyle headerBoxOpenedDark;
         private static GUIStyle headerBoxOpenedLight;
         private static GUIStyle headerBoxClosedDark;
@@ -54,13 +56,12 @@ namespace MarkupAttributes
 
         private static void InitializeHeaderStyles()
         {
-            if (!headerStylesInitialized)
+            if (headerBoxOpenedDark == null)
             {
                 headerBoxOpenedDark = CreateBoxStyle(GetTexture("MarkupAttributes_HeaderOpened_Dark"));
                 headerBoxOpenedLight = CreateBoxStyle(GetTexture("MarkupAttributes_HeaderOpened_Light"));
                 headerBoxClosedDark = CreateBoxStyle(GetTexture("MarkupAttributes_HeaderClosed_Dark"));
                 headerBoxClosedLight = CreateBoxStyle(GetTexture("MarkupAttributes_HeaderClosed_Light"));
-                headerStylesInitialized = true;
             }
         }
 
