@@ -13,10 +13,8 @@ namespace MarkupAttributes.Editor
         public bool isEnabled;
         public string cachedPrefsPrefix = null;
         public int? cachedLocalScopeStart = null;
-        public bool? cachedHierarchyMode = null;
-        public int? cachedIndent = null;
-        public float? cachedLabelWidth = null;
         public string cachedActiveTab = null;
+        public MarkupGUI.LabelState labelState;
 
         public int Order()
         {

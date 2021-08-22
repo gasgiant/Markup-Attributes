@@ -4,30 +4,29 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public static class MarkupGUI
+    public static partial class MarkupGUI
     {
         internal const float SpaceAfterBoxedHeader = 2;
         internal const float SpaceBeforeHeader = 3;
 
-        public static bool DrawScriptProperty => drawScriptProperty;
-        private static bool drawScriptProperty = true;
+        #region Utility
 
+        internal static bool DrawScriptProperty { get; private set; } = true;
         public struct DrawScriptPropertyScope : IDisposable
         {
             private readonly bool cachedDrawScriptProperty;
 
             public DrawScriptPropertyScope(bool draw)
             {
-                cachedDrawScriptProperty = drawScriptProperty;
-                drawScriptProperty &= draw;
+                cachedDrawScriptProperty = DrawScriptProperty;
+                DrawScriptProperty &= draw;
             }
 
             public void Dispose()
             {
-                drawScriptProperty = cachedDrawScriptProperty;
+                DrawScriptProperty = cachedDrawScriptProperty;
             }
         }
-
         public struct SetIndentLevelScope : IDisposable
         {
             private readonly int cachedIndentLevel;
@@ -44,82 +43,120 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        public static bool StartNonHierarchyScope()
+        public static LabelState CurrentLabelState() => LabelState.CreateSnapshot();
+
+        public struct LabelState
+        {
+            private bool? hierarchyMode;
+            private int? indentLevel;
+            private float? labelWidth;
+
+            public static LabelState CreateSnapshot()
+            {
+                LabelState state = new LabelState();
+                state.hierarchyMode = EditorGUIUtility.hierarchyMode;
+                state.indentLevel = EditorGUI.indentLevel;
+                state.labelWidth = EditorGUIUtility.labelWidth;
+                return state;
+            }
+
+            public void ResetToThis()
+            {
+                if (hierarchyMode.HasValue)
+                    EditorGUIUtility.hierarchyMode = hierarchyMode.Value;
+                if (indentLevel.HasValue)
+                    EditorGUI.indentLevel = indentLevel.Value;
+                if (labelWidth.HasValue)
+                    EditorGUIUtility.labelWidth = labelWidth.Value;
+            }
+        }
+
+        public static LabelState StartNonHierarchyScope() => StartNonHierarchyScope(0);
+
+        public static LabelState StartNonHierarchyScope(float padding)
         {
             bool previous = EditorGUIUtility.hierarchyMode;
             float labelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.hierarchyMode = false;
-            EditorGUIUtility.labelWidth = labelWidth;
-            return previous;
+            EditorGUIUtility.labelWidth = labelWidth - padding;
+            return CurrentLabelState();
+        }
+
+        #endregion Utility
+
+        #region Styling
+        public static void HorizontalLine(float height = 1)
+        {
+            float c = EditorGUIUtility.isProSkin ? 0.45f : 0.4f;
+            HorizontalLine(new Color(c, c, c), height);
+        }
+
+        public static void HorizontalLine(Color color, float height)
+        {
+            Rect rect = EditorGUILayout.GetControlRect(false, height);
+            EditorGUI.DrawRect(rect, color);
+            GUILayout.Space(2);
         }
 
         internal static Rect BeginVertical(MarkupBodyStyle style, bool hasHeader, bool isExpanded)
         {
             Rect headerRect = Rect.zero;
-            switch (style)
+            if (style == MarkupBodyStyle.SeparatorLine)
             {
-                case MarkupBodyStyle.SeparatorLine:
-                    EditorGUILayout.BeginVertical();
-                    if (hasHeader)
-                    {
-                        GUILayout.Space(SpaceBeforeHeader);
-                        headerRect = EditorGUILayout.GetControlRect();
-                        if (isExpanded)
-                        {
-                            HorizontalLine();
-                        }
-                    }
-                    break;
-
-                case MarkupBodyStyle.ContentBox:
-                    // Inlined editors create unwanted padding, 
-                    // if there is an empty GUIStyle.none vertical scope
-                    // (which can happen, for example, in unexpanded foldouts).
-                    // I don't know if it's a bug or an intended behaviour.
-                    if (!isExpanded)
-                        EditorGUILayout.BeginVertical();
-                    if (hasHeader)
-                    {
-                        GUILayout.Space(SpaceBeforeHeader);
-                        headerRect = EditorGUILayout.GetControlRect();
-                    }
+                EditorGUILayout.BeginVertical();
+                if (hasHeader)
+                {
+                    GUILayout.Space(SpaceBeforeHeader);
+                    headerRect = EditorGUILayout.GetControlRect();
                     if (isExpanded)
-                        EditorGUILayout.BeginVertical(MarkupStyles.Box);
-                    break;
-
-                case MarkupBodyStyle.FullBox:
-                    EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
-                    if (hasHeader)
                     {
-                        headerRect = EditorGUILayout.GetControlRect();
-                        Rect headerBoxRect = MarkupStyles.OutlinedBox.padding.Add(headerRect);
-                        GUI.Box(headerBoxRect, GUIContent.none, MarkupStyles.OutlinedHeaderBox(isExpanded));
-                        if (isExpanded)
-                        {
-                            EditorGUILayout.Space(SpaceAfterBoxedHeader);
-                        }
+                        HorizontalLine();
                     }
-                    break;
-
-                default:
-                    EditorGUILayout.BeginVertical();
-                    break;
+                }
+                return headerRect;
             }
+
+            if (style == MarkupBodyStyle.ContentBox)
+            {
+                // Inlined editors create unwanted padding, 
+                // if there is an empty GUIStyle.none vertical scope
+                // (which can happen, for example, in unexpanded foldouts).
+                // I don't know if it's a bug or an intended behaviour.
+                // Workaround - put header inside the scope if it's not expanded.
+                if (!isExpanded)
+                    EditorGUILayout.BeginVertical();
+                if (hasHeader)
+                {
+                    GUILayout.Space(SpaceBeforeHeader);
+                    headerRect = EditorGUILayout.GetControlRect();
+                }
+                if (isExpanded)
+                    EditorGUILayout.BeginVertical(MarkupStyles.Box);
+                return headerRect;
+            }
+
+            if (style == MarkupBodyStyle.FullBox)
+            {
+                EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
+                if (hasHeader)
+                {
+                    headerRect = EditorGUILayout.GetControlRect();
+                    Rect headerBoxRect = MarkupStyles.OutlinedBox.padding.Add(headerRect);
+                    GUI.Box(headerBoxRect, GUIContent.none, MarkupStyles.OutlinedHeaderBox(isExpanded));
+                    if (isExpanded)
+                    {
+                        EditorGUILayout.Space(SpaceAfterBoxedHeader);
+                    }
+                }
+                return headerRect;
+            }
+
+            EditorGUILayout.BeginVertical();
             return headerRect;
         }
+        
+        #endregion Styling
 
-        internal static void HorizontalLine(float height = 1)
-        {
-            float c = EditorGUIUtility.isProSkin ? 0.5f : 0.4f;
-            HorizontalLine(new Color(c, c, c), height);
-        }
-
-        internal static void HorizontalLine(Color color, float height = 1)
-        {
-            Rect rect = EditorGUILayout.GetControlRect(false, height);
-            EditorGUI.DrawRect(rect, color);
-            EditorGUILayout.GetControlRect(false, height);
-        }
 
         internal static bool FoldoutWithObjectField(SerializedProperty property)
         {
@@ -134,20 +171,18 @@ namespace MarkupAttributes.Editor
             label = EditorGUI.BeginProperty(position, label, property);
             var foldoutRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, EditorGUIUtility.singleLineHeight);
             bool result = false;
-
             if (property.objectReferenceValue != null)
                 result = EditorGUI.Foldout(foldoutRect, property.isExpanded, label, true);
             else
                 EditorGUI.LabelField(position, label);
 
-            float xOffset = EditorGUIUtility.labelWidth - 0.5f * MarkupStyles.OutlinedBox.padding.left;
+            float xOffset = EditorGUIUtility.labelWidth + EditorGUIUtility.standardVerticalSpacing;
             var propertyRect = new Rect(position.x + xOffset,
                 position.y, position.width - xOffset, EditorGUIUtility.singleLineHeight);
             EditorGUI.ObjectField(propertyRect, property, GUIContent.none);
             EditorGUI.EndProperty();
             return result;
         }
-
 
         internal static bool ToggleGroupHeader(Rect position,
             TogglableValueWrapper wrapper, GUIContent label, ref bool isExpanded, bool foldable)
@@ -171,7 +206,6 @@ namespace MarkupAttributes.Editor
             value = EditorGUI.ToggleLeft(rectToggle, label, value, EditorStyles.boldLabel);
             if (EditorGUI.EndChangeCheck())
                 wrapper.SetValue(value, true);
-            
 
             if (foldable)
             {
@@ -226,8 +260,8 @@ namespace MarkupAttributes.Editor
             EditorGUILayout.Space(SpaceAfterBoxedHeader);
 
             return selected;
-        } 
-        
+        }
+
         private static Rect GetTabRect(Rect rect, int tabIndex, int tabCount, out GUIStyle tabStyle)
         {
             tabStyle = MarkupStyles.TabMiddle;
@@ -262,7 +296,7 @@ namespace MarkupAttributes.Editor
             if (!stripped)
             {
                 Rect headerRect = BeginVertical(MarkupBodyStyle.FullBox, true, property.isExpanded);
-                StartNonHierarchyScope();
+                StartNonHierarchyScope(MarkupStyles.OutlinedBox.padding.left);
                 property.isExpanded = FoldoutWithObjectField(headerRect, property);
                 if (expanded)
                     EditorGUILayout.Space(SpaceAfterBoxedHeader);

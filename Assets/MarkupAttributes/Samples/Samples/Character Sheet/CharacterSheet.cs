@@ -13,7 +13,7 @@ namespace MarkupAttributes.Samples
         public Alignment alignment;
         public int level;
 
-        [TitleGroup("Main/Stats")]
+        [TitleGroup("./Stats")]
         public int strength;
         public int dexterity;
         public int constitution;

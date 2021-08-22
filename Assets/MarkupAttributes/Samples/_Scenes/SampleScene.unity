@@ -423,6 +423,9 @@ MonoBehaviour:
   one: 0
   two: 0
   three: 0
+  four: 0
+  five: 0
+  six: 0
 --- !u!1 &362746292
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +592,7 @@ MonoBehaviour:
     two: 0
     three: 0
   noControl:
-    boolean: 1
+    boolean: 0
     one: 0
     two: 0
     three: 0

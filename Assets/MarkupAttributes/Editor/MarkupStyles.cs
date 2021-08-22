@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MarkupAttributes
+namespace MarkupAttributes.Editor
 {
     public static class MarkupStyles
     {

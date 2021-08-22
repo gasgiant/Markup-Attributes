@@ -261,7 +261,9 @@ namespace MarkupAttributes.Editor
             bool valid = ParseAttribute(attribute, "TitleGroup", 1, out string[] args);
             if (valid)
             {
-                return new TitleGroupAttribute(GetPath(args[0]));
+                if (args.Length < 2)
+                    return new TitleGroupAttribute(GetPath(args[0]));
+                return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]));
             }
             return null;
         }
