@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace MarkupAttributes.Editor
 {
-    public class InspectorLayoutGroup
+    internal class InspectorLayoutGroup
     {
         public readonly Params data;
         public readonly string[] pathArray;
@@ -71,7 +71,6 @@ namespace MarkupAttributes.Editor
             public LayoutGroupType Type => type;
             public MarkupHeaderStyle HeaderStyle => headerStyle;
             public MarkupBodyStyle BodyStyle => bodyStyle;
-            public bool Toggle => toggle;
             public float LabelWidth => labelWidth;
             public string[] Tabs => tabs;
 
@@ -81,7 +80,6 @@ namespace MarkupAttributes.Editor
             private readonly LayoutGroupType type;
             private readonly MarkupHeaderStyle headerStyle;
             private readonly MarkupBodyStyle bodyStyle;
-            private readonly bool toggle = false;
             private readonly float labelWidth;
             private readonly string[] tabs;
 
@@ -92,7 +90,6 @@ namespace MarkupAttributes.Editor
                 type = attribute.Type;
                 headerStyle = attribute.HeaderStyle;
                 bodyStyle = attribute.BodyStyle;
-                toggle = attribute.Toggle;
                 labelWidth = attribute.LabelWidth;
                 tabs = attribute.Tabs;
                 this.conditionWrapper = conditionWrapper;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public class InspectorLayoutController
+    internal class InspectorLayoutController
     {
         public bool IncludeChildren(int index) => layoutData[index] == null || layoutData[index].includeChildren;
         public bool Hide(int index) => layoutData[index] == null || layoutData[index].hide;
@@ -109,16 +109,9 @@ namespace MarkupAttributes.Editor
             if (group.data.Type == LayoutGroupType.TabScope)
             {
                 bool boxed = group.data.BodyStyle == MarkupBodyStyle.Box;
-                if (boxed)
-                {
-                    EditorGUILayout.BeginVertical(MarkupStyles.TabsBox);
-                    MarkupGUI.StartNonHierarchyScope(MarkupStyles.TabsBox.padding.left);
-                }
-                else
-                    EditorGUILayout.BeginVertical(GUIStyle.none);
                 string prefsName = GetPrefsName();
                 int activeTab;
-                activeTab = MarkupGUI.TabsControl(MarkupAttributesPrefs.GetInt(prefsName), group.data.Tabs, boxed);
+                activeTab = MarkupGUI.BeginTabsGroup(MarkupAttributesPrefs.GetInt(prefsName), group.data.Tabs, boxed);
                 MarkupAttributesPrefs.SetInt(prefsName, activeTab);
                 group.cachedActiveTab = activeTabName;
                 activeTabName = group.data.Tabs[activeTab];
@@ -132,58 +125,14 @@ namespace MarkupAttributes.Editor
 
             if (group.data.Type == LayoutGroupType.Vertical)
             {
-                bool hasHeader = group.data.HeaderStyle != MarkupHeaderStyle.None;
-                bool isFoldable = group.data.HeaderStyle == MarkupHeaderStyle.Foldable;
-
                 string prefsName = GetPrefsName();
-                bool isExpanded = !isFoldable || MarkupAttributesPrefs.GetBool(prefsName);
-                Rect headerRect = MarkupGUI.BeginVertical(group.data.BodyStyle, hasHeader, isExpanded);
+                bool isExpanded = MarkupAttributesPrefs.GetBool(prefsName);
+                MarkupGUI.BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
+                    group.data.HeaderStyle, group.data.BodyStyle, group.name,
+                    group.data.togglableValueWrapper);
 
-                if (group.data.BodyStyle == MarkupBodyStyle.Box)
-                {
-                    MarkupGUI.StartNonHierarchyScope(MarkupStyles.OutlinedBox.padding.left);
-                }
-
-                if (hasHeader)
-                {
-                    if (group.data.Toggle)
-                    {
-                        if (!isFoldable)
-                            isExpanded = group.data.togglableValueWrapper.GetValue();
-                        bool value = MarkupGUI.ToggleGroupHeader(
-                            headerRect, group.data.togglableValueWrapper,
-                            new GUIContent(group.name), ref isExpanded, isFoldable);
-                        if (isFoldable)
-                        {
-                            MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
-                            isEnabled &= value;
-                        }
-                        else
-                            isVisible &= value;
-                    }
-                    else
-                    {
-                        if (isFoldable)
-                        {
-                            isExpanded = EditorGUI.Foldout(headerRect, isExpanded, group.name, true, MarkupStyles.BoldFoldout);
-                            MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
-                        }
-                        else
-                        {
-                            using (new EditorGUI.DisabledScope(!ScopeEnabled))
-                            {
-                                EditorGUI.LabelField(headerRect, group.name, EditorStyles.boldLabel);
-                            }
-                        }
-                    }
-
-                    isVisible &= isExpanded;
-                }
-
-                if (group.data.BodyStyle == MarkupBodyStyle.ContentBox)
-                {
-                    MarkupGUI.StartNonHierarchyScope(MarkupStyles.Box.padding.left);
-                }
+                MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
+                isVisible &= isExpanded;
             }
         }
         
@@ -317,7 +266,7 @@ namespace MarkupAttributes.Editor
                     if (group.cachedActiveTab != null)
                         activeTabName = group.cachedActiveTab;
 
-                    group.labelState.ResetToThis();
+                    group.labelState.Restore();
 
                     group.cachedPrefsPrefix = null;
                     group.cachedActiveTab = null;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MarkupAttributes.Editor
 {
-    public class PropertyLayoutData
+    internal class PropertyLayoutData
     {
         public readonly InspectorLayoutGroup[] groups;
         public readonly EndGroupAttribute end;

@@ -8,6 +8,19 @@ namespace MarkupAttributes.Editor
         public static GUIStyle OutlinedBox => EditorStyles.helpBox;
         public static GUIStyle Box => GUI.skin.box;
 
+        public static GUIStyle CenteredLabel
+        {
+            get
+            {
+                if (centeredLabel == null)
+                {
+                    centeredLabel = new GUIStyle(EditorStyles.label);
+                    centeredLabel.alignment = TextAnchor.MiddleCenter;
+                }
+                return centeredLabel;
+            }
+        }
+
         public static GUIStyle BoldFoldout
         {
             get
@@ -47,6 +60,7 @@ namespace MarkupAttributes.Editor
             }
         }
 
+        private static GUIStyle centeredLabel;
         private static GUIStyle boldFoldout;
         private static GUIStyle frameBox;
         private static GUIStyle headerBoxOpenedDark;

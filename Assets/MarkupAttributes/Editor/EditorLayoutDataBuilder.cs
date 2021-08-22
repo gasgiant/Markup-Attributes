@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace MarkupAttributes.Editor
 {
-    public class InlineEditorData
+    internal class InlineEditorData
     {
         public UnityEditor.Editor editor;
         public InlineEditorMode mode;
@@ -19,7 +19,7 @@ namespace MarkupAttributes.Editor
         }
     }
 
-    public static class EditorLayoutDataBuilder
+    internal static class EditorLayoutDataBuilder
     {
         public static void BuildLayoutData(SerializedObject serializedObject,
             out SerializedProperty[] allProps,

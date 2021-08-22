@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public static class ShaderAttributesParser
+    internal static class ShaderAttributesParser
     {
         public static string GetKeyword(string arg, out bool isGlobal)
         {
