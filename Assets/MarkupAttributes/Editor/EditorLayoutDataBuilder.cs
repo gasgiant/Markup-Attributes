@@ -9,13 +9,13 @@ namespace MarkupAttributes.Editor
     public class InlineEditorData
     {
         public UnityEditor.Editor editor;
-        public bool stripped;
+        public InlineEditorMode mode;
         public bool enabled = true;
 
         public InlineEditorData(UnityEditor.Editor editor, InlineEditorAttribute attribute)
         {
             this.editor = editor;
-            stripped = attribute.stripped;
+            mode = attribute.mode;
         }
     }
 

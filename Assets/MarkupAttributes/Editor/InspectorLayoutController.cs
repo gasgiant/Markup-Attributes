@@ -108,7 +108,7 @@ namespace MarkupAttributes.Editor
 
             if (group.data.Type == LayoutGroupType.TabScope)
             {
-                bool boxed = group.data.BodyStyle == MarkupBodyStyle.FullBox;
+                bool boxed = group.data.BodyStyle == MarkupBodyStyle.Box;
                 if (boxed)
                 {
                     EditorGUILayout.BeginVertical(MarkupStyles.TabsBox);
@@ -139,7 +139,7 @@ namespace MarkupAttributes.Editor
                 bool isExpanded = !isFoldable || MarkupAttributesPrefs.GetBool(prefsName);
                 Rect headerRect = MarkupGUI.BeginVertical(group.data.BodyStyle, hasHeader, isExpanded);
 
-                if (group.data.BodyStyle == MarkupBodyStyle.FullBox)
+                if (group.data.BodyStyle == MarkupBodyStyle.Box)
                 {
                     MarkupGUI.StartNonHierarchyScope(MarkupStyles.OutlinedBox.padding.left);
                 }

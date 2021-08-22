@@ -11,7 +11,7 @@ namespace MarkupAttributes
             Type = LayoutGroupType.TabScope;
             Tabs = tabs.Split('|');
             if (boxed)
-                BodyStyle = MarkupBodyStyle.FullBox;
+                BodyStyle = MarkupBodyStyle.Box;
         }
     }
 }

@@ -7,14 +7,14 @@ namespace MarkupAttributes.Samples
         [InlineEditor]
         [SerializeField] private SomeData someData;
 
-        [InlineEditor]
+        [InlineEditor(InlineEditorMode.Box)]
         [SerializeField] private SomeComponent someComponent;
         
-        [InlineEditor]
+        [InlineEditor(InlineEditorMode.Box)]
         [SerializeField] private Material material;
 
         [TitleGroup("Stripped")]
-        [InlineEditor(stripped: true)]
-        [SerializeField] private SomeData stripped;
+        [InlineEditor(InlineEditorMode.Stripped)]
+        [SerializeField] private SomeData stripped1;
     }
 }

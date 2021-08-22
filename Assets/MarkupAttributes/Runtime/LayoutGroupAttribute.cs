@@ -42,7 +42,7 @@ namespace MarkupAttributes
         None,
         SeparatorLine,
         ContentBox,
-        FullBox
+        Box
     }
 }
 

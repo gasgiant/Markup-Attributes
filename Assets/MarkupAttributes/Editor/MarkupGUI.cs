@@ -6,7 +6,7 @@ namespace MarkupAttributes.Editor
 {
     public static partial class MarkupGUI
     {
-        internal const float SpaceAfterBoxedHeader = 2;
+        internal const float SpaceAfterBoxedHeader = 5;
         internal const float SpaceBeforeHeader = 3;
 
         #region Utility
@@ -135,7 +135,7 @@ namespace MarkupAttributes.Editor
                 return headerRect;
             }
 
-            if (style == MarkupBodyStyle.FullBox)
+            if (style == MarkupBodyStyle.Box)
             {
                 EditorGUILayout.BeginVertical(MarkupStyles.OutlinedBox);
                 if (hasHeader)
@@ -145,7 +145,7 @@ namespace MarkupAttributes.Editor
                     GUI.Box(headerBoxRect, GUIContent.none, MarkupStyles.OutlinedHeaderBox(isExpanded));
                     if (isExpanded)
                     {
-                        EditorGUILayout.Space(SpaceAfterBoxedHeader);
+                        GUILayout.Space(SpaceAfterBoxedHeader);
                     }
                 }
                 return headerRect;
@@ -257,7 +257,7 @@ namespace MarkupAttributes.Editor
             }
             else
                 selected = GUILayout.Toolbar(selected, tabs);
-            EditorGUILayout.Space(SpaceAfterBoxedHeader);
+            GUILayout.Space(SpaceAfterBoxedHeader);
 
             return selected;
         }
@@ -286,23 +286,36 @@ namespace MarkupAttributes.Editor
         }
 
         internal static void DrawEditorInline(SerializedProperty property,
-            UnityEditor.Editor editor, bool stripped = false, bool enabled = true)
+            UnityEditor.Editor editor, InlineEditorMode mode, bool enabled = true)
         {
-            stripped &= editor != null;
-            bool expanded = property.isExpanded && editor != null && !property.hasMultipleDifferentValues;
-            bool hierarchyMode = EditorGUIUtility.hierarchyMode;
-            float labelWidth = EditorGUIUtility.labelWidth;
+            var labelState = CurrentLabelState();
+            
+            bool expanded = mode == InlineEditorMode.Stripped || property.isExpanded;
+            expanded &= editor != null;
+            expanded &= !property.hasMultipleDifferentValues;
             MaterialEditor materialEditor = editor as MaterialEditor;
-            if (!stripped)
+
+            if (mode == InlineEditorMode.Box)
             {
-                Rect headerRect = BeginVertical(MarkupBodyStyle.FullBox, true, property.isExpanded);
+                Rect headerRect = BeginVertical(MarkupBodyStyle.Box, true, property.isExpanded);
                 StartNonHierarchyScope(MarkupStyles.OutlinedBox.padding.left);
                 property.isExpanded = FoldoutWithObjectField(headerRect, property);
-                if (expanded)
-                    EditorGUILayout.Space(SpaceAfterBoxedHeader);
             }
 
-            if (expanded || stripped)
+            if (mode == InlineEditorMode.ContentBox)
+            {
+                Rect headerRect = BeginVertical(MarkupBodyStyle.ContentBox, true, property.isExpanded);
+                property.isExpanded = FoldoutWithObjectField(headerRect, property);
+                StartNonHierarchyScope(MarkupStyles.Box.padding.left);
+            }
+
+            if (mode == InlineEditorMode.Stripped)
+            {
+                if (editor == null)
+                    FoldoutWithObjectField(EditorGUILayout.GetControlRect(), property);
+            }
+
+            if (expanded)
             {
                 // begin dummy vertical group,
                 // because MaterialEditor interrupts one in OnInspectorGUI
@@ -310,7 +323,6 @@ namespace MarkupAttributes.Editor
                 {
                     EditorGUILayout.BeginVertical();
                 }
-
                 using (new EditorGUI.DisabledScope(!enabled))
                 {
                     using (new DrawScriptPropertyScope(false))
@@ -324,13 +336,10 @@ namespace MarkupAttributes.Editor
                     EditorGUILayout.EndVertical();
             }
 
-            if (!stripped)
+            if (mode != InlineEditorMode.Stripped)
             {
-                if (expanded)
-                    EditorGUILayout.Space(SpaceAfterBoxedHeader);
                 EditorGUILayout.EndVertical();
-                EditorGUIUtility.hierarchyMode = hierarchyMode;
-                EditorGUIUtility.labelWidth = labelWidth;
+                labelState.ResetToThis();
             }
         }
     }

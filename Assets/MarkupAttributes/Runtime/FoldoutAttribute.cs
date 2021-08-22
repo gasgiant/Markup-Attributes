@@ -10,7 +10,7 @@ namespace MarkupAttributes
             Path = path;
             Type = LayoutGroupType.Vertical;
             HeaderStyle = MarkupHeaderStyle.Foldable;
-            BodyStyle = boxed ? MarkupBodyStyle.FullBox : MarkupBodyStyle.ContentBox;
+            BodyStyle = boxed ? MarkupBodyStyle.Box : MarkupBodyStyle.ContentBox;
         }
     }
 }

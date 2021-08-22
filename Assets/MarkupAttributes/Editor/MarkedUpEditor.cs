@@ -112,7 +112,7 @@ namespace MarkupAttributes.Editor
                     if (inlineEditors.ContainsKey(prop))
                     {
                         InlineEditorData data = inlineEditors[prop];
-                        MarkupGUI.DrawEditorInline(prop, data.editor, data.stripped, data.enabled);
+                        MarkupGUI.DrawEditorInline(prop, data.editor, data.mode, data.enabled);
                     }
                     else
                     {

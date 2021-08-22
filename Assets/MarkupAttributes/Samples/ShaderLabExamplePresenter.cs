@@ -7,7 +7,7 @@ namespace MarkupAttributes.Samples
         [Space]
         public Shader shader;
 
-        [InlineEditor(stripped : true)]
+        [InlineEditor(InlineEditorMode.Stripped)]
         public Material material;
 
         private void OnValidate()

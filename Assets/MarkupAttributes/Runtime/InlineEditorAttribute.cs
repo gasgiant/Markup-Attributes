@@ -5,11 +5,13 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class InlineEditorAttribute : Attribute
     {
-        public bool stripped;
+        public InlineEditorMode mode;
 
-        public InlineEditorAttribute(bool stripped = false)
+        public InlineEditorAttribute(InlineEditorMode mode = InlineEditorMode.ContentBox)
         {
-            this.stripped = stripped;
+            this.mode = mode;
         }
     }
+
+    public enum InlineEditorMode { Box, ContentBox, Stripped }
 }

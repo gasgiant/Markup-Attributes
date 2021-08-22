@@ -14,7 +14,7 @@ namespace MarkupAttributes
                 HeaderStyle = MarkupHeaderStyle.Foldable;
             else
                 HeaderStyle = MarkupHeaderStyle.Label;
-            BodyStyle = MarkupBodyStyle.FullBox;
+            BodyStyle = MarkupBodyStyle.Box;
         }
 
         public static ToggleGroupAttribute CreateForShader(string path, bool foldable, string shaderKeyword)

@@ -11,7 +11,7 @@ namespace MarkupAttributes
             Type = LayoutGroupType.Vertical;
             if (labeled)
                 HeaderStyle = MarkupHeaderStyle.Label;
-            BodyStyle = outlined ? MarkupBodyStyle.FullBox : MarkupBodyStyle.ContentBox;
+            BodyStyle = outlined ? MarkupBodyStyle.Box : MarkupBodyStyle.ContentBox;
         }
     }
 }
