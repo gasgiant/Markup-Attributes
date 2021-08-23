@@ -81,9 +81,9 @@ namespace MarkupAttributes.Editor
 
         private void BeginGroup(InspectorLayoutGroup group, ref bool isVisible, ref bool isEnabled)
         {
-            group.labelState = MarkupGUI.CurrentLabelState();
             if (group.data.Type == LayoutGroupType.LocalScope)
             {
+                group.guiHandle = new MarkupGUI.GroupHandle(false, false);
                 if (group.localScope.indent)
                     EditorGUI.indentLevel += 1;
                 isVisible &= !group.localScope.showControl || group.localScope.IsExpanded;
@@ -110,8 +110,8 @@ namespace MarkupAttributes.Editor
             {
                 bool boxed = group.data.BodyStyle == MarkupBodyStyle.Box;
                 string prefsName = GetPrefsName();
-                int activeTab;
-                activeTab = MarkupGUI.BeginTabsGroup(MarkupAttributesPrefs.GetInt(prefsName), group.data.Tabs, boxed);
+                int activeTab = MarkupAttributesPrefs.GetInt(prefsName);
+                group.guiHandle = MarkupGUI.BeginTabsGroup(ref activeTab, group.data.Tabs, boxed);
                 MarkupAttributesPrefs.SetInt(prefsName, activeTab);
                 group.cachedActiveTab = activeTabName;
                 activeTabName = group.data.Tabs[activeTab];
@@ -119,6 +119,7 @@ namespace MarkupAttributes.Editor
 
             if (group.data.Type == LayoutGroupType.Horizontal)
             {
+                group.guiHandle = new MarkupGUI.GroupHandle(false, true);
                 EditorGUIUtility.labelWidth = group.data.LabelWidth;
                 EditorGUILayout.BeginHorizontal(GUIStyle.none);
             }
@@ -127,7 +128,9 @@ namespace MarkupAttributes.Editor
             {
                 string prefsName = GetPrefsName();
                 bool isExpanded = MarkupAttributesPrefs.GetBool(prefsName);
-                MarkupGUI.BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
+                
+                group.guiHandle = MarkupGUI.BeginGenericVerticalGroup(
+                    ref isExpanded, ref isEnabled,
                     group.data.HeaderStyle, group.data.BodyStyle, group.name,
                     group.data.togglableValueWrapper);
 
@@ -251,22 +254,14 @@ namespace MarkupAttributes.Editor
                     localScopeStart = group.cachedLocalScopeStart.Value;
                 if (ScopeVisible)
                 {
-                    if (group.data.Type == LayoutGroupType.Vertical)
-                        EditorGUILayout.EndVertical();
-
-                    if (group.data.Type == LayoutGroupType.Horizontal)
-                        EditorGUILayout.EndHorizontal();
-
-                    if (group.data.Type == LayoutGroupType.TabScope)
-                        EditorGUILayout.EndVertical();
-
                     if (group.cachedPrefsPrefix != null)
                         prefsPrefix = group.cachedPrefsPrefix;
 
                     if (group.cachedActiveTab != null)
                         activeTabName = group.cachedActiveTab;
 
-                    group.labelState.Restore();
+                    if (group.guiHandle.HasValue)
+                        group.guiHandle.Value.End();
 
                     group.cachedPrefsPrefix = null;
                     group.cachedActiveTab = null;

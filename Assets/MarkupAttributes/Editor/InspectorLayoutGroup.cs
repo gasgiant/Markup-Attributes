@@ -14,7 +14,7 @@ namespace MarkupAttributes.Editor
         public string cachedPrefsPrefix = null;
         public int? cachedLocalScopeStart = null;
         public string cachedActiveTab = null;
-        public MarkupGUI.LabelState labelState;
+        public MarkupGUI.GroupHandle? guiHandle;
 
         public int Order()
         {

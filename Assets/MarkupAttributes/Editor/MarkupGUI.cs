@@ -12,6 +12,16 @@ namespace MarkupAttributes.Editor
 
         #region Utility
 
+        private static GUIContent tempContent = new GUIContent();
+        private static GUIContent GetContent(string label = null, string tooltip = null)
+        {
+            if (label == null)
+                return GUIContent.none;
+            tempContent.text = label;
+            tempContent.tooltip = tooltip;
+            return tempContent;
+        }
+
         internal static bool DrawScriptProperty { get; private set; } = true;
         public struct DrawScriptPropertyScope : IDisposable
         {
@@ -29,9 +39,9 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        internal static LabelState CurrentLabelState() => LabelState.CreateSnapshot();
+        private static LabelState CurrentLabelState() => LabelState.CreateSnapshot();
 
-        internal struct LabelState
+        private struct LabelState
         {
             private bool? hierarchyMode;
             private int? indentLevel;
@@ -157,12 +167,22 @@ namespace MarkupAttributes.Editor
             return headerRect;
         }
 
-        
-        internal static void BeginGenericVerticalGroup(
+
+        internal static GroupHandle BeginGenericVerticalGroup(
             ref bool isExpanded, ref bool isEnabled,
-            MarkupHeaderStyle headerStyle, MarkupBodyStyle bodyStyle, 
+            MarkupHeaderStyle headerStyle, MarkupBodyStyle bodyStyle,
             string label, TogglableValueWrapper togglableValue)
         {
+            return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
+                headerStyle, bodyStyle, GetContent(label), togglableValue);
+        }
+
+        internal static GroupHandle BeginGenericVerticalGroup(
+            ref bool isExpanded, ref bool isEnabled,
+            MarkupHeaderStyle headerStyle, MarkupBodyStyle bodyStyle, 
+            GUIContent label, TogglableValueWrapper togglableValue)
+        {
+            var handle = new GroupHandle(true, false);
             bool hasHeader = headerStyle != MarkupHeaderStyle.None;
             bool isFoldable = headerStyle == MarkupHeaderStyle.Foldable;
             isExpanded |= !isFoldable;
@@ -182,7 +202,7 @@ namespace MarkupAttributes.Editor
                         isExpanded = togglableValue.GetValue();
                     bool value = Toggle(
                         headerRect, togglableValue,
-                        new GUIContent(label), ref isExpanded, isFoldable);
+                        label, ref isExpanded, isFoldable);
                     if (isFoldable)
                     {
                         isEnabled &= value;
@@ -210,11 +230,48 @@ namespace MarkupAttributes.Editor
             {
                 StartNonHierarchyScope(MarkupStyles.Box.padding.left);
             }
+
+            return handle;
+        }
+
+        public static GroupHandle BeginBoxGroup(string label = null) => BeginBoxGroup(GetContent(label));
+
+        public static GroupHandle BeginBoxGroup(GUIContent label)
+        {
+            bool isExpanded = true;
+            bool isEnabled = true;
+            return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
+                label != GUIContent.none ? MarkupHeaderStyle.Label : MarkupHeaderStyle.None,
+                MarkupBodyStyle.Box, label, null);
+        }
+
+        public static GroupHandle BeginTitleGroup(string label, bool contentBox = false) 
+            => BeginTitleGroup(GetContent(label), contentBox);
+
+        public static GroupHandle BeginTitleGroup(GUIContent label, bool contentBox = false)
+        {
+            bool isExpanded = true;
+            bool isEnabled = true;
+            return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
+                MarkupHeaderStyle.Label, contentBox ? 
+                MarkupBodyStyle.ContentBox : MarkupBodyStyle.SeparatorLine, label, null);
+        }
+
+        public static GroupHandle BeginFoldoutGroup(ref bool isExpanded, string label, bool box = true)
+            => BeginFoldoutGroup(ref isExpanded, GetContent(label), box);
+
+        public static GroupHandle BeginFoldoutGroup(ref bool isExpanded, GUIContent label, bool box = true)
+        {
+            bool isEnabled = true;
+            return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
+                MarkupHeaderStyle.Foldable, box ?
+                MarkupBodyStyle.Box : MarkupBodyStyle.ContentBox, label, null);
         }
 
 
-        public static int BeginTabsGroup(int selected, string[] tabs, bool box = false)
+        public static GroupHandle BeginTabsGroup(ref int selected, string[] tabs, bool box = false)
         {
+            var handle = new GroupHandle(true, false);
             if (box)
             {
                 EditorGUILayout.BeginVertical(MarkupStyles.TabsBox);
@@ -242,7 +299,7 @@ namespace MarkupAttributes.Editor
             }
             GUILayout.Space(SpaceAfterBoxedHeader);
 
-            return selected;
+            return handle;
         }
 
         private static Rect GetTabRect(Rect rect, int tabIndex, int tabCount, out GUIStyle tabStyle)
