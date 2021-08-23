@@ -39,15 +39,13 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        private static LabelState CurrentLabelState() => LabelState.CreateSnapshot();
-
         private struct LabelState
         {
             private bool? hierarchyMode;
             private int? indentLevel;
             private float? labelWidth;
 
-            public static LabelState CreateSnapshot()
+            public static LabelState Current()
             {
                 LabelState state = new LabelState();
                 state.hierarchyMode = EditorGUIUtility.hierarchyMode;
@@ -76,13 +74,13 @@ namespace MarkupAttributes.Editor
 
         public struct GroupHandle
         {
-            private LabelState labelState;
-            private bool isVertical;
-            private bool isHorizontal;
+            private readonly LabelState labelState;
+            private readonly bool isVertical;
+            private readonly bool isHorizontal;
 
             public GroupHandle(bool isVertical, bool isHorizontal)
             {
-                labelState = CurrentLabelState();
+                labelState = LabelState.Current();
                 this.isVertical = isVertical;
                 this.isHorizontal = isHorizontal;
             }
@@ -97,9 +95,36 @@ namespace MarkupAttributes.Editor
             }
         }
 
+        public class GroupsStack
+        {
+            private readonly Stack<GroupHandle> groups = new Stack<GroupHandle>();
+            public void PushGroup(GroupHandle group) => groups.Push(group);
+
+            public void EndGroup()
+            {
+                if (groups.Count < 1)
+                {
+                    Debug.LogWarning("No MarkupGUI groups to end.");
+                }
+                groups.Pop().End();
+            }
+
+            public void Clear()
+            {
+                groups.Clear();
+            }
+
+            public static GroupsStack operator +(GroupsStack stateStack, GroupHandle group)
+            {
+                stateStack.PushGroup(group);
+                return stateStack;
+            }
+
+        }
+
         #endregion Utility
 
-        public static void HorizontalLine(float height = 1)
+            public static void HorizontalLine(float height = 1)
         {
             float c = EditorGUIUtility.isProSkin ? 0.45f : 0.4f;
             HorizontalLine(new Color(c, c, c), height);
@@ -402,7 +427,7 @@ namespace MarkupAttributes.Editor
         public static void DrawEditorInline(SerializedProperty property,
             UnityEditor.Editor editor, InlineEditorMode mode, bool enabled = true)
         {
-            var labelState = CurrentLabelState();
+            var labelState = LabelState.Current();
             
             bool expanded = mode == InlineEditorMode.Stripped || property.isExpanded;
             expanded &= editor != null;

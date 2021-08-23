@@ -20,40 +20,41 @@ namespace MarkupAttributes.Samples
         void OnGUI()
         {
             int k = 0;
-            var handle = MarkupGUI.BeginBoxGroup();
+            var groupsStack = new MarkupGUI.GroupsStack();
+            groupsStack += MarkupGUI.BeginBoxGroup();
             for (int i = 0; i < 3; i++)
             {
                 EditorGUILayout.IntField("Int " + k, 0);
                 k++;
             }
-            handle.End();
+            groupsStack.EndGroup();
 
-            handle = MarkupGUI.BeginTitleGroup("TitleGroup", true);
+            groupsStack += MarkupGUI.BeginTitleGroup("TitleGroup", true);
             for (int i = 0; i < 3; i++)
             {
                 EditorGUILayout.IntField("Int " + k, 0);
                 k++;
             }
-            handle.End();
+            groupsStack.EndGroup();
 
-            handle = MarkupGUI.BeginFoldoutGroup(ref foldout, "Foldout");
+            groupsStack += MarkupGUI.BeginFoldoutGroup(ref foldout, "Foldout");
             for (int i = 0; i < 3; i++)
             {
                 if (foldout)
                     EditorGUILayout.IntField("Int " + k, 0);
                 k++;
             }
-            handle.End();
+            groupsStack.EndGroup();
 
 
-            handle = MarkupGUI.BeginTabsGroup(ref activeTab, 
+            groupsStack += MarkupGUI.BeginTabsGroup(ref activeTab, 
                 new string[] { "Left", "Middle", "Right" }, true);
             for (int i = 0; i < 3; i++)
             {
                 EditorGUILayout.IntField("Int " + k, 0);
                 k++;
             }
-            handle.End();
+            groupsStack.EndGroup();
         }
     }
 }
