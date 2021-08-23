@@ -7,10 +7,12 @@ namespace MarkupAttributes.Samples
         [Range(0, 1)]
         [SerializeField] private int one;
 
-        [DisableIfGroup("Disabled If One Is Even", nameof(IsOneEvenProperty))]
         [Header("Disabled If One Is Even")]
+        [DisableIf(nameof(IsOneEvenProperty))]
         [SerializeField] private int two;
+        [DisableIf(nameof(IsOneEvenProperty))]
         [SerializeField] private int three;
+        [DisableIf(nameof(IsOneEvenProperty))]
         [SerializeField] private int four;
 
         [EnableIfGroup("Enabled If One Is Even", nameof(IsOneEvenMethod))]
@@ -22,10 +24,12 @@ namespace MarkupAttributes.Samples
 
         [Space(20)]
         [SerializeField] private bool boolean;
-        [HideIfGroup("Hidden If Boolean", nameof(boolean))]
         [Header("Hidden If Boolean")]
+        [HideIf(nameof(boolean))]
         [SerializeField] private int eight;
+        [HideIf(nameof(boolean))]
         [SerializeField] private int nine;
+        [HideIf(nameof(boolean))]
         [SerializeField] private int ten;
 
         [ShowIfGroup("Shown If Boolean", nameof(boolean))]

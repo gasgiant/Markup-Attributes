@@ -38,7 +38,7 @@ namespace MarkupAttributes.Samples
         public string[] fivteen;
         [EndGroup("Tab Scope")]
 
-        [InlineEditor]
+        [InlineEditor(InlineEditorMode.Box)]
         public Material material;
 
         public enum Race { Human, Elf, Dwarf, Halfing, Tiefling }

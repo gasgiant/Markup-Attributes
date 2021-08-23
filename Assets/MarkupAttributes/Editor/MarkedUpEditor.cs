@@ -25,20 +25,20 @@ namespace MarkupAttributes.Editor
 
         protected void OnEnable()
         {
-            InitializeMarkedUpInspector();
+            InitializeMarkedUpEditor();
         }
 
         protected void OnDisable()
         {
-            CleanupMarkedUpInspector();
+            CleanupMarkedUpEditor();
         }
 
         public override void OnInspectorGUI()
         {
-            DrawMarkedUpInspector();
+            DrawMarkedUpEditor();
         }
 
-        protected void InitializeMarkedUpInspector()
+        protected void InitializeMarkedUpEditor()
         {
             EditorLayoutDataBuilder.BuildLayoutData(serializedObject, 
                 out allProps, out firstLevelProps, out layoutData, out inlineEditors);
@@ -48,7 +48,7 @@ namespace MarkupAttributes.Editor
             OnInitialize();
         }
 
-        protected void CleanupMarkedUpInspector()
+        protected void CleanupMarkedUpEditor()
         {
             OnCleanup();
             foreach (var item in inlineEditors)
@@ -57,15 +57,15 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        protected bool DrawMarkedUpInspector()
+        protected bool DrawMarkedUpEditor()
         {
             EditorGUI.BeginChangeCheck();
             serializedObject.UpdateIfRequiredOrScript();
 
             CreateInlineEditors();
             int topLevelIndex = 0;
-
             layoutController.Begin();
+
             for (int i = 0; i < allProps.Length; i++)
             {
                 if (allProps[i].name.Equals("m_Script"))
@@ -105,18 +105,23 @@ namespace MarkupAttributes.Editor
             bool topLevel = layoutController.TopLevel(index);
 
             if (topLevel) callbackManager.InvokeCallback(topLevelIndex, CallbackEvent.BeforeProperty);
-            if (!topLevel || !callbackManager.InvokeCallback(index, CallbackEvent.ReplaceProperty))
+            
+
+            using (new EditorGUI.DisabledScope(!layoutController.PropertyEnabled(index)))
             {
-                if (!layoutController.Hide(index))
+                if (layoutController.PropertyVisible(index))
                 {
-                    if (inlineEditors.ContainsKey(prop))
+                    if (!topLevel || !callbackManager.InvokeCallback(index, CallbackEvent.ReplaceProperty))
                     {
-                        InlineEditorData data = inlineEditors[prop];
-                        MarkupGUI.DrawEditorInline(prop, data.editor, data.mode, data.enabled);
-                    }
-                    else
-                    {
-                        EditorGUILayout.PropertyField(prop, layoutController.IncludeChildren(index));
+                        if (inlineEditors.ContainsKey(prop))
+                        {
+                            InlineEditorData data = inlineEditors[prop];
+                            MarkupGUI.DrawEditorInline(prop, data.editor, data.mode, data.enabled);
+                        }
+                        else
+                        {
+                            EditorGUILayout.PropertyField(prop, layoutController.IncludeChildren(index));
+                        }
                     }
                 }
             }

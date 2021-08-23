@@ -4,12 +4,12 @@ Shader "MarkupAttributes/ConditionalsSample"
     {
         [MaterialToggle] _Toggle("Toggle", Float) = 0
 
-        [EnableIfGroup(TogglePositive, _Toggle)]
         [Header(Enabled If Toggle Positive)]
         [Space]
+        [EnableIf(_Toggle)]
         _One("One", Float) = 0
+        [EnableIf(_Toggle)]
         _Two("Two", Float) = 0
-        [EndGroup(TogglePositive)]
 
         [Space(10)]
         [Toggle(MY_KEYWORD)] _KeywordToggle("MY_KEYWORD", Float) = 0

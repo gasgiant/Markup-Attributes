@@ -68,12 +68,29 @@ namespace MarkupAttributes.Editor
                             groupAttribute, sibling, targetObject);
                         groups.Add(group);
                     }
+
+                    // conditionals 
+                    var hideContitions = new List<ConditionWrapper>();
+                    foreach (var attribute in fieldInfo.GetCustomAttributes<HideIfAttribute>())
+                    {
+                        hideContitions.Add(ConditionWrapper.Create(attribute.Condition,
+                            attribute.IsInverted, targetObject));
+                    }
+
+                    var disableContitions = new List<ConditionWrapper>();
+                    foreach (var attribute in fieldInfo.GetCustomAttributes<DisableIfAttribute>())
+                    {
+                        disableContitions.Add(ConditionWrapper.Create(attribute.Condition,
+                            attribute.IsInverted, targetObject));
+                    }
+
                     var end = fieldInfo.GetCustomAttribute<EndGroupAttribute>();
-                    data = new PropertyLayoutData(groups, end);
-                    data.hide = isPropertyHidden;
-                    data.topLevel = scopeGroup == null;
+                    data = new PropertyLayoutData(groups, hideContitions, disableContitions, end);
+                    data.alwaysHide = isPropertyHidden;
+                    data.isTopLevel = scopeGroup == null;
                     data.numberOfScopesToClose = scopesToClose;
                     scopesToClose = 0;
+                    
 
                     // InlineEditors
                     var inline = fieldInfo.GetCustomAttribute<InlineEditorAttribute>();
@@ -99,7 +116,7 @@ namespace MarkupAttributes.Editor
                             if (children != null && children.Length > 0)
                             {
                                 data.includeChildren = false;
-                                data.hide |= !markedUp.showControl;
+                                data.alwaysHide |= !markedUp.showControl;
                                 var subScopeGroup = InspectorLayoutGroup.CreateScopeGroup(
                                     "./" + sibling.name, sibling, subTargetType.FullName, 
                                     markedUp.showControl, markedUp.indentChildren);

@@ -35,12 +35,13 @@ namespace MarkupAttributes.Editor
             {
                 layoutController.BeforeProperty(i);
                 
-                if (layoutController.ScopeVisible)
+                if (layoutController.ScopeVisible && layoutController.PropertyVisible(i))
                 {
                     callbackManager.InvokeCallback(i, CallbackEvent.BeforeProperty);
-                    using (new EditorGUI.DisabledScope(!layoutController.ScopeEnabled))
+                    using (new EditorGUI.DisabledScope(
+                        !layoutController.ScopeEnabled || !layoutController.PropertyEnabled(i)))
                     {
-                        if (!layoutController.Hide(i) && !callbackManager.InvokeCallback(i, CallbackEvent.ReplaceProperty))
+                        if (!callbackManager.InvokeCallback(i, CallbackEvent.ReplaceProperty))
                             DrawProperty(materialEditor, properties[i], allAttributes[i]);
                     }
                     callbackManager.InvokeCallback(i, CallbackEvent.AfterProperty);

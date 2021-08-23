@@ -8,8 +8,10 @@ namespace MarkupAttributes.Editor
     internal class InspectorLayoutController
     {
         public bool IncludeChildren(int index) => layoutData[index] == null || layoutData[index].includeChildren;
-        public bool Hide(int index) => layoutData[index] == null || layoutData[index].hide;
-        public bool TopLevel(int index) => layoutData[index] == null || layoutData[index].topLevel;
+        public bool PropertyVisible(int index) => layoutData[index] == null || layoutData[index].IsVisible();
+        public bool PropertyEnabled(int index) => layoutData[index] == null || layoutData[index].IsEnabled();
+
+        public bool TopLevel(int index) => layoutData[index] == null || layoutData[index].isTopLevel;
         public bool ScopeEnabled => groupsStack.Count == 0 || groupsStack.Peek().isEnabled;
         public bool ScopeVisible => groupsStack.Count == 0 || groupsStack.Peek().isVisible;
         

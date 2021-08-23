@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace MarkupAttributes.Editor
@@ -82,9 +81,12 @@ namespace MarkupAttributes.Editor
                     if (group != null)
                         groups.Add(group);
                 }
-                output[i] = new PropertyLayoutData(
-                    groups, GetEndGroupAttribute(allAttributes[i]));
-                output[i].hide = isPropertyHidden;
+
+                var conditionals = GetConditionals(allAttributes[i], propertiesWrapper, targetMaterial);
+
+                output[i] = new PropertyLayoutData(groups, conditionals.Item1, conditionals.Item2,
+                    GetEndGroupAttribute(allAttributes[i]));
+                output[i].alwaysHide = isPropertyHidden;
             }
 
             return output;
@@ -137,6 +139,52 @@ namespace MarkupAttributes.Editor
                     return a;
                 }
             }
+            return null;
+        }
+
+        private static (List<ConditionWrapper>, List<ConditionWrapper>) GetConditionals(
+            string[] attributes, MaterialPropertiesWrapper materialProperties, Material material)
+        {
+            List<ConditionWrapper> hideConditions = new List<ConditionWrapper>();
+            List<ConditionWrapper> disableConditions = new List<ConditionWrapper>();
+
+            foreach (var attribute in attributes)
+            {
+                var hideIf = GetHideIfAttribute(attribute);
+                if (hideIf != null)
+                    hideConditions.Add(ConditionWrapper.Create(
+                        hideIf.Condition, hideIf.IsInverted, materialProperties, material));
+
+                var disableIf = GetDisableIfAttribute(attribute);
+                if (disableIf != null)
+                    disableConditions.Add(ConditionWrapper.Create(
+                        disableIf.Condition, disableIf.IsInverted, materialProperties, material));
+            }
+
+            return (hideConditions, disableConditions);
+        }
+
+        private static HideIfAttribute GetHideIfAttribute(string attribute)
+        {
+            string[] args;
+            bool valid = ParseAttribute(attribute, "HideIf", 1, out args);
+            if (valid)
+                return new HideIfAttribute(args[0]);
+            valid = ParseAttribute(attribute, "ShowIf", 1, out args);
+            if (valid)
+                return new ShowIfAttribute(args[0]);
+            return null;
+        }
+
+        private static DisableIfAttribute GetDisableIfAttribute(string attribute)
+        {
+            string[] args;
+            bool valid = ParseAttribute(attribute, "DisableIf", 1, out args);
+            if (valid)
+                return new DisableIfAttribute(args[0]);
+            valid = ParseAttribute(attribute, "EnableIf", 1, out args);
+            if (valid)
+                return new EnableIfAttribute(args[0]);
             return null;
         }
 
