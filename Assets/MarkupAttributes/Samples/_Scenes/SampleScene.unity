@@ -630,7 +630,7 @@ MonoBehaviour:
     two: 0
     three: 0
   noChildrenIndent:
-    boolean: 0
+    boolean: 1
     one: 0
     two: 0
     three: 0

@@ -35,7 +35,7 @@ namespace MarkupAttributes.Editor
 
         public override void OnInspectorGUI()
         {
-            DrawMarkedUpEditor();
+            DrawMarkedUpInspector();
         }
 
         protected void InitializeMarkedUpEditor()
@@ -57,7 +57,7 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        protected bool DrawMarkedUpEditor()
+        protected bool DrawMarkedUpInspector()
         {
             EditorGUI.BeginChangeCheck();
             serializedObject.UpdateIfRequiredOrScript();

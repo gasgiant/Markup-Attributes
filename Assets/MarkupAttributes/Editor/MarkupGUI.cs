@@ -12,7 +12,7 @@ namespace MarkupAttributes.Editor
 
         #region Utility
 
-        private static GUIContent tempContent = new GUIContent();
+        private static readonly GUIContent tempContent = new GUIContent();
         private static GUIContent GetContent(string label = null, string tooltip = null)
         {
             if (label == null)
@@ -247,13 +247,13 @@ namespace MarkupAttributes.Editor
                 }
                 else
                 {
-                    if (isFoldable)
+                    using (new EditorGUI.DisabledScope(!isEnabled))
                     {
-                        isExpanded = EditorGUI.Foldout(headerRect, isExpanded, label, true, MarkupStyles.BoldFoldout);
-                    }
-                    else
-                    {
-                        using (new EditorGUI.DisabledScope(!isEnabled))
+                        if (isFoldable)
+                        {
+                            isExpanded = EditorGUI.Foldout(headerRect, isExpanded, label, true, MarkupStyles.BoldFoldout);
+                        }
+                        else
                         {
                             EditorGUI.LabelField(headerRect, label, EditorStyles.boldLabel);
                         }

@@ -23,7 +23,7 @@ namespace MarkupAttributes.Editor
     {
         public static void BuildLayoutData(SerializedObject serializedObject,
             out SerializedProperty[] allProps,
-            out SerializedProperty[] firstLevelProps,
+            out SerializedProperty[] topLevelProps,
             out List<PropertyLayoutData> layoutData,
             out Dictionary<SerializedProperty, InlineEditorData> inlineEditors)
         {
@@ -32,14 +32,16 @@ namespace MarkupAttributes.Editor
             inlineEditors = new Dictionary<SerializedProperty, InlineEditorData>();
             Type targetType = serializedObject.targetObject.GetType();
 
-            firstLevelProps = MarkupEditorUtils.GetSerializedObjectProperties(serializedObject);
-            GetLayoutDataForSiblings(null, firstLevelProps, targetType, serializedObject.targetObject,
+            topLevelProps = MarkupEditorUtils.GetSerializedObjectProperties(serializedObject);
+            GetLayoutDataForSiblings(null, topLevelProps, targetType, 
+                serializedObject.targetObject, null,
                 props, layoutData, inlineEditors);
             allProps = props.ToArray();
         }
 
         private static int GetLayoutDataForSiblings(InspectorLayoutGroup scopeGroup,
-            SerializedProperty[] siblings, Type targetType, object targetObject,
+            SerializedProperty[] siblings, 
+            Type targetType, object targetObject, SerializedProperty parent,
             List<SerializedProperty> allProps, List<PropertyLayoutData> layoutData,
             Dictionary<SerializedProperty, InlineEditorData> inlineEditors)
         {
@@ -65,27 +67,29 @@ namespace MarkupAttributes.Editor
                     foreach (var groupAttribute in groupAttribues)
                     {
                         var group = CreateGroupFromAttribute(ref isPropertyHidden, 
-                            groupAttribute, sibling, targetObject);
+                            groupAttribute, sibling, targetObject, parent);
                         groups.Add(group);
                     }
 
                     // conditionals 
-                    var hideContitions = new List<ConditionWrapper>();
+                    var hideConditions = new List<ConditionWrapper>();
                     foreach (var attribute in fieldInfo.GetCustomAttributes<HideIfAttribute>())
                     {
-                        hideContitions.Add(ConditionWrapper.Create(attribute.Condition,
+                        hideConditions.Add(ConditionWrapper.Create(attribute.Condition,
                             attribute.IsInverted, targetObject));
                     }
 
-                    var disableContitions = new List<ConditionWrapper>();
+                    var disableConditions = new List<ConditionWrapper>();
                     foreach (var attribute in fieldInfo.GetCustomAttributes<DisableIfAttribute>())
                     {
-                        disableContitions.Add(ConditionWrapper.Create(attribute.Condition,
+                        disableConditions.Add(ConditionWrapper.Create(attribute.Condition,
                             attribute.IsInverted, targetObject));
                     }
+                    if (fieldInfo.GetCustomAttribute<ReadOnlyAttribute>() != null)
+                        disableConditions.Add(new ConditionWrapper(true));
 
                     var end = fieldInfo.GetCustomAttribute<EndGroupAttribute>();
-                    data = new PropertyLayoutData(groups, hideContitions, disableContitions, end);
+                    data = new PropertyLayoutData(groups, hideConditions, disableConditions, end);
                     data.alwaysHide = isPropertyHidden;
                     data.isTopLevel = scopeGroup == null;
                     data.numberOfScopesToClose = scopesToClose;
@@ -122,7 +126,7 @@ namespace MarkupAttributes.Editor
                                     markedUp.showControl, markedUp.indentChildren);
                                 scopesToClose += GetLayoutDataForSiblings(
                                     subScopeGroup, children, subTargetType,
-                                    subTarget, allProps, layoutData, inlineEditors);
+                                    subTarget, sibling, allProps, layoutData, inlineEditors);
                                 scopesToClose += 1;
                             }
                         }
@@ -133,13 +137,14 @@ namespace MarkupAttributes.Editor
         }
 
         private static InspectorLayoutGroup CreateGroupFromAttribute(ref bool isHidden,
-            LayoutGroupAttribute attribute, SerializedProperty property, object targetObject)
+            LayoutGroupAttribute attribute, SerializedProperty property, object targetObject, 
+            SerializedProperty parent)
         {
             ConditionWrapper conditionWrapper = null;
             if (attribute.HasCondition)
             {
                 conditionWrapper = ConditionWrapper.Create(
-                    attribute.Condition, attribute.IsConditionInverted, targetObject);
+                    attribute.Condition, attribute.IsConditionInverted, targetObject, parent);
                 if (conditionWrapper == null)
                     return null;
             }
