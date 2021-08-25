@@ -6,7 +6,7 @@ namespace MarkupAttributes.Samples
 {
     public class CustomizedInspector : MonoBehaviour
     {
-        // See CustomizedInspectorEditor for details
+        // See CustomizedInspectorEditor.cs for details
 
         [HorizontalGroup("Split", labelWidth: 50)]
         [Box("./Left", labeled: true)]

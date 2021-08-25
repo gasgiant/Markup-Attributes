@@ -100,6 +100,14 @@ namespace MarkupAttributes.Editor
             private readonly Stack<GroupHandle> groups = new Stack<GroupHandle>();
             public void PushGroup(GroupHandle group) => groups.Push(group);
 
+            public void EndAll()
+            {
+                while (groups.Count > 0)
+                {
+                    groups.Pop().End();
+                }
+            }
+
             public void EndGroup()
             {
                 if (groups.Count < 1)
@@ -124,7 +132,7 @@ namespace MarkupAttributes.Editor
 
         #endregion Utility
 
-            public static void HorizontalLine(float height = 1)
+        public static void HorizontalLine(float height = 1)
         {
             float c = EditorGUIUtility.isProSkin ? 0.45f : 0.4f;
             HorizontalLine(new Color(c, c, c), height);
@@ -192,7 +200,6 @@ namespace MarkupAttributes.Editor
             return headerRect;
         }
 
-
         internal static GroupHandle BeginGenericVerticalGroup(
             ref bool isExpanded, ref bool isEnabled,
             MarkupHeaderStyle headerStyle, MarkupBodyStyle bodyStyle,
@@ -210,7 +217,10 @@ namespace MarkupAttributes.Editor
             var handle = new GroupHandle(true, false);
             bool hasHeader = headerStyle != MarkupHeaderStyle.None;
             bool isFoldable = headerStyle == MarkupHeaderStyle.Foldable;
-            isExpanded |= !isFoldable;
+            if (!isFoldable)
+            {
+                isExpanded = togglableValue == null || togglableValue.GetValue();
+            }
 
             Rect headerRect = BeginVertical(bodyStyle, hasHeader, isExpanded);
 

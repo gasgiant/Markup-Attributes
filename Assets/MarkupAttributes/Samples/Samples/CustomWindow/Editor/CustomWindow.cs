@@ -6,22 +6,25 @@ namespace MarkupAttributes.Samples
 {
     public class CustomWindow : EditorWindow
     {
+        MarkupGUI.GroupsStack groupsStack = new MarkupGUI.GroupsStack();
         int activeTab = 0;
-        bool foldout;
+        bool foldout = true;
 
-        [MenuItem("Window/CustomWindow")]
-        static void Init()
+        public static void Open()
         {
-            CustomWindow window = (CustomWindow)GetWindow(typeof(CustomWindow));
-            window.name = "Custom Window Sample";
+            CustomWindow window = (CustomWindow)GetWindow(typeof(CustomWindow), 
+                false, "Custom Window Sample");
             window.Show();
         }
 
         void OnGUI()
         {
+            // Always clear the groups stack.
+            groupsStack.Clear();
+
             int k = 0;
-            var groupsStack = new MarkupGUI.GroupsStack();
-            groupsStack += MarkupGUI.BeginBoxGroup();
+
+            groupsStack += MarkupGUI.BeginBoxGroup("Box");
             for (int i = 0; i < 3; i++)
             {
                 EditorGUILayout.IntField("Int " + k, 0);
@@ -46,15 +49,17 @@ namespace MarkupAttributes.Samples
             }
             groupsStack.EndGroup();
 
-
             groupsStack += MarkupGUI.BeginTabsGroup(ref activeTab, 
                 new string[] { "Left", "Middle", "Right" }, true);
+            k += activeTab * 3;
             for (int i = 0; i < 3; i++)
             {
                 EditorGUILayout.IntField("Int " + k, 0);
                 k++;
             }
-            groupsStack.EndGroup();
+
+            // Always end all groups at the end.
+            groupsStack.EndAll();
         }
     }
 }
