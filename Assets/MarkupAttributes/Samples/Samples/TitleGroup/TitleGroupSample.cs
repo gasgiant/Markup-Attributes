@@ -9,7 +9,7 @@ namespace MarkupAttributes.Samples
         public int two;
         public int three;
 
-        [TitleGroup("Title Group With a Box", boxContent: true)]
+        [TitleGroup("Title Group With A Content Box", boxContent: true)]
         public int four;
         public int five;
         public int six;

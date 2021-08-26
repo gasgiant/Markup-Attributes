@@ -1,16 +1,16 @@
-Shader "MarkupAttributes/BoxSample"
+Shader "MarkupAttributes/ReadOnlySample"
 {
     Properties
     {
-        [Box(Labeled_Box)]
+        [ReadOnly]
         _One("One", Float) = 0
+
+        [ReadOnlyGroup(Read_Only_Group)]
+        [Header(Read Only Group)]
+        [Space]
         _Two("Two", Float) = 0
         _Three("Three", Float) = 0
-
-        [Box(Unlabeled_Box, false)]
         _Four("Four", Float) = 0
-        _Five("Five", Float) = 0
-        _Six("Six", Float) = 0
     }
 
     CustomEditor "MarkupAttributes.Editor.MarkedUpShaderGUI"

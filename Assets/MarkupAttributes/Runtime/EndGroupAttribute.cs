@@ -5,11 +5,11 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class EndGroupAttribute : Attribute
     {
-        public string name;
+        public string GroupName { get; private set; }
 
-        public EndGroupAttribute(string name = null)
+        public EndGroupAttribute(string groupName = null)
         {
-            this.name = name;
+            GroupName = groupName;
         }
     }
 }

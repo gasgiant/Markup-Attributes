@@ -47,7 +47,7 @@ namespace MarkupAttributes.Editor
         {
             if (layoutData[index].end != null)
             {
-                EndGroupsUntill(layoutData[index].end.name);
+                EndGroupsUntill(layoutData[index].end.GroupName);
             }
 
             for (int i = 0; i < layoutData[index].numberOfScopesToClose; i++)

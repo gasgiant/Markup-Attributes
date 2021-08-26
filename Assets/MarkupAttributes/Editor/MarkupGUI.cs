@@ -140,6 +140,7 @@ namespace MarkupAttributes.Editor
         public static void HorizontalLine(Color color, float height)
         {
             Rect rect = EditorGUILayout.GetControlRect(false, height);
+            rect = EditorGUI.IndentedRect(rect);
             EditorGUI.DrawRect(rect, color);
             GUILayout.Space(2);
         }

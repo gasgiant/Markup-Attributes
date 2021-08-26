@@ -26,7 +26,7 @@ namespace MarkupAttributes
             Condition.isInverted = true;
         }
 
-        public ShowIfAttribute(string memberName, object enumValue) : base(memberName, enumValue)
+        public ShowIfAttribute(string memberName, object value) : base(memberName, value)
         {
             Condition.isInverted = true;
         }

@@ -5,11 +5,11 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class InlineEditorAttribute : Attribute
     {
-        public InlineEditorMode mode;
+        public InlineEditorMode Mode { get; private set; }
 
-        public InlineEditorAttribute(InlineEditorMode mode = InlineEditorMode.ContentBox)
+        public InlineEditorAttribute(InlineEditorMode mode = InlineEditorMode.Box)
         {
-            this.mode = mode;
+            Mode = mode;
         }
     }
 

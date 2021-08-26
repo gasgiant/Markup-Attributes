@@ -5,13 +5,13 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class BoxAttribute : LayoutGroupAttribute
     {
-        public BoxAttribute(string path, bool labeled = false, bool outlined  = true)
+        public BoxAttribute(string path, bool labeled = true)
         {
             Path = path;
             Type = LayoutGroupType.Vertical;
             if (labeled)
                 HeaderStyle = MarkupHeaderStyle.Label;
-            BodyStyle = outlined ? MarkupBodyStyle.Box : MarkupBodyStyle.ContentBox;
+            BodyStyle = MarkupBodyStyle.Box;
         }
     }
 }

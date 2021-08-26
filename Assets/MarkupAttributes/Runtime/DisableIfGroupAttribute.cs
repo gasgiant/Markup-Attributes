@@ -19,7 +19,7 @@ namespace MarkupAttributes
             Condition = new ConditionDescriptor(memberName, false, value);
         }
 
-        public DisableIfGroupAttribute(string path, bool fixedValue)
+        protected DisableIfGroupAttribute(string path, bool fixedValue)
         {
             Path = path;
             Type = LayoutGroupType.DisableIf;

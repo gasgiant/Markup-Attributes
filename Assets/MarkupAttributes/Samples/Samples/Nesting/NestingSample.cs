@@ -4,7 +4,7 @@ namespace MarkupAttributes.Samples
 {
     public class NestingSample : SamplesBehaviour
     {
-        [Box("First Group", labeled: true)]
+        [Box("First Group")]
         [SerializeField] private int one;
         // To nest groups, just write their path.
         [TitleGroup("First Group/Nested Group 1")]
@@ -17,7 +17,7 @@ namespace MarkupAttributes.Samples
 
         // ./ shortcut opens a group on top of the current one,
         // ../ closes the topmost group and then opens a new one on top.
-        [Box("Second Group", labeled: true)]
+        [Box("Second Group")]
         [TitleGroup("./Nested Group 1")]
         [SerializeField] private int six;
         [SerializeField] private int seven;
@@ -28,7 +28,7 @@ namespace MarkupAttributes.Samples
         // closes the named group and all of its children.
         [EndGroup("Second Group")]
 
-        [Box("Third Group", labeled: true)]
+        [Box("Third Group")]
         [SerializeField] private int ten;
         [SerializeField] private int eleven;
         // At the end all groups a closed automatically.

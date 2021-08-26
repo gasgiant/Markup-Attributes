@@ -15,7 +15,7 @@ namespace MarkupAttributes.Editor
         public InlineEditorData(UnityEditor.Editor editor, InlineEditorAttribute attribute)
         {
             this.editor = editor;
-            mode = attribute.mode;
+            mode = attribute.Mode;
         }
     }
 
@@ -120,10 +120,10 @@ namespace MarkupAttributes.Editor
                             if (children != null && children.Length > 0)
                             {
                                 data.includeChildren = false;
-                                data.alwaysHide |= !markedUp.showControl;
+                                data.alwaysHide |= !markedUp.ShowControl;
                                 var subScopeGroup = InspectorLayoutGroup.CreateScopeGroup(
                                     "./" + sibling.name, sibling, subTargetType.FullName, 
-                                    markedUp.showControl, markedUp.indentChildren);
+                                    markedUp.ShowControl, markedUp.IndentChildren);
                                 scopesToClose += GetLayoutDataForSiblings(
                                     subScopeGroup, children, subTargetType, subTargetWrapper, 
                                     allProps, layoutData, inlineEditors, targetObjectWrappers);

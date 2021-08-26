@@ -5,13 +5,13 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class MarkedUpFieldAttribute : Attribute
     {
-        public bool showControl;
-        public bool indentChildren;
+        public bool ShowControl { get; private set; }
+        public bool IndentChildren { get; private set; }
 
         public MarkedUpFieldAttribute(bool showControl = true, bool indentChildren = true)
         {
-            this.showControl = showControl;
-            this.indentChildren = indentChildren;
+            ShowControl = showControl;
+            IndentChildren = indentChildren;
         }
     }
 }

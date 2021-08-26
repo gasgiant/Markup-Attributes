@@ -1,5 +1,3 @@
-using System;
-
 namespace MarkupAttributes
 {
     public class ConditionDescriptor
@@ -9,7 +7,6 @@ namespace MarkupAttributes
         public bool isInverted;
         public object value;
         public bool hasValue;
-
 
         internal ConditionDescriptor(string memberName, bool isInverted)
         {
