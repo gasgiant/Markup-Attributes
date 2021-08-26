@@ -15,6 +15,7 @@ namespace MarkupAttributes.Editor
         private InspectorLayoutController layoutController;
         private CallbackManager callbackManager;
         private Dictionary<SerializedProperty, InlineEditorData> inlineEditors;
+        private List<TargetObjectWrapper> targetsRequireUpdate;
 
         protected virtual void OnInitialize() { }
         protected virtual void OnCleanup() { }
@@ -40,8 +41,8 @@ namespace MarkupAttributes.Editor
 
         protected void InitializeMarkedUpEditor()
         {
-            EditorLayoutDataBuilder.BuildLayoutData(serializedObject, 
-                out allProps, out firstLevelProps, out layoutData, out inlineEditors);
+            EditorLayoutDataBuilder.BuildLayoutData(serializedObject, out allProps, 
+                out firstLevelProps, out layoutData, out inlineEditors, out targetsRequireUpdate);
             layoutController = new InspectorLayoutController(target.GetType().FullName,
                 layoutData.ToArray());
             callbackManager = new CallbackManager(firstLevelProps);
@@ -63,6 +64,7 @@ namespace MarkupAttributes.Editor
             serializedObject.UpdateIfRequiredOrScript();
 
             CreateInlineEditors();
+            UpdateTargets();
             int topLevelIndex = 0;
             layoutController.Begin();
 
@@ -143,6 +145,14 @@ namespace MarkupAttributes.Editor
                 else
                     CreateCachedEditor(prop.objectReferenceValue, null, ref editor);
                 inlineEditors[prop].editor = editor;
+            }
+        }
+
+        private void UpdateTargets()
+        {
+            foreach (var wrapper in targetsRequireUpdate)
+            {
+                wrapper.Update();
             }
         }
     }

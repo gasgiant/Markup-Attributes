@@ -875,7 +875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de97da0dbb50f084180015e898961eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  one: 1
+  one: 0
   two: 0
   three: 0
   four: 0
@@ -889,6 +889,7 @@ MonoBehaviour:
   eleven: 0
   twelve: 0
   thirteen: 0
+  fourteen: 0
 --- !u!114 &1790592134
 MonoBehaviour:
   m_ObjectHideFlags: 0

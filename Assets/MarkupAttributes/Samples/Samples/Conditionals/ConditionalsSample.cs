@@ -38,6 +38,10 @@ namespace MarkupAttributes.Samples
         [SerializeField] private int twelve;
         [SerializeField] private int thirteen;
 
+        [Header("ReadOnly")]
+        [ReadOnly]
+        [SerializeField] private int fourteen;
+
         private bool IsOneEvenProperty => one % 2 == 0;
         private bool IsOneEvenMethod() => one % 2 == 0;
     }

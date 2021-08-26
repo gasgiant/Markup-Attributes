@@ -12,11 +12,23 @@ namespace MarkupAttributes.Samples
 
         [Box("No Control", labeled: true)]
         [MarkedUpField(showControl: false, indentChildren: false)]
-        public SomeSerializedClass noControl;
+        public SomeSerializedStruct noControl;
     }
 
     [System.Serializable]
     public class SomeSerializedClass
+    {
+        public bool boolean;
+
+        [EnableIfGroup("", nameof(boolean))]
+        [TitleGroup("./Enabled If Boolean")]
+        public int one;
+        public int two;
+        public int three;
+    }
+
+    [System.Serializable]
+    public struct SomeSerializedStruct
     {
         public bool boolean;
 

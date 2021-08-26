@@ -6,15 +6,13 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public class ConditionWrapper
+    internal class ConditionWrapper
     {
-        private bool alwaysTrue;
-        private bool alwaysFalse;
+        private readonly bool alwaysTrue;
+        private readonly bool alwaysFalse;
         private readonly bool inverted;
 
-        private readonly object targetObject;
-        private readonly SerializedProperty parentProperty;
-        private readonly bool isParentValueType;
+        private readonly TargetObjectWrapper targetObjectWrapper;
         private readonly FieldInfo fieldInfo;
         private readonly PropertyInfo propertyInfo;
         private readonly MethodInfo methodInfo;
@@ -25,29 +23,30 @@ namespace MarkupAttributes.Editor
         private readonly bool isShaderKeywordGlobal;
         private readonly MaterialPropertiesWrapper materialProperties;
 
-        public static ConditionWrapper Create(string condition, bool inverted, object targetObject, SerializedProperty parentProperty = null)
+        public static ConditionWrapper Create(string condition, bool inverted, TargetObjectWrapper targetObjectWrapper)
         {
-            if (targetObject != null)
+            if (targetObjectWrapper != null && targetObjectWrapper.Target != null)
             {
+                object targetObject = targetObjectWrapper.Target;
                 Type type = targetObject.GetType();
 
                 FieldInfo fieldInfo = type.GetField(condition, MarkupEditorUtils.DefaultBindingFlags);
                 if (fieldInfo != null && fieldInfo.FieldType == typeof(bool))
                 {
-                    return new ConditionWrapper(inverted, targetObject, parentProperty, type.IsValueType, fieldInfo, null, null);
+                    return new ConditionWrapper(inverted, targetObjectWrapper, fieldInfo, null, null);
                 }
 
                 PropertyInfo propertyInfo = type.GetProperty(condition, MarkupEditorUtils.DefaultBindingFlags);
                 if (propertyInfo != null && propertyInfo.PropertyType == typeof(bool))
                 {
-                    return new ConditionWrapper(inverted, targetObject, parentProperty, type.IsValueType, null, propertyInfo, null);
+                    return new ConditionWrapper(inverted, targetObjectWrapper, null, propertyInfo, null);
                 }
 
                 MethodInfo methodInfo = type.GetMethod(condition, MarkupEditorUtils.DefaultBindingFlags);
                 if (methodInfo != null && methodInfo.ReturnType == typeof(bool)
                     && methodInfo.GetParameters().Length == 0)
                 {
-                    return new ConditionWrapper(inverted, targetObject, parentProperty, type.IsValueType, null, null, methodInfo);
+                    return new ConditionWrapper(inverted, targetObjectWrapper, null, null, methodInfo);
                 }
             }
             return null;
@@ -73,14 +72,11 @@ namespace MarkupAttributes.Editor
             return new ConditionWrapper(inverted, -1, null, targetMaterial, keyword, isGlobal);
         }
 
-        private ConditionWrapper(bool inverted, object targetObject, 
-            SerializedProperty parentProperty, bool isParentValueType,
+        private ConditionWrapper(bool inverted, TargetObjectWrapper targetObjectWrapper, 
             FieldInfo fieldInfo, PropertyInfo propertyInfo, MethodInfo methodInfo)
         {
             this.inverted = inverted;
-            this.targetObject = targetObject;
-            this.parentProperty = parentProperty;
-            this.isParentValueType = isParentValueType;
+            this.targetObjectWrapper = targetObjectWrapper;
             this.fieldInfo = fieldInfo;
             this.propertyInfo = propertyInfo;
             this.methodInfo = methodInfo;
@@ -111,9 +107,9 @@ namespace MarkupAttributes.Editor
             if (alwaysTrue) return true;
             if (alwaysFalse) return false;
 
-            object target = targetObject;
-            if (parentProperty != null && isParentValueType)
-                target = MarkupEditorUtils.GetTargetObjectOfProperty(parentProperty);
+            object target = null;
+            if (targetObjectWrapper != null)
+                target = targetObjectWrapper.Target;
 
             if (target != null)
             {

@@ -19,6 +19,11 @@ Shader "MarkupAttributes/ConditionalsSample"
         [Space]
         _Three("Three", Float) = 0
         _Four("Four", Float) = 0
+
+        [Header(ReadOnly)]
+        [Space]
+        [ReadOnly]
+        _Five("Five", Float) = 0
     }
 
     CustomEditor "MarkupAttributes.Editor.MarkedUpShaderGUI"
