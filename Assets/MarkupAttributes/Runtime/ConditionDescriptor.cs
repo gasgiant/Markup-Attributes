@@ -4,21 +4,30 @@ namespace MarkupAttributes
 {
     public class ConditionDescriptor
     {
-        public string condition;
+        public bool? fixedValue;
+        public string memberName;
         public bool isInverted;
-        public int? enumValue = null;
+        public object value;
+        public bool hasValue;
 
-        internal ConditionDescriptor(string condition, bool isInverted)
+
+        internal ConditionDescriptor(string memberName, bool isInverted)
         {
-            this.condition = condition;
+            this.memberName = memberName;
             this.isInverted = isInverted;
         }
 
-        internal ConditionDescriptor(string condition, bool isInverted, int enumValue)
+        internal ConditionDescriptor(string memberName, bool isInverted, object value)
         {
-            this.condition = condition;
+            this.memberName = memberName;
             this.isInverted = isInverted;
-            this.enumValue = enumValue;
+            this.value = value;
+            hasValue = true;
+        }
+
+        internal ConditionDescriptor(bool fixedValue)
+        {
+            this.fixedValue = fixedValue;
         }
     }
 }

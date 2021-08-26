@@ -84,8 +84,6 @@ namespace MarkupAttributes.Editor
                     {
                         disableConditions.Add(ConditionWrapper.Create(attribute.Condition, targetObjectWrapper));
                     }
-                    if (fieldInfo.GetCustomAttribute<ReadOnlyAttribute>() != null)
-                        disableConditions.Add(new ConditionWrapper(true));
 
                     var end = fieldInfo.GetCustomAttribute<EndGroupAttribute>();
                     data = new PropertyLayoutData(groups, hideConditions, disableConditions, end);

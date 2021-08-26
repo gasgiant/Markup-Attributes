@@ -159,20 +159,9 @@ namespace MarkupAttributes.Editor
                 if (disableIf != null)
                     disableConditions.Add(ConditionWrapper.Create(
                         disableIf.Condition, materialProperties, material));
-
-                if (GetReadonlyAttribute(attribute) != null)
-                    disableConditions.Add(new ConditionWrapper(true));
             }
 
             return (hideConditions, disableConditions);
-        }
-
-        private static ReadOnlyAttribute GetReadonlyAttribute(string attribute)
-        {
-            bool valid = ParseAttribute(attribute, "ReadOnly");
-            if (valid)
-                return new ReadOnlyAttribute();
-            return null;
         }
 
         private static HideIfAttribute GetHideIfAttribute(string attribute)
@@ -196,6 +185,10 @@ namespace MarkupAttributes.Editor
             valid = ParseAttribute(attribute, "EnableIf", 1, out args);
             if (valid)
                 return new EnableIfAttribute(args[0]);
+            valid = ParseAttribute(attribute, "ReadOnly");
+            if (valid)
+                return new ReadOnlyAttribute();
+
             return null;
         }
 
@@ -247,6 +240,9 @@ namespace MarkupAttributes.Editor
             valid = ParseAttribute(attribute, "EnableIfGroup", 2, out args);
             if (valid)
                 return new EnableIfGroupAttribute(GetPath(args[0]), args[1]);
+            valid = ParseAttribute(attribute, "ReadOnlyGroup", 1, out args);
+            if (valid)
+                return new ReadOnlyGroupAttribute(GetPath(args[0]));
             return null;
         }
 

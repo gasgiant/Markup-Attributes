@@ -16,7 +16,8 @@ namespace MarkupAttributes.Editor
         private readonly FieldInfo fieldInfo;
         private readonly PropertyInfo propertyInfo;
         private readonly MethodInfo methodInfo;
-        private readonly int? enumValue;
+        private readonly object memberValue;
+        private readonly bool hasMemberValue;
 
         private readonly int materialPropertyIndex;
         private readonly Material targetMaterial;
@@ -26,33 +27,33 @@ namespace MarkupAttributes.Editor
 
         public static ConditionWrapper Create(ConditionDescriptor descriptor, TargetObjectWrapper targetObjectWrapper)
         {
+            if (descriptor.fixedValue.HasValue)
+                return new ConditionWrapper(descriptor.fixedValue.Value);
+
             if (targetObjectWrapper != null && targetObjectWrapper.Target != null)
             {
                 object targetObject = targetObjectWrapper.Target;
                 Type type = targetObject.GetType();
 
-                FieldInfo fieldInfo = type.GetField(descriptor.condition, MarkupEditorUtils.DefaultBindingFlags);
+                FieldInfo fieldInfo = type.GetField(descriptor.memberName, MarkupEditorUtils.DefaultBindingFlags);
                 if (fieldInfo != null)
                 {
-                    if (fieldInfo.FieldType == typeof(bool) 
-                        || IsEnumCondition(fieldInfo.FieldType, descriptor.enumValue))
-                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, fieldInfo, null, null, descriptor.enumValue);
+                    if (IsConditionValid(fieldInfo.FieldType, descriptor))
+                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, fieldInfo, null, null, descriptor.value, descriptor.hasValue);
                 }
 
-                PropertyInfo propertyInfo = type.GetProperty(descriptor.condition, MarkupEditorUtils.DefaultBindingFlags);
+                PropertyInfo propertyInfo = type.GetProperty(descriptor.memberName, MarkupEditorUtils.DefaultBindingFlags);
                 if (propertyInfo != null)
                 {
-                    if (propertyInfo.PropertyType == typeof(bool) 
-                        || IsEnumCondition(propertyInfo.PropertyType, descriptor.enumValue))
-                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, null, propertyInfo, null, descriptor.enumValue);
+                    if (IsConditionValid(propertyInfo.PropertyType, descriptor))
+                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, null, propertyInfo, null, descriptor.value, descriptor.hasValue);
                 }
 
-                MethodInfo methodInfo = type.GetMethod(descriptor.condition, MarkupEditorUtils.DefaultBindingFlags);
+                MethodInfo methodInfo = type.GetMethod(descriptor.memberName, MarkupEditorUtils.DefaultBindingFlags);
                 if (methodInfo != null && methodInfo.GetParameters().Length == 0)
                 {
-                    if (methodInfo.ReturnType == typeof(bool)
-                        || IsEnumCondition(methodInfo.ReturnType, descriptor.enumValue))
-                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, null, null, methodInfo, descriptor.enumValue);
+                    if (IsConditionValid(methodInfo.ReturnType, descriptor))
+                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, null, null, methodInfo, descriptor.value, descriptor.hasValue);
                 }
             }
             return null;
@@ -61,32 +62,36 @@ namespace MarkupAttributes.Editor
         public static ConditionWrapper Create(ConditionDescriptor descriptor, 
             MaterialPropertiesWrapper materialProperties, Material targetMaterial)
         {
+            if (descriptor.fixedValue.HasValue)
+                return new ConditionWrapper(descriptor.fixedValue.Value);
+
             var props = materialProperties.value;
             for (int i = 0; i < props.Length; i++)
             {
                 var materialProperty = props[i];
                 if ((materialProperty.type == MaterialProperty.PropType.Float
                                     || materialProperty.type == MaterialProperty.PropType.Range)
-                                    && materialProperty.name == descriptor.condition)
+                                    && materialProperty.name == descriptor.memberName)
                 {
                     return new ConditionWrapper(descriptor.isInverted, i, materialProperties,
                         null, null, false);
                 }
             }
 
-            string keyword = ShaderAttributesParser.GetKeyword(descriptor.condition, out bool isGlobal);
+            string keyword = ShaderAttributesParser.GetKeyword(descriptor.memberName, out bool isGlobal);
             return new ConditionWrapper(descriptor.isInverted, -1, null, targetMaterial, keyword, isGlobal);
         }
 
         private ConditionWrapper(bool inverted, TargetObjectWrapper targetObjectWrapper, 
-            FieldInfo fieldInfo, PropertyInfo propertyInfo, MethodInfo methodInfo, int? enumValue)
+            FieldInfo fieldInfo, PropertyInfo propertyInfo, MethodInfo methodInfo, object memberValue, bool hasValue)
         {
             this.inverted = inverted;
             this.targetObjectWrapper = targetObjectWrapper;
             this.fieldInfo = fieldInfo;
             this.propertyInfo = propertyInfo;
             this.methodInfo = methodInfo;
-            this.enumValue = enumValue;
+            this.memberValue = memberValue;
+            this.hasMemberValue = hasValue;
         }
 
         private ConditionWrapper(bool inverted, int materialPropertyIndex, 
@@ -101,7 +106,7 @@ namespace MarkupAttributes.Editor
             this.isShaderKeywordGlobal = isShaderKeywordGlobal;
         }
 
-        public ConditionWrapper(bool value)
+        private ConditionWrapper(bool value)
         {
             if (value)
                 alwaysTrue = true;
@@ -150,13 +155,13 @@ namespace MarkupAttributes.Editor
 
         private bool FromMemberValue(object value)
         {
-            if (enumValue.HasValue)
-                return  ((int)value == enumValue.Value) ^ inverted;
+            if (hasMemberValue)
+                return value.Equals(memberValue) ^ inverted;
             else
                 return (bool)value ^ inverted;
         }
 
-        private static bool IsEnumCondition(Type type, int? enumValue) =>
-            typeof(Enum).IsAssignableFrom(type) && enumValue.HasValue;
+        private static bool IsConditionValid(Type type, ConditionDescriptor descriptor) =>
+            type == typeof(bool) || descriptor.hasValue;
     }
 }

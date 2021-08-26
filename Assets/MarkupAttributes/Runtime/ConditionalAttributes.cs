@@ -7,26 +7,26 @@ namespace MarkupAttributes
     {
         public ConditionDescriptor Condition { get; protected set; }
 
-        public HideIfAttribute(string condition)
+        public HideIfAttribute(string memberName)
         {
-            Condition = new ConditionDescriptor(condition, false);
+            Condition = new ConditionDescriptor(memberName, false);
         }
 
-        public HideIfAttribute(string condition, int enumValue)
+        public HideIfAttribute(string memberName, object value)
         {
-            Condition = new ConditionDescriptor(condition, false, enumValue);
+            Condition = new ConditionDescriptor(memberName, false, value);
         }
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class ShowIfAttribute : HideIfAttribute
     {
-        public ShowIfAttribute(string condition) : base(condition)
+        public ShowIfAttribute(string memberName) : base(memberName)
         {
             Condition.isInverted = true;
         }
 
-        public ShowIfAttribute(string condition, int enumValue) : base(condition, enumValue)
+        public ShowIfAttribute(string memberName, object enumValue) : base(memberName, enumValue)
         {
             Condition.isInverted = true;
         }
@@ -37,28 +37,41 @@ namespace MarkupAttributes
     {
         public ConditionDescriptor Condition { get; protected set; }
 
-        public DisableIfAttribute(string condition)
+        public DisableIfAttribute(string memberName)
         {
-            Condition = new ConditionDescriptor(condition, false);
+            Condition = new ConditionDescriptor(memberName, false);
         }
 
-        public DisableIfAttribute(string condition, int enumValue)
+        public DisableIfAttribute(string memberName, object value)
         {
-            Condition = new ConditionDescriptor(condition, false, enumValue);
+            Condition = new ConditionDescriptor(memberName, false, value);
+        }
+
+        protected DisableIfAttribute(bool fixedValue)
+        {
+            Condition = new ConditionDescriptor(fixedValue);
         }
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class EnableIfAttribute : DisableIfAttribute
     {
-        public EnableIfAttribute(string condition) : base(condition)
+        public EnableIfAttribute(string memberName) : base(memberName)
         {
             Condition.isInverted = true;
         }
 
-        public EnableIfAttribute(string condition, int enumValue) : base(condition, enumValue)
+        public EnableIfAttribute(string memberName, object value) : base(memberName, value)
         {
             Condition.isInverted = true;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public class ReadOnlyAttribute : DisableIfAttribute
+    {
+        public ReadOnlyAttribute() : base(true)
+        {
         }
     }
 }

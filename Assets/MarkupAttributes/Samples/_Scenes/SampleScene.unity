@@ -889,7 +889,6 @@ MonoBehaviour:
   eleven: 0
   twelve: 0
   thirteen: 0
-  fourteen: 0
 --- !u!114 &1790592134
 MonoBehaviour:
   m_ObjectHideFlags: 0
