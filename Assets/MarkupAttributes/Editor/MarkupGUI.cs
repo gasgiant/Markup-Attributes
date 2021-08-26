@@ -235,9 +235,8 @@ namespace MarkupAttributes.Editor
                 {
                     if (!isFoldable)
                         isExpanded = togglableValue.GetValue();
-                    bool value = Toggle(
-                        headerRect, togglableValue,
-                        label, ref isExpanded, isFoldable);
+                    bool value = Toggle(headerRect, togglableValue, label, 
+                        ref isExpanded, isFoldable);
                     if (isFoldable)
                     {
                         isEnabled &= value;
@@ -399,7 +398,7 @@ namespace MarkupAttributes.Editor
             bool hasMixedValue = wrapper.HasMixedValue;
             bool value = wrapper.GetValue();
             if (wrapper.TargetSerializedProperty != null)
-                EditorGUI.BeginProperty(position, label, wrapper.TargetSerializedProperty);
+                label = EditorGUI.BeginProperty(position, label, wrapper.TargetSerializedProperty);
             else
                 EditorGUI.showMixedValue = hasMixedValue;
 

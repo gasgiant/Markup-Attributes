@@ -13,7 +13,7 @@ namespace MarkupAttributes.Editor
         private readonly Material targetMaterial;
         private readonly string shaderKeyword;
 
-        private MaterialProperty materialProperty
+        public MaterialProperty MaterialProperty
         {
             get
             {
@@ -56,7 +56,7 @@ namespace MarkupAttributes.Editor
             {
                 if (serializedProperty != null && serializedProperty.hasMultipleDifferentValues)
                     return true;
-                if (materialProperty != null && materialProperty.hasMixedValue)
+                if (MaterialProperty != null && MaterialProperty.hasMixedValue)
                 {
                     return true;
                 }
@@ -83,9 +83,9 @@ namespace MarkupAttributes.Editor
             if (serializedProperty != null)
                 return serializedProperty.boolValue;
 
-            if (materialProperty != null)
+            if (MaterialProperty != null)
             {
-                bool b = materialProperty.floatValue > 0;
+                bool b = MaterialProperty.floatValue > 0;
                 SetKeywordOnMaterial(b);
                 return b;
             }
@@ -103,11 +103,11 @@ namespace MarkupAttributes.Editor
                 return;
             }
 
-            if (materialProperty != null)
+            if (MaterialProperty != null)
             {
-                if (!forceIfMixed && materialProperty.hasMixedValue)
+                if (!forceIfMixed && MaterialProperty.hasMixedValue)
                     return;
-                materialProperty.floatValue = b ? 1 : 0;
+                MaterialProperty.floatValue = b ? 1 : 0;
                 SetKeywordOnMaterial(b);
                 return;
             }
