@@ -16,6 +16,7 @@ namespace MarkupAttributes.Editor
         private readonly FieldInfo fieldInfo;
         private readonly PropertyInfo propertyInfo;
         private readonly MethodInfo methodInfo;
+        private readonly int? enumValue;
 
         private readonly int materialPropertyIndex;
         private readonly Material targetMaterial;
@@ -23,36 +24,41 @@ namespace MarkupAttributes.Editor
         private readonly bool isShaderKeywordGlobal;
         private readonly MaterialPropertiesWrapper materialProperties;
 
-        public static ConditionWrapper Create(string condition, bool inverted, TargetObjectWrapper targetObjectWrapper)
+        public static ConditionWrapper Create(ConditionDescriptor descriptor, TargetObjectWrapper targetObjectWrapper)
         {
             if (targetObjectWrapper != null && targetObjectWrapper.Target != null)
             {
                 object targetObject = targetObjectWrapper.Target;
                 Type type = targetObject.GetType();
 
-                FieldInfo fieldInfo = type.GetField(condition, MarkupEditorUtils.DefaultBindingFlags);
-                if (fieldInfo != null && fieldInfo.FieldType == typeof(bool))
+                FieldInfo fieldInfo = type.GetField(descriptor.condition, MarkupEditorUtils.DefaultBindingFlags);
+                if (fieldInfo != null)
                 {
-                    return new ConditionWrapper(inverted, targetObjectWrapper, fieldInfo, null, null);
+                    if (fieldInfo.FieldType == typeof(bool) 
+                        || IsEnumCondition(fieldInfo.FieldType, descriptor.enumValue))
+                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, fieldInfo, null, null, descriptor.enumValue);
                 }
 
-                PropertyInfo propertyInfo = type.GetProperty(condition, MarkupEditorUtils.DefaultBindingFlags);
-                if (propertyInfo != null && propertyInfo.PropertyType == typeof(bool))
+                PropertyInfo propertyInfo = type.GetProperty(descriptor.condition, MarkupEditorUtils.DefaultBindingFlags);
+                if (propertyInfo != null)
                 {
-                    return new ConditionWrapper(inverted, targetObjectWrapper, null, propertyInfo, null);
+                    if (propertyInfo.PropertyType == typeof(bool) 
+                        || IsEnumCondition(propertyInfo.PropertyType, descriptor.enumValue))
+                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, null, propertyInfo, null, descriptor.enumValue);
                 }
 
-                MethodInfo methodInfo = type.GetMethod(condition, MarkupEditorUtils.DefaultBindingFlags);
-                if (methodInfo != null && methodInfo.ReturnType == typeof(bool)
-                    && methodInfo.GetParameters().Length == 0)
+                MethodInfo methodInfo = type.GetMethod(descriptor.condition, MarkupEditorUtils.DefaultBindingFlags);
+                if (methodInfo != null && methodInfo.GetParameters().Length == 0)
                 {
-                    return new ConditionWrapper(inverted, targetObjectWrapper, null, null, methodInfo);
+                    if (methodInfo.ReturnType == typeof(bool)
+                        || IsEnumCondition(methodInfo.ReturnType, descriptor.enumValue))
+                        return new ConditionWrapper(descriptor.isInverted, targetObjectWrapper, null, null, methodInfo, descriptor.enumValue);
                 }
             }
             return null;
         }
 
-        public static ConditionWrapper Create(string condition, bool inverted, 
+        public static ConditionWrapper Create(ConditionDescriptor descriptor, 
             MaterialPropertiesWrapper materialProperties, Material targetMaterial)
         {
             var props = materialProperties.value;
@@ -61,25 +67,26 @@ namespace MarkupAttributes.Editor
                 var materialProperty = props[i];
                 if ((materialProperty.type == MaterialProperty.PropType.Float
                                     || materialProperty.type == MaterialProperty.PropType.Range)
-                                    && materialProperty.name == condition)
+                                    && materialProperty.name == descriptor.condition)
                 {
-                    return new ConditionWrapper(inverted, i, materialProperties,
+                    return new ConditionWrapper(descriptor.isInverted, i, materialProperties,
                         null, null, false);
                 }
             }
 
-            string keyword = ShaderAttributesParser.GetKeyword(condition, out bool isGlobal);
-            return new ConditionWrapper(inverted, -1, null, targetMaterial, keyword, isGlobal);
+            string keyword = ShaderAttributesParser.GetKeyword(descriptor.condition, out bool isGlobal);
+            return new ConditionWrapper(descriptor.isInverted, -1, null, targetMaterial, keyword, isGlobal);
         }
 
         private ConditionWrapper(bool inverted, TargetObjectWrapper targetObjectWrapper, 
-            FieldInfo fieldInfo, PropertyInfo propertyInfo, MethodInfo methodInfo)
+            FieldInfo fieldInfo, PropertyInfo propertyInfo, MethodInfo methodInfo, int? enumValue)
         {
             this.inverted = inverted;
             this.targetObjectWrapper = targetObjectWrapper;
             this.fieldInfo = fieldInfo;
             this.propertyInfo = propertyInfo;
             this.methodInfo = methodInfo;
+            this.enumValue = enumValue;
         }
 
         private ConditionWrapper(bool inverted, int materialPropertyIndex, 
@@ -114,13 +121,13 @@ namespace MarkupAttributes.Editor
             if (target != null)
             {
                 if (fieldInfo != null)
-                    return (bool)fieldInfo.GetValue(target) ^ inverted;
+                    return FromMemberValue(fieldInfo.GetValue(target));
 
                 if (propertyInfo != null)
-                    return (bool)propertyInfo.GetValue(target) ^ inverted;
+                    return FromMemberValue(propertyInfo.GetValue(target));
 
                 if (methodInfo != null)
-                    return (bool)methodInfo.Invoke(target, null) ^ inverted;
+                    return FromMemberValue(methodInfo.Invoke(target, null));
             }
 
             if (materialProperties != null)
@@ -140,5 +147,16 @@ namespace MarkupAttributes.Editor
 
             return false;
         }
+
+        private bool FromMemberValue(object value)
+        {
+            if (enumValue.HasValue)
+                return  ((int)value == enumValue.Value) ^ inverted;
+            else
+                return (bool)value ^ inverted;
+        }
+
+        private static bool IsEnumCondition(Type type, int? enumValue) =>
+            typeof(Enum).IsAssignableFrom(type) && enumValue.HasValue;
     }
 }

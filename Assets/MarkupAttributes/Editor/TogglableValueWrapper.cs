@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public class TogglableValueWrapper
+    internal class TogglableValueWrapper
     {
         private readonly SerializedProperty serializedProperty;
 

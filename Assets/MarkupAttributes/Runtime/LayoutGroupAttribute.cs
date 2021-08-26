@@ -8,12 +8,11 @@ namespace MarkupAttributes
         public LayoutGroupType Type { get; protected set; }
         public MarkupHeaderStyle HeaderStyle { get; protected set; } 
         public MarkupBodyStyle BodyStyle { get; protected set; } 
-        public bool Toggle { get; protected set; }
         public float LabelWidth { get; protected set; }
         public string[] Tabs { get; protected set; }
-        public string Condition { get; protected set; }
-        public bool IsConditionInverted { get; protected set; }
-        public string ShaderKeyword { get; protected set; }
+        public ConditionDescriptor Condition { get; protected set; }
+        public bool Toggle { get; protected set; }
+        public string ToggleShaderKeyword { get; protected set; }
 
         public bool HasCondition => Type == LayoutGroupType.DisableIf
             || Type == LayoutGroupType.HideIf;

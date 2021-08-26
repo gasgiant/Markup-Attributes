@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public static partial class MarkupGUI
+    public static class MarkupGUI
     {
         internal const float SpaceAfterBoxedHeader = 5;
         internal const float SpaceBeforeHeader = 3;
@@ -23,11 +23,11 @@ namespace MarkupAttributes.Editor
         }
 
         internal static bool DrawScriptProperty { get; private set; } = true;
-        public struct DrawScriptPropertyScope : IDisposable
+        public struct ScriptPropertyScope : IDisposable
         {
             private readonly bool cachedDrawScriptProperty;
 
-            public DrawScriptPropertyScope(bool draw)
+            public ScriptPropertyScope(bool draw)
             {
                 cachedDrawScriptProperty = DrawScriptProperty;
                 DrawScriptProperty &= draw;
@@ -474,7 +474,7 @@ namespace MarkupAttributes.Editor
                 }
                 using (new EditorGUI.DisabledScope(!enabled))
                 {
-                    using (new DrawScriptPropertyScope(false))
+                    using (new ScriptPropertyScope(false))
                     {
                         if (materialEditor)
                             editor.DrawHeader();

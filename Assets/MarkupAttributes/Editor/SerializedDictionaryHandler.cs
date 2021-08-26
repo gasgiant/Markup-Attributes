@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace MarkupAttributes.Editor
 {
-    public class SerializedDictionaryHandler
+    internal class SerializedDictionaryHandler
     {
         private readonly SerializedProperty array;
         private Dictionary<string, SerializedProperty> dictionary;

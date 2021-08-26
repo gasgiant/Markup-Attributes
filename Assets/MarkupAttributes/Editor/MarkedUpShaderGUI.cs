@@ -4,7 +4,7 @@ using System;
 
 namespace MarkupAttributes.Editor
 {
-    public enum CompactTextureMode { Default, UniformScaleOnly, ScaleOnly }
+    internal enum CompactTextureMode { Default, UniformScaleOnly, ScaleOnly }
 
     [CanEditMultipleObjects()]
     public class MarkedUpShaderGUI : ShaderGUI

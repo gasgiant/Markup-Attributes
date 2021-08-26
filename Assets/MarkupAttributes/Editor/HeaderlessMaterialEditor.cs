@@ -3,7 +3,7 @@ using UnityEditorInternal;
 
 namespace MarkupAttributes.Editor
 {
-    public class HeaderlessMaterialEditor : MaterialEditor
+    internal class HeaderlessMaterialEditor : MaterialEditor
     {
         protected override void OnHeaderGUI()
         {

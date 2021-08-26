@@ -11,7 +11,7 @@ namespace MarkupAttributes.Editor
         AfterProperty
     }
 
-    public class CallbackManager
+    internal class CallbackManager
     {
         private readonly bool usedByShaderGUI;
         private readonly SerializedProperty[] properties;

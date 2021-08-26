@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MarkupAttributes.Editor
 {
-    public class MarkupAttributesPrefs : ScriptableObject
+    internal class MarkupAttributesPrefs : ScriptableObject
     {
         private static MarkupAttributesPrefs instance;
         private static MarkupAttributesPrefs Instance

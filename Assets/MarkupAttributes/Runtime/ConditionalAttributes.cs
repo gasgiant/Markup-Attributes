@@ -2,41 +2,63 @@ using System;
 
 namespace MarkupAttributes
 {
-    public abstract class ConditionalAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+    public class HideIfAttribute : Attribute
     {
-        public string Condition { get; protected set; }
-        public bool IsInverted { get; protected set; } = false;
-    }
+        public ConditionDescriptor Condition { get; protected set; }
 
-    public class HideIfAttribute : ConditionalAttribute
-    {
         public HideIfAttribute(string condition)
         {
-            Condition = condition;
+            Condition = new ConditionDescriptor(condition, false);
+        }
+
+        public HideIfAttribute(string condition, int enumValue)
+        {
+            Condition = new ConditionDescriptor(condition, false, enumValue);
         }
     }
 
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class ShowIfAttribute : HideIfAttribute
     {
         public ShowIfAttribute(string condition) : base(condition)
         {
-            IsInverted = true;
+            Condition.isInverted = true;
+        }
+
+        public ShowIfAttribute(string condition, int enumValue) : base(condition, enumValue)
+        {
+            Condition.isInverted = true;
         }
     }
 
-    public class DisableIfAttribute : ConditionalAttribute
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+    public class DisableIfAttribute : Attribute
     {
+        public ConditionDescriptor Condition { get; protected set; }
+
         public DisableIfAttribute(string condition)
         {
-            Condition = condition;
+            Condition = new ConditionDescriptor(condition, false);
+        }
+
+        public DisableIfAttribute(string condition, int enumValue)
+        {
+            Condition = new ConditionDescriptor(condition, false, enumValue);
         }
     }
 
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class EnableIfAttribute : DisableIfAttribute
     {
         public EnableIfAttribute(string condition) : base(condition)
         {
-            IsInverted = true;
+            Condition.isInverted = true;
+        }
+
+        public EnableIfAttribute(string condition, int enumValue) : base(condition, enumValue)
+        {
+            Condition.isInverted = true;
         }
     }
 }

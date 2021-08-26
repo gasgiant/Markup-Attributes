@@ -99,17 +99,17 @@ namespace MarkupAttributes.Editor
             ConditionWrapper conditionWrapper = null;
             if (attribute.HasCondition)
             {
-                conditionWrapper = ConditionWrapper.Create(attribute.Condition,
-                    attribute.IsConditionInverted, allProperties, targetMaterial);
+                conditionWrapper = ConditionWrapper.Create(attribute.Condition, 
+                    allProperties, targetMaterial);
                 if (conditionWrapper == null) return null;
             }
 
             TogglableValueWrapper togglableValueWrapper = null;
             if (attribute.Toggle)
             {
-                if (attribute.ShaderKeyword != null)
+                if (attribute.ToggleShaderKeyword != null)
                 {
-                    togglableValueWrapper = TogglableValueWrapper.Create(index, allProperties, targetMaterial, attribute.ShaderKeyword);
+                    togglableValueWrapper = TogglableValueWrapper.Create(index, allProperties, targetMaterial, attribute.ToggleShaderKeyword);
                     isHidden = true;
                 }
                 else
@@ -153,12 +153,12 @@ namespace MarkupAttributes.Editor
                 var hideIf = GetHideIfAttribute(attribute);
                 if (hideIf != null)
                     hideConditions.Add(ConditionWrapper.Create(
-                        hideIf.Condition, hideIf.IsInverted, materialProperties, material));
-
+                        hideIf.Condition, materialProperties, material));
+                
                 var disableIf = GetDisableIfAttribute(attribute);
                 if (disableIf != null)
                     disableConditions.Add(ConditionWrapper.Create(
-                        disableIf.Condition, disableIf.IsInverted, materialProperties, material));
+                        disableIf.Condition, materialProperties, material));
 
                 if (GetReadonlyAttribute(attribute) != null)
                     disableConditions.Add(new ConditionWrapper(true));

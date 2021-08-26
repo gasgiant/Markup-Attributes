@@ -61,6 +61,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Eight: 0
+    - _Five: 0
     - _Four: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5

@@ -9,7 +9,14 @@ namespace MarkupAttributes
         {
             Path = path;
             Type = LayoutGroupType.HideIf;
-            Condition = condition;
+            Condition = new ConditionDescriptor(condition, false);
+        }
+
+        public HideIfGroupAttribute(string path, string condition, int enumValue)
+        {
+            Path = path;
+            Type = LayoutGroupType.HideIf;
+            Condition = new ConditionDescriptor(condition, false, enumValue);
         }
     }
 
@@ -18,7 +25,12 @@ namespace MarkupAttributes
     {
         public ShowIfGroupAttribute(string path, string condition) : base(path, condition)
         {
-            IsConditionInverted = true;
+            Condition.isInverted = true;
+        }
+
+        public ShowIfGroupAttribute(string path, string condition, int enumValue) : base(path, condition, enumValue)
+        {
+            Condition.isInverted = true;
         }
     }
 }

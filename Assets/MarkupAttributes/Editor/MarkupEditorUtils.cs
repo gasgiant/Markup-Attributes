@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace MarkupAttributes.Editor
 {
-	public static class MarkupEditorUtils
+	internal static class MarkupEditorUtils
 	{
 		public const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly;
 

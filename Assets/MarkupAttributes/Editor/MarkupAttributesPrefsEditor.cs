@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MarkupAttributes.Editor
 {
     [CustomEditor(typeof(MarkupAttributesPrefs))]
-    public class MarkupAttributesPrefsEditor : UnityEditor.Editor
+    internal class MarkupAttributesPrefsEditor : UnityEditor.Editor
     {
         string message = "Hi! I am a file that keeps data about " +
             "selected tabs, expanded foldouts and things like that for " +

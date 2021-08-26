@@ -20,7 +20,7 @@ namespace MarkupAttributes
         public static ToggleGroupAttribute CreateForShader(string path, bool foldable, string shaderKeyword)
         {
             var value = new ToggleGroupAttribute(path, foldable);
-            value.ShaderKeyword = shaderKeyword;
+            value.ToggleShaderKeyword = shaderKeyword;
             return value;
         }
     }

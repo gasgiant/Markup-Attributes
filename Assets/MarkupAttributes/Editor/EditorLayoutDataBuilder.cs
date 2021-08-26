@@ -44,7 +44,7 @@ namespace MarkupAttributes.Editor
         private static int GetLayoutDataForSiblings(InspectorLayoutGroup scopeGroup,
             SerializedProperty[] siblings, Type targetType, TargetObjectWrapper targetObjectWrapper,
             List<SerializedProperty> allProps, List<PropertyLayoutData> layoutData,
-            Dictionary<SerializedProperty, InlineEditorData> inlineEditors, List<TargetObjectWrapper> targetsRequireUpdate)
+            Dictionary<SerializedProperty, InlineEditorData> inlineEditors, List<TargetObjectWrapper> targetObjectWrappers)
         {
             int scopesToClose = 0;
             for (int i = 0; i < siblings.Length; i++)
@@ -62,7 +62,7 @@ namespace MarkupAttributes.Editor
                 if (fieldInfo != null)
                 {
                     // layout groups
-                    var groupAttribues = fieldInfo.GetCustomAttributes<LayoutGroupAttribute>().ToArray();
+                    var groupAttribues = fieldInfo.GetCustomAttributes<LayoutGroupAttribute>(true).ToArray();
 
                     bool isPropertyHidden = false;
                     foreach (var groupAttribute in groupAttribues)
@@ -76,15 +76,13 @@ namespace MarkupAttributes.Editor
                     var hideConditions = new List<ConditionWrapper>();
                     foreach (var attribute in fieldInfo.GetCustomAttributes<HideIfAttribute>())
                     {
-                        hideConditions.Add(ConditionWrapper.Create(attribute.Condition,
-                            attribute.IsInverted, targetObjectWrapper));
+                        hideConditions.Add(ConditionWrapper.Create(attribute.Condition, targetObjectWrapper));
                     }
 
                     var disableConditions = new List<ConditionWrapper>();
                     foreach (var attribute in fieldInfo.GetCustomAttributes<DisableIfAttribute>())
                     {
-                        disableConditions.Add(ConditionWrapper.Create(attribute.Condition,
-                            attribute.IsInverted, targetObjectWrapper));
+                        disableConditions.Add(ConditionWrapper.Create(attribute.Condition, targetObjectWrapper));
                     }
                     if (fieldInfo.GetCustomAttribute<ReadOnlyAttribute>() != null)
                         disableConditions.Add(new ConditionWrapper(true));
@@ -117,7 +115,7 @@ namespace MarkupAttributes.Editor
                         var subTargetType = subTarget.GetType();
                         var subTargetWrapper = new TargetObjectWrapper(subTarget, sibling);
                         if (subTargetType.IsValueType)
-                            targetsRequireUpdate.Add(subTargetWrapper);
+                            targetObjectWrappers.Add(subTargetWrapper);
                         if (subTargetType != targetType)
                         {
                             var children = MarkupEditorUtils.GetChildrenOfProperty(sibling).ToArray();
@@ -130,7 +128,7 @@ namespace MarkupAttributes.Editor
                                     markedUp.showControl, markedUp.indentChildren);
                                 scopesToClose += GetLayoutDataForSiblings(
                                     subScopeGroup, children, subTargetType, subTargetWrapper, 
-                                    allProps, layoutData, inlineEditors, targetsRequireUpdate);
+                                    allProps, layoutData, inlineEditors, targetObjectWrappers);
                                 scopesToClose += 1;
                             }
                         }
@@ -146,8 +144,7 @@ namespace MarkupAttributes.Editor
             ConditionWrapper conditionWrapper = null;
             if (attribute.HasCondition)
             {
-                conditionWrapper = ConditionWrapper.Create(
-                    attribute.Condition, attribute.IsConditionInverted, targetObjectWrapper);
+                conditionWrapper = ConditionWrapper.Create(attribute.Condition, targetObjectWrapper);
                 if (conditionWrapper == null)
                     return null;
             }
