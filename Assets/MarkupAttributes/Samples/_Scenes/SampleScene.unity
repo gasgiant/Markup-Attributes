@@ -942,11 +942,12 @@ MonoBehaviour:
   three: 0
   four: 0
   five: 0
+  boolean: 1
   six: 0
   seven: 0
-  boolean: 1
   eight: 0
   nine: 0
+  state: 0
   ten: 0
   eleven: 0
   twelve: 0
@@ -1043,7 +1044,7 @@ GameObject:
   - component: {fileID: 2052686481}
   - component: {fileID: 2052686482}
   m_Layer: 0
-  m_Name: Nesting
+  m_Name: Nesting Groups
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

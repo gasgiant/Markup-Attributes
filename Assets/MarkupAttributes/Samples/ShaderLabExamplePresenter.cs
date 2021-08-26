@@ -4,7 +4,7 @@ namespace MarkupAttributes.Samples
 {
     public class ShaderLabExamplePresenter : SamplesBehaviour
     {
-        [Space]
+        [ReadOnly]
         public Shader shader;
 
         [InlineEditor(InlineEditorMode.Stripped)]
@@ -17,7 +17,5 @@ namespace MarkupAttributes.Samples
             else
                 shader = null;
         }
-
-        
     }
 }

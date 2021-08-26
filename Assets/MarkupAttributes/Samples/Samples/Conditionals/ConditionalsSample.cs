@@ -4,6 +4,9 @@ namespace MarkupAttributes.Samples
 {
     public class ConditionalsSample : SamplesBehaviour
     {
+        private bool IsOneEvenProperty => one % 2 == 0;
+        private bool IsOneEvenMethod() => one % 2 == 0;
+
         [Range(0, 1)]
         [SerializeField] private int one;
 
@@ -12,33 +15,41 @@ namespace MarkupAttributes.Samples
         public int two;
         [DisableIf(nameof(IsOneEvenProperty))]
         public int three;
-        [DisableIf(nameof(IsOneEvenProperty))]
-        public int four;
 
         [EnableIfGroup("Enabled If One Is Even", nameof(IsOneEvenMethod))]
         [Header("Enabled If One Is Even")]
+        public int four;
         public int five;
-        public int six;
-        public int seven;
         [EndGroup]
 
         [Space(20)]
         [SerializeField] private bool boolean;
         [Header("Hidden If Boolean")]
         [HideIf(nameof(boolean))]
-        public int eight;
+        public int six;
         [HideIf(nameof(boolean))]
-        public int nine;
-        [HideIf(nameof(boolean))]
-        public int ten;
+        public int seven;
 
         [ShowIfGroup("Shown If Boolean", nameof(boolean))]
         [Header("Shown If Boolean")]
+        public int eight;
+        public int nine;
+        [EndGroup]
+
+
+        [Header("Shown If Enum Value")]
+        public SomeEnum state;
+        [ShowIf(nameof(state), SomeEnum.Foo)]
+        public int ten;
+        [ShowIf(nameof(state), SomeEnum.Foo)]
         public int eleven;
+        [ShowIf(nameof(GetState), SomeEnum.Bar)]
         public int twelve;
+        [ShowIf(nameof(GetState), SomeEnum.Bar)]
         public int thirteen;
 
-        private bool IsOneEvenProperty => one % 2 == 0;
-        private bool IsOneEvenMethod() => one % 2 == 0;
+        private SomeEnum GetState() => state;
+
+        public enum SomeEnum { Foo, Bar }
     }
 }
