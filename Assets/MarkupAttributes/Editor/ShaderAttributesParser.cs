@@ -159,9 +159,20 @@ namespace MarkupAttributes.Editor
                 if (disableIf != null)
                     disableConditions.Add(ConditionWrapper.Create(
                         disableIf.Condition, disableIf.IsInverted, materialProperties, material));
+
+                if (GetReadonlyAttribute(attribute) != null)
+                    disableConditions.Add(new ConditionWrapper(true));
             }
 
             return (hideConditions, disableConditions);
+        }
+
+        private static ReadOnlyAttribute GetReadonlyAttribute(string attribute)
+        {
+            bool valid = ParseAttribute(attribute, "ReadOnly");
+            if (valid)
+                return new ReadOnlyAttribute();
+            return null;
         }
 
         private static HideIfAttribute GetHideIfAttribute(string attribute)
