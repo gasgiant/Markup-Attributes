@@ -4,8 +4,6 @@ using System;
 
 namespace MarkupAttributes.Editor
 {
-    internal enum CompactTextureMode { Default, UniformScaleOnly, ScaleOnly }
-
     [CanEditMultipleObjects()]
     public class MarkedUpShaderGUI : ShaderGUI
     {
@@ -42,7 +40,7 @@ namespace MarkupAttributes.Editor
                         !layoutController.ScopeEnabled || !layoutController.PropertyEnabled(i)))
                     {
                         if (!callbackManager.InvokeCallback(i, CallbackEvent.ReplaceProperty))
-                            DrawProperty(materialEditor, properties[i], allAttributes[i]);
+                            DrawProperty(materialEditor, properties[i]);
                     }
                     callbackManager.InvokeCallback(i, CallbackEvent.AfterProperty);
                 }
@@ -91,80 +89,14 @@ namespace MarkupAttributes.Editor
             return output;
         }
 
-        private void DrawProperty(MaterialEditor editor, MaterialProperty prop, string[] attributes)
+        private void DrawProperty(MaterialEditor editor, MaterialProperty prop)
         {
             if (prop.flags.HasFlag(MaterialProperty.PropFlags.HideInInspector))
                 return;
-
-            if (prop.type == MaterialProperty.PropType.Texture)
-            {
-                var mode = ShaderAttributesParser.GetCompactTextureAttribute(attributes);
-                if (mode.HasValue)
-                    CompactTextureField(editor, prop, mode.Value);
-                else
-                    editor.ShaderProperty(prop, MakeLabel(prop));
-            }
-            else
-                editor.ShaderProperty(prop, MakeLabel(prop));
+            editor.ShaderProperty(prop, MakeLabel(prop));
         }
 
-        private void CompactTextureField(MaterialEditor editor, 
-            MaterialProperty prop, CompactTextureMode mode)
-        {
-
-            Rect fullRect = EditorGUILayout.GetControlRect(false);
-            editor.TexturePropertyMiniThumbnail(fullRect, prop, prop.displayName, null);
-            if (prop.flags.HasFlag(MaterialProperty.PropFlags.NoScaleOffset))
-                return;
-
-            Vector4 currentScaleOffset = prop.textureScaleAndOffset;
-            float[] scale = new float[] { currentScaleOffset.x, currentScaleOffset.y };
-            float[] offset = new float[] { currentScaleOffset.z, currentScaleOffset.w };
-            
-            Rect scaleRect = fullRect;
-            scaleRect.x += EditorGUIUtility.labelWidth;
-            scaleRect.width -= EditorGUIUtility.labelWidth;
-            float labelWidth = EditorStyles.label.CalcSize(OffsetLabel).x;
-            labelWidth += EditorGUIUtility.standardVerticalSpacing * 5;
-            Rect scaleLabelRect = scaleRect;
-            scaleLabelRect.width = labelWidth;
-            Rect scaleFieldRect = scaleRect;
-            scaleFieldRect.x += labelWidth;
-            scaleFieldRect.width -= labelWidth;
-
-            if (mode == CompactTextureMode.UniformScaleOnly)
-            {
-                float previousLabelWidth = EditorGUIUtility.labelWidth;
-                EditorGUIUtility.labelWidth = labelWidth;
-                scale[0] = EditorGUI.FloatField(scaleRect, ScaleLabel, scale[0]);
-                EditorGUIUtility.labelWidth = previousLabelWidth;
-                scale[1] = scale[0];
-            }
-            else
-            {
-                EditorGUI.LabelField(scaleLabelRect, ScaleLabel);
-                MultiFloatField(scaleFieldRect, scale);
-            }
-
-            if (mode == CompactTextureMode.Default)
-            {
-                EditorGUILayout.GetControlRect(false);
-                Rect offsetLabelRect = scaleLabelRect;
-                Rect offsetFieldRect = scaleFieldRect;
-                offsetLabelRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                offsetFieldRect.y = offsetLabelRect.y;
-                EditorGUI.LabelField(offsetLabelRect, OffsetLabel);
-                MultiFloatField(offsetFieldRect, offset);
-            }
-
-            prop.textureScaleAndOffset = new Vector4(scale[0], scale[1], offset[0], offset[1]);
-        }
-
-        private void MultiFloatField(Rect rect, float[] floats)
-        {
-            GUIContent[] labels = { new GUIContent("X"), new GUIContent("Y"), new GUIContent("Z") };
-            EditorGUI.MultiFloatField(rect, labels, floats);
-        }
+        
 
         private static GUIContent TempLabel = new GUIContent();
         private static GUIContent MakeLabel(MaterialProperty property, string tooltip = null)
@@ -174,8 +106,7 @@ namespace MarkupAttributes.Editor
             return TempLabel;
         }
 
-        private static readonly GUIContent ScaleLabel = new GUIContent("Tiling");
-        private static readonly GUIContent OffsetLabel = new GUIContent("Offset");
+        
     }
 }
 

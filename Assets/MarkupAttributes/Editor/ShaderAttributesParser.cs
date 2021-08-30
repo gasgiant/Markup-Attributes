@@ -36,32 +36,6 @@ namespace MarkupAttributes.Editor
             }
             return false;
         }
-        public static CompactTextureMode? GetCompactTextureAttribute(string[] attributes)
-        {
-            CompactTextureMode? mode = null;
-            for (int i = 0; i < attributes.Length; i++)
-            {
-                mode = GetCompactTextureAttribute(attributes[i]);
-                if (mode != null)
-                    break;
-            }
-            return mode;
-        }
-
-        private static CompactTextureMode? GetCompactTextureAttribute(string attribute)
-        {
-            bool valid = ParseAttribute(attribute, "CompactTexture", 0, out string[] args);
-            if (!valid)
-                return null;
-            if (args != null && args.Length > 0)
-            {
-                if (args[0] == "UniformScaleOnly")
-                    return CompactTextureMode.UniformScaleOnly;
-                if (args[0] == "ScaleOnly")
-                    return CompactTextureMode.ScaleOnly;
-            }
-            return CompactTextureMode.Default;
-        }
 
         public static PropertyLayoutData[] GetLayoutData(string[][] allAttributes,
             MaterialPropertiesWrapper propertiesWrapper, Material targetMaterial)

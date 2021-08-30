@@ -3,12 +3,9 @@ Shader "MarkupAttributes/ShaderLabOnlySample"
     Properties
     {
         [DrawSystemProperties]
-        [CompactTexture]
-        _Texture1("Compact Texture", 2D) = "white" {}
-        [CompactTexture(ScaleOnly)]
-        _Texture2("Scale Only", 2D) = "white" {}
-        [CompactTexture(UniformScaleOnly)]
-        _Texture3("Uniform Scale", 2D) = "white" {}
+        _One("One", Float) = 0
+        _Two("Two", Float) = 0
+        _Three("Three", Float) = 0
     }
 
     CustomEditor "MarkupAttributes.Editor.MarkedUpShaderGUI"
