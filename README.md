@@ -740,6 +740,9 @@ Class `MarkupGUI` exposes methods for creating MarkupAttributes styled groups. T
 ![](./ReadmeImages/EditorWindowSample.png)
 
 ```c#
+using UnityEditor;
+using MarkupAttributes.Editor;
+
 public class CustomWindow : EditorWindow
 {
     MarkupGUI.GroupsStack groupsStack = new MarkupGUI.GroupsStack();

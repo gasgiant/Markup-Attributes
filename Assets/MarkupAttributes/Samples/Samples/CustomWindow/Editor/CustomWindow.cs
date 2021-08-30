@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEngine;
 using MarkupAttributes.Editor;
 
 namespace MarkupAttributes.Samples
