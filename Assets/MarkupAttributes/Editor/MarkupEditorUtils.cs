@@ -9,7 +9,7 @@ namespace MarkupAttributes.Editor
 {
 	internal static class MarkupEditorUtils
 	{
-		public const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly;
+		public const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public;
 
 		public static SerializedProperty[] GetSerializedObjectProperties(SerializedObject serializedObject)
 		{

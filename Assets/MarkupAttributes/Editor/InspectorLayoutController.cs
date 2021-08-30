@@ -45,20 +45,23 @@ namespace MarkupAttributes.Editor
 
         public void BeforeProperty(int index)
         {
-            if (layoutData[index].end != null)
+            var layout = layoutData[index];
+            if (layout == null) return;
+
+            if (layout.end != null)
             {
-                EndGroupsUntill(layoutData[index].end.GroupName);
+                EndGroupsUntill(layout.end.GroupName);
             }
 
-            for (int i = 0; i < layoutData[index].numberOfScopesToClose; i++)
+            for (int i = 0; i < layout.numberOfScopesToClose; i++)
             {
                 EndLocalScope();
             }
 
-            if (layoutData[index].groups == null)
+            if (layout.groups == null)
                 return;
 
-            foreach (var group in layoutData[index].groups)
+            foreach (var group in layout.groups)
             {
                 SetScope(group.pathArray);
                 bool isVisible = ScopeVisible;
