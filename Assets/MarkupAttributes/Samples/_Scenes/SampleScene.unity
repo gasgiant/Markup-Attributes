@@ -362,6 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   one: 0
   two: 0
+  three: 0
 --- !u!1 &197551612
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,9 +533,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2f5273782cd2246bae910ee20a11c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  someComponent: {fileID: 193942669}
   someData: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
-  material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  someComponent: {fileID: 193942669}
   stripped1: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
 --- !u!1 &539659650
 GameObject:

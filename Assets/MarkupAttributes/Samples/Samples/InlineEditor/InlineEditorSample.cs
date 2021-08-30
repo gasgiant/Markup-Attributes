@@ -4,14 +4,11 @@ namespace MarkupAttributes.Samples
 {
     public class InlineEditorSample : SamplesBehaviour
     {
-        [InlineEditor(InlineEditorMode.ContentBox)]
-        public SomeComponent someComponent;
-
         [InlineEditor]
         public SomeData someData;
-        
-        [InlineEditor]
-        public Material material;
+
+        [InlineEditor(InlineEditorMode.ContentBox)]
+        public SomeComponent someComponent;
 
         [TitleGroup("Stripped")]
         [InlineEditor(InlineEditorMode.Stripped)]

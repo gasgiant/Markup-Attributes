@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: ToggleGroupSample
   m_Shader: {fileID: 4800000, guid: 1dc37ff7453fa374fb31eea653d9a9ad, type: 3}
-  m_ShaderKeywords: MY_KEYWORD
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AnotherToggle: 1
+    - _AnotherToggle: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1

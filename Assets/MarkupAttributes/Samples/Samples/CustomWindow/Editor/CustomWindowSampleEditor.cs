@@ -8,6 +8,7 @@ namespace MarkupAttributes.Samples
     {
         public override void OnInspectorGUI()
         {
+            DrawDefaultInspector();
             if (GUILayout.Button("Open Window"))
             {
                 CustomWindow.Open();
