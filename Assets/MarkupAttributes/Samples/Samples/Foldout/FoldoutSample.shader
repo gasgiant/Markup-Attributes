@@ -2,7 +2,7 @@ Shader "MarkupAttributes/FoldoutSample"
 {
     Properties
     {
-        [Foldout(Boxed_Foldout)]
+        [Foldout(Foldout_In_A_Box)]
         _One("One", Float) = 0
         _Two("Two", Float) = 0
         _Three("Three", Float) = 0

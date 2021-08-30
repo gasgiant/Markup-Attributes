@@ -329,8 +329,8 @@ namespace MarkupAttributes.Editor
             }
             else
             {
-                EditorGUILayout.BeginVertical(GUIStyle.none);
                 selected = GUILayout.Toolbar(selected, tabs);
+                EditorGUILayout.BeginVertical(GUIStyle.none);
             }
             GUILayout.Space(SpaceAfterBoxedHeader);
 

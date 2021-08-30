@@ -171,7 +171,7 @@ MonoBehaviour:
   one: 0
   two: 0
   three: 0
-  anotherBoolean: 1
+  anotherBoolean: 0
   four: 0
   five: 0
   six: 0
@@ -937,12 +937,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de97da0dbb50f084180015e898961eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  one: 0
+  one: 1
   two: 0
   three: 0
   four: 0
   five: 0
-  boolean: 1
+  boolean: 0
   six: 0
   seven: 0
   eight: 0

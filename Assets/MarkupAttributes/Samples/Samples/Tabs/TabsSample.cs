@@ -4,7 +4,7 @@ namespace MarkupAttributes.Samples
 {
     public class TabsSample : SamplesBehaviour
     {
-        [TabScope("Tab Scope", "Left|Middle|Right", boxed: true)]
+        [TabScope("Tab Scope", "Left|Middle|Right", box: true)]
         [Tab("./Left")]
         public int one;
         public int two;

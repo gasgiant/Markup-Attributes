@@ -22,7 +22,7 @@ namespace MarkupAttributes.Samples
         public int charisma;
 
 
-        [TabScope("Tab Scope", "Personality|Equipment|Spells", boxed: true)]
+        [TabScope("Tab Scope", "Personality|Equipment|Spells", box: true)]
         [Tab("./Personality")]
         [TextArea]
         public string traits;

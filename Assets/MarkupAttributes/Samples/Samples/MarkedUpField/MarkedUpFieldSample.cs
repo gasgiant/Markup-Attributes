@@ -10,7 +10,7 @@ namespace MarkupAttributes.Samples
         [MarkedUpField(indentChildren: false)]
         public SomeSerializedClass noChildrenIndent;
 
-        [TitleGroup("No Control", boxContent: true)]
+        [TitleGroup("No Control", contentBox: true)]
         [MarkedUpField(showControl: false, indentChildren: false)]
         public SomeSerializedStruct noControl;
     }

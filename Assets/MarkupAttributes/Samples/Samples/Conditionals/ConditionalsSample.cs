@@ -4,11 +4,12 @@ namespace MarkupAttributes.Samples
 {
     public class ConditionalsSample : SamplesBehaviour
     {
+        
         private bool IsOneEvenProperty => one % 2 == 0;
         private bool IsOneEvenMethod() => one % 2 == 0;
 
         [Range(0, 1)]
-        [SerializeField] private int one;
+        public int one;
 
         [Header("Disabled If One Is Even")]
         [DisableIf(nameof(IsOneEvenProperty))]
@@ -23,7 +24,7 @@ namespace MarkupAttributes.Samples
         [EndGroup]
 
         [Space(20)]
-        [SerializeField] private bool boolean;
+        public bool boolean;
         [Header("Hidden If Boolean")]
         [HideIf(nameof(boolean))]
         public int six;
@@ -35,7 +36,7 @@ namespace MarkupAttributes.Samples
         public int eight;
         public int nine;
         [EndGroup]
-
+        
 
         [Header("Shown If Enum Value")]
         public SomeEnum state;
@@ -48,8 +49,7 @@ namespace MarkupAttributes.Samples
         [ShowIf(nameof(GetState), SomeEnum.Bar)]
         public int thirteen;
 
-        private SomeEnum GetState() => state;
-
         public enum SomeEnum { Foo, Bar }
+        private SomeEnum GetState() => state;
     }
 }
