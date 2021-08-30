@@ -646,10 +646,30 @@ _AnyProperty("Any one will do", Float) = 0
 
 `MarkedUpEditor` allows to inject custom code into itself before, after and instead of any property. Here are the methods used for extension:
 
-* `DrawMarkedUpInspector()` — works like `Editor`'s  `DrawDefaultInspector`, but for the marked up editor. Call it if you have overridden the `OnInspectorGUI` and want to draw `MarkedUpEditor` as is. 
-* `OnInitialize()` — is called after `MarkedUpEditor` have initialized itself in `OnEnable`. 
-* `AddCallback(SerializedProperty property, CallbackEvent type, Action<SerializedProperty> callback)` — adds a callback to a specified `SerializedProperty ` at a specified `CallbackEvent `. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
-* `OnCleanup()` — is called before `MarkedUpEditor` started cleanup in `OnDisable`. 
+* ```c#
+  protected bool DrawMarkedUpInspector()
+  ```
+
+  Works like `Editor`'s  `DrawDefaultInspector`, but for the marked up editor. Call it if you have overridden the `OnInspectorGUI` and want to draw `MarkedUpEditor` as is. 
+
+* ```c#
+  protected virtual void OnInitialize()
+  ```
+
+  Is called after `MarkedUpEditor` have initialized itself in `OnEnable`. 
+
+* ```c#
+  protected void AddCallback(SerializedProperty property, CallbackEvent type, Action<SerializedProperty> callback)
+  ```
+
+
+  Adds a callback to a specified `SerializedProperty ` at a specified `CallbackEvent `. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
+
+* ```c#
+  protected virtual void OnCleanup()
+  ```
+
+   Is called before `MarkedUpEditor` started cleanup in `OnDisable`. 
 
 ```c#
 using UnityEditor;
@@ -694,8 +714,17 @@ public class MyComponentEditor : MarkedUpEditor
 
 `MarkedUpShaderGUI` can be extended in a similar manner. It provides the following methods:
 
-* `OnInitialize(MaterialEditor materialEditor, MaterialProperty[] properties)` — is called after `MarkedUpShaderGUI` have initialized itself. `AddCallback` should be used here.
-* `AddCallback(MaterialProperty property, CallbackEvent type, Action<MaterialEditor, MaterialProperty[], MaterialProperty> callback)`  — adds a callback to a specified `MaterialProperty ` at a specified `CallbackEvent `. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
+* ```c#
+  protected virtual void OnInitialize(MaterialEditor materialEditor, MaterialProperty[] properties)
+  ```
+
+  Is called after `MarkedUpShaderGUI` have initialized itself. `AddCallback` should be used here.
+
+* ```c#
+  protected void AddCallback(MaterialProperty property, CallbackEvent type, Action<MaterialEditor, MaterialProperty[], MaterialProperty> callback)
+  ```
+
+  Adds a callback to a specified `MaterialProperty ` at a specified `CallbackEvent `. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
 
 ```c#
 using UnityEditor;
