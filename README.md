@@ -372,9 +372,18 @@ _Nine("Nine", Float) = 0
 
 ![](./ReadmeImages/HorizontalAndVerticalSample.png)
 
+__VerticalGroup__
+
 | Parameter       | Description                                                |
 | --------------- | ---------------------------------------------------------- |
 | __string__ path | Path to the group (see [Nesting Groups](#nesting-groups)). |
+
+__HorizontalGroup__
+
+| Parameter            | Description                                                |
+| -------------------- | ---------------------------------------------------------- |
+| __string__ path      | Path to the group (see [Nesting Groups](#nesting-groups)). |
+| __float__ labelWidth | Label width inside the horizontal group.                   |
 
 ```c#
 // C#
