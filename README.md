@@ -44,7 +44,11 @@ Markup Attributes is MIT licensed and relatively small, focusing exclusively on 
 
 ## Installation
 
-Download the [.unitypackage](https://github.com/gasgiant/Markup-Attributes/releases/tag/v0.2.1) and import it into your project. Installation via UPM will be available later.
+You can install MarkupAttributes with [Unity Package Manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html). Git URL: 
+
+```
+https://github.com/gasgiant/Markup-Attributes.git#upm
+```
 
 ## Usage
 
@@ -773,7 +777,7 @@ Shader "Unlit/MyShader"
 
 ## MarkupGUI
 
-Class `MarkupGUI` exposes methods for creating MarkupAttributes styled groups. They can be useful for making `EditorWindows` or custom inspectors, that don't use attributes themselves.
+Class `MarkupGUI` exposes methods for creating Markup Attributes styled groups. They can be useful for making `EditorWindows` or custom inspectors, that don't use attributes themselves.
 
 ![](./ReadmeImages/EditorWindowSample.png)
 
