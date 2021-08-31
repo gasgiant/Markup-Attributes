@@ -1,5 +1,7 @@
 # 0.3.0
 
+_(2021-August-31)_
+
 #### Features
 
 * UPM installation
@@ -20,10 +22,15 @@
 
 # 0.2.1
 
+_(2021-August-9)_
+
 #### Fixes
 
 * Fixed a bug where header textures were missing on unscaled screens ([Issue](https://github.com/gasgiant/Markup-Attributes/issues/1)).
 
 # 0.2.0 
 
+_(2021-August-1)_
+
 Initial release. 
+
