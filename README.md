@@ -46,9 +46,7 @@ Markup Attributes is MIT licensed and relatively small, focusing exclusively on 
 
 You can install MarkupAttributes with [Unity Package Manager](https://docs.unity3d.com/Manual/upm-ui-giturl.html). Git URL: 
 
-```
-https://github.com/gasgiant/Markup-Attributes.git#upm
-```
+`https://github.com/gasgiant/Markup-Attributes.git#upm`
 
 ## Usage
 
