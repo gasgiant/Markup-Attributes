@@ -1,0 +1,17 @@
+{
+    "name": "MarkupAttributes.Samples",
+    "rootNamespace": "MarkupAttributes.Samples",
+    "references": [
+        "GUID:d3040e716f8936a4f85e3a5eb009cb77",
+        "GUID:f6fff43b61063a145b47159e6e46b6c1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
