@@ -645,8 +645,7 @@ public SomeData stripped1;
 
 _ShaderLab only_
 
-When added to any property tells `MarkedUpShaderGUI` to draw Render Queue and Double Sided
-Global Illumination properties below the inspector.
+Tells `MarkedUpShaderGUI` to draw Render Queue, Enable Instancing (if applicable) and Double Sided Global Illumination properties below the inspector.
 
 ```javascript
 [DrawSystemProperties]
