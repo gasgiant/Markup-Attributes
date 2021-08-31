@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25aa6d96ef4475c41891758bc69a8109, type: 3}
+  m_Name: Character Sheet
+  m_EditorClassIdentifier: 
+  characterName: Idvig Manhunter
+  race: 0
+  characterClass: 2
+  alignment: 4
+  level: 14
+  strength: 10
+  dexterity: 18
+  constitution: 12
+  intelligence: 14
+  wisdom: 16
+  charisma: 14
+  traits: 
+  ideals: 
+  weapons:
+  - 
+  - 
+  potions:
+  - 
+  - 
+  - 
+  other: Rope (x13)
+  fivteen: []
+  material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
