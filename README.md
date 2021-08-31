@@ -11,8 +11,6 @@ A Unity Editor extension for customizing inspector layout with attributes.
 
 ## Why?
 
-__Note:__ _This is an early version of the extension, so expect bugs. If you find this thing useful, please, don't hesitate to try it out and let me know about any problems here or on Twitter @pensionerov._
-
 Anyone who wrote custom editors knows, that they are prone to boilerplate and often rely on hardcoded names of the properties, which adds unnecessary friction to development.  One way to deal with it is to use C# Attributes, and the most prominent project to do so is [Odin Inspector](https://odininspector.com/). It is great, but it can't be used in open source and on the Asset Store because it's paid and huge. Also, as far as know, it doesn't do anything for shader editors, which drag with them even more boilerplate and bookkeeping that the regular ones. So, here is my take on the problem. 
 
 Markup Attributes is MIT licensed and relatively small, focusing exclusively on editor layout. It works both in C# and in ShaderLab. Custom inspector provides hooks at any of the properties, which makes it possible to extend the inspector without loosing the layout functionality. 
