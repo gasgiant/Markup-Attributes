@@ -93,7 +93,11 @@ namespace MarkupAttributes.Editor
         {
             if (prop.flags.HasFlag(MaterialProperty.PropFlags.HideInInspector))
                 return;
+            bool hierarchyMode = EditorGUIUtility.hierarchyMode;
+            if (prop.type == MaterialProperty.PropType.Range)
+                EditorGUIUtility.hierarchyMode = true;
             editor.ShaderProperty(prop, MakeLabel(prop));
+            EditorGUIUtility.hierarchyMode = hierarchyMode;
         }
 
         
