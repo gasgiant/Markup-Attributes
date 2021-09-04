@@ -6,7 +6,7 @@ namespace MarkupAttributes
     {
         public string Path { get; protected set; }
         public LayoutGroupType Type { get; protected set; }
-        public MarkupHeaderStyle HeaderStyle { get; protected set; } 
+        public MarkupHeaderFlags HeaderFlags { get; protected set; } 
         public MarkupBodyStyle BodyStyle { get; protected set; } 
         public float LabelWidth { get; protected set; }
         public string[] Tabs { get; protected set; }
@@ -29,17 +29,17 @@ namespace MarkupAttributes
         HideIf
     }
 
-    public enum MarkupHeaderStyle
+    public enum MarkupHeaderFlags
     {
-        None,
-        Label,
-        Foldable
+        None = 0,
+        Label = 1,
+        Foldable = 2,
+        Underline = 4
     }
 
     public enum MarkupBodyStyle
     {
         None,
-        SeparatorLine,
         ContentBox,
         Box
     }

@@ -5,12 +5,14 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class TitleGroupAttribute : LayoutGroupAttribute
     {
-        public TitleGroupAttribute(string path, bool contentBox = false)
+        public TitleGroupAttribute(string path, bool contentBox = false, bool underline = true)
         {
             Path = path;
             Type = LayoutGroupType.Vertical;
-            HeaderStyle = MarkupHeaderStyle.Label;
-            BodyStyle = contentBox ? MarkupBodyStyle.ContentBox : MarkupBodyStyle.SeparatorLine;
+            HeaderFlags = MarkupHeaderFlags.Label;
+            if (underline)
+                HeaderFlags |= MarkupHeaderFlags.Underline;
+            BodyStyle = contentBox ? MarkupBodyStyle.ContentBox : MarkupBodyStyle.None;
         }
     }
 }

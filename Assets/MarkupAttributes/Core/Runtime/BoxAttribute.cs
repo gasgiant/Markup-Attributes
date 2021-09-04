@@ -10,7 +10,7 @@ namespace MarkupAttributes
             Path = path;
             Type = LayoutGroupType.Vertical;
             if (labeled)
-                HeaderStyle = MarkupHeaderStyle.Label;
+                HeaderFlags = MarkupHeaderFlags.Label;
             BodyStyle = MarkupBodyStyle.Box;
         }
     }

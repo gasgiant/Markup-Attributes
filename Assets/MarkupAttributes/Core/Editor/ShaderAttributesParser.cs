@@ -292,7 +292,9 @@ namespace MarkupAttributes.Editor
             {
                 if (args.Length < 2)
                     return new TitleGroupAttribute(GetPath(args[0]));
-                return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]));
+                if (args.Length < 3)
+                    return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]));
+                return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]), GetBool(args[2]));
             }
             return null;
         }

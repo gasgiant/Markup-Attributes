@@ -144,16 +144,18 @@ namespace MarkupAttributes.Editor
             EditorGUI.DrawRect(rect, color);
             GUILayout.Space(2);
         }
-        public static Rect BeginVertical(MarkupBodyStyle style, bool hasHeader, bool isExpanded)
+        public static Rect BeginVertical(MarkupBodyStyle style, MarkupHeaderFlags headerFlags, bool isExpanded)
         {
             Rect headerRect = Rect.zero;
-            if (style == MarkupBodyStyle.SeparatorLine)
+            bool hasHeader = headerFlags.HasFlag(MarkupHeaderFlags.Label);
+            bool underline = headerFlags.HasFlag(MarkupHeaderFlags.Underline);
+            if (style == MarkupBodyStyle.None)
             {
                 EditorGUILayout.BeginVertical();
                 if (hasHeader)
                 {
                     headerRect = EditorGUILayout.GetControlRect();
-                    if (isExpanded)
+                    if (isExpanded && underline)
                     {
                         HorizontalLine();
                     }
@@ -199,7 +201,7 @@ namespace MarkupAttributes.Editor
 
         internal static GroupHandle BeginGenericVerticalGroup(
             ref bool isExpanded, ref bool isEnabled,
-            MarkupHeaderStyle headerStyle, MarkupBodyStyle bodyStyle,
+            MarkupHeaderFlags headerStyle, MarkupBodyStyle bodyStyle,
             string label, TogglableValueWrapper togglableValue)
         {
             return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
@@ -208,25 +210,25 @@ namespace MarkupAttributes.Editor
 
         internal static GroupHandle BeginGenericVerticalGroup(
             ref bool isExpanded, ref bool isEnabled,
-            MarkupHeaderStyle headerStyle, MarkupBodyStyle bodyStyle, 
+            MarkupHeaderFlags headerFlags, MarkupBodyStyle bodyStyle, 
             GUIContent label, TogglableValueWrapper togglableValue)
         {
             var handle = new GroupHandle(true, false);
-            bool hasHeader = headerStyle != MarkupHeaderStyle.None;
-            bool isFoldable = headerStyle == MarkupHeaderStyle.Foldable;
+            bool hasLabel = headerFlags.HasFlag(MarkupHeaderFlags.Label);
+            bool isFoldable = headerFlags.HasFlag(MarkupHeaderFlags.Foldable);
             if (!isFoldable)
             {
                 isExpanded = togglableValue == null || togglableValue.GetValue();
             }
 
-            Rect headerRect = BeginVertical(bodyStyle, hasHeader, isExpanded);
+            Rect headerRect = BeginVertical(bodyStyle, headerFlags, isExpanded);
 
             if (bodyStyle == MarkupBodyStyle.Box)
             {
                 StartNonHierarchyScope(MarkupStyles.OutlinedBox.padding.left);
             }
 
-            if (hasHeader)
+            if (hasLabel)
             {
                 if (togglableValue != null)
                 {
@@ -272,20 +274,22 @@ namespace MarkupAttributes.Editor
             bool isExpanded = true;
             bool isEnabled = true;
             return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
-                label != GUIContent.none ? MarkupHeaderStyle.Label : MarkupHeaderStyle.None,
+                label != GUIContent.none ? MarkupHeaderFlags.Label : MarkupHeaderFlags.None,
                 MarkupBodyStyle.Box, label, null);
         }
 
-        public static GroupHandle BeginTitleGroup(string label, bool contentBox = false) 
-            => BeginTitleGroup(GetContent(label), contentBox);
+        public static GroupHandle BeginTitleGroup(string label, bool contentBox = false, bool underline = true) 
+            => BeginTitleGroup(GetContent(label), contentBox, underline);
 
-        public static GroupHandle BeginTitleGroup(GUIContent label, bool contentBox = false)
+        public static GroupHandle BeginTitleGroup(GUIContent label, bool contentBox = false, bool underline = true)
         {
             bool isExpanded = true;
             bool isEnabled = true;
-            return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
-                MarkupHeaderStyle.Label, contentBox ? 
-                MarkupBodyStyle.ContentBox : MarkupBodyStyle.SeparatorLine, label, null);
+            MarkupHeaderFlags headerFlags = MarkupHeaderFlags.Label;
+            if (underline)
+                headerFlags |= MarkupHeaderFlags.Underline;
+            return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled, headerFlags, 
+                contentBox ? MarkupBodyStyle.ContentBox : MarkupBodyStyle.None, label, null);
         }
 
         public static GroupHandle BeginFoldoutGroup(ref bool isExpanded, string label, bool box = true)
@@ -295,10 +299,9 @@ namespace MarkupAttributes.Editor
         {
             bool isEnabled = true;
             return BeginGenericVerticalGroup(ref isExpanded, ref isEnabled,
-                MarkupHeaderStyle.Foldable, box ?
+                MarkupHeaderFlags.Foldable | MarkupHeaderFlags.Label, box ?
                 MarkupBodyStyle.Box : MarkupBodyStyle.ContentBox, label, null);
         }
-
 
         public static GroupHandle BeginTabsGroup(ref int selected, string[] tabs, bool box = false)
         {
@@ -442,14 +445,14 @@ namespace MarkupAttributes.Editor
 
             if (mode == InlineEditorMode.Box)
             {
-                Rect headerRect = BeginVertical(MarkupBodyStyle.Box, true, property.isExpanded);
+                Rect headerRect = BeginVertical(MarkupBodyStyle.Box, MarkupHeaderFlags.Label, property.isExpanded);
                 StartNonHierarchyScope(MarkupStyles.OutlinedBox.padding.left);
                 property.isExpanded = FoldoutWithObjectField(headerRect, property);
             }
 
             if (mode == InlineEditorMode.ContentBox)
             {
-                Rect headerRect = BeginVertical(MarkupBodyStyle.ContentBox, true, property.isExpanded);
+                Rect headerRect = BeginVertical(MarkupBodyStyle.ContentBox, MarkupHeaderFlags.Label, property.isExpanded);
                 property.isExpanded = FoldoutWithObjectField(headerRect, property);
                 StartNonHierarchyScope(MarkupStyles.Box.padding.left);
             }

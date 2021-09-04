@@ -10,10 +10,9 @@ namespace MarkupAttributes
             Path = path;
             Toggle = true;
             Type = LayoutGroupType.Vertical;
+            HeaderFlags = MarkupHeaderFlags.Label;
             if (foldable)
-                HeaderStyle = MarkupHeaderStyle.Foldable;
-            else
-                HeaderStyle = MarkupHeaderStyle.Label;
+                HeaderFlags |= MarkupHeaderFlags.Foldable;
             BodyStyle = MarkupBodyStyle.Box;
         }
 

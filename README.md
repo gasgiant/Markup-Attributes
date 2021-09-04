@@ -244,6 +244,7 @@ Starts a vertical group with a title.
 | ------------------- | ---------------------------------------------------------- |
 | __string__ path     | Path to the group (see [Nesting Groups](#nesting-groups)). |
 | __bool__ contentBox | Adds a box around the group content. Default: _false_.     |
+| __bool__ underline  | Underlines the title. Default: _true_.                     |
 
 ```c#
 // C#

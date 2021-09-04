@@ -136,9 +136,7 @@ namespace MarkupAttributes.Editor
                 string prefsName = GetPrefsName();
                 bool isExpanded = MarkupAttributesPrefs.GetBool(prefsName);
 
-                if (addSpaceBeforeHeader && 
-                    (group.data.BodyStyle == MarkupBodyStyle.SeparatorLine
-                    || group.data.BodyStyle == MarkupBodyStyle.ContentBox))
+                if (addSpaceBeforeHeader && group.data.BodyStyle != MarkupBodyStyle.Box)
                     GUILayout.Space(MarkupGUI.SpaceBeforeHeader);
                 group.guiHandle = MarkupGUI.BeginGenericVerticalGroup(
                     ref isExpanded, ref isEnabled,
