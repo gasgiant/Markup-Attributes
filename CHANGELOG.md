@@ -4,7 +4,7 @@ _(2021-September-4)_
 
 #### Features
 
-* Option for the `TitleGroup` to not be underlined
+* Option for `TitleGroup` to not be underlined
 
 #### Fixes
 
