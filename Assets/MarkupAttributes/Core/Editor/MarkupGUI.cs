@@ -152,7 +152,6 @@ namespace MarkupAttributes.Editor
                 EditorGUILayout.BeginVertical();
                 if (hasHeader)
                 {
-                    GUILayout.Space(SpaceBeforeHeader);
                     headerRect = EditorGUILayout.GetControlRect();
                     if (isExpanded)
                     {
@@ -172,10 +171,7 @@ namespace MarkupAttributes.Editor
                 if (!isExpanded)
                     EditorGUILayout.BeginVertical();
                 if (hasHeader)
-                {
-                    GUILayout.Space(SpaceBeforeHeader);
                     headerRect = EditorGUILayout.GetControlRect();
-                }
                 if (isExpanded)
                     EditorGUILayout.BeginVertical(MarkupStyles.Box);
                 return headerRect;
