@@ -69,7 +69,7 @@ namespace MarkupAttributes.Editor
         {
             public string Path => path;
             public LayoutGroupType Type => type;
-            public MarkupHeaderStyle HeaderStyle => headerStyle;
+            public MarkupHeaderFlags HeaderStyle => headerStyle;
             public MarkupBodyStyle BodyStyle => bodyStyle;
             public float LabelWidth => labelWidth;
             public string[] Tabs => tabs;
@@ -78,7 +78,7 @@ namespace MarkupAttributes.Editor
             public readonly TogglableValueWrapper togglableValueWrapper;
             private readonly string path;
             private readonly LayoutGroupType type;
-            private readonly MarkupHeaderStyle headerStyle;
+            private readonly MarkupHeaderFlags headerStyle;
             private readonly MarkupBodyStyle bodyStyle;
             private readonly float labelWidth;
             private readonly string[] tabs;
@@ -88,7 +88,7 @@ namespace MarkupAttributes.Editor
             {
                 path = attribute.Path;
                 type = attribute.Type;
-                headerStyle = attribute.HeaderStyle;
+                headerStyle = attribute.HeaderFlags;
                 bodyStyle = attribute.BodyStyle;
                 labelWidth = attribute.LabelWidth;
                 tabs = attribute.Tabs;

@@ -9,7 +9,7 @@ namespace MarkupAttributes
         {
             Path = path;
             Type = LayoutGroupType.Vertical;
-            HeaderStyle = MarkupHeaderStyle.Foldable;
+            HeaderFlags = MarkupHeaderFlags.Label | MarkupHeaderFlags.Foldable;
             BodyStyle = box ? MarkupBodyStyle.Box : MarkupBodyStyle.ContentBox;
         }
     }
