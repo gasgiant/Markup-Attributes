@@ -7,7 +7,7 @@ namespace MarkupAttributes.Editor
 {
     public static class MarkupGUI
     {
-        internal const float SpaceAfterBoxedHeader = 5;
+        internal const float SpaceAfterBoxedHeader = 4;
         internal const float SpaceBeforeHeader = 3;
 
         #region Utility
