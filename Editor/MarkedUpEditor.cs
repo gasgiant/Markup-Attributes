@@ -68,7 +68,7 @@ namespace MarkupAttributes.Editor
             int topLevelIndex = 1;
             layoutController.Begin();
 
-            if (MarkupGUI.DrawScriptProperty)
+            if (MarkupGUI.DrawScriptPropertyInInspector)
             {
                 using (new EditorGUI.DisabledScope(true))
                 {
