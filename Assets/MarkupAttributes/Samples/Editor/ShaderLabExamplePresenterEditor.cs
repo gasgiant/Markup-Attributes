@@ -8,7 +8,7 @@ namespace MarkupAttributes.Samples
     {
         public override void OnInspectorGUI()
         {
-            using (new MarkupGUI.ScriptPropertyScope(false))
+            using (new MarkupGUI.InlineEditorScope())
             {
                 DrawMarkedUpInspector();
             }

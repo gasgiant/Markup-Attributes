@@ -22,20 +22,20 @@ namespace MarkupAttributes.Editor
             return tempContent;
         }
 
-        public static bool DrawScriptPropertyInInspector { get; private set; } = true;
-        public struct ScriptPropertyScope : IDisposable
+        public static bool IsInsideInlineEditor { get; private set; } = false;
+        public class InlineEditorScope : IDisposable
         {
-            private readonly bool cachedDrawScriptProperty;
+            private readonly bool cachedIsInsideInlineEditor;
 
-            public ScriptPropertyScope(bool draw)
+            public InlineEditorScope()
             {
-                cachedDrawScriptProperty = DrawScriptPropertyInInspector;
-                DrawScriptPropertyInInspector &= draw;
+                cachedIsInsideInlineEditor = IsInsideInlineEditor;
+                IsInsideInlineEditor = true;
             }
 
             public void Dispose()
             {
-                DrawScriptPropertyInInspector = cachedDrawScriptProperty;
+                IsInsideInlineEditor = cachedIsInsideInlineEditor;
             }
         }
 
@@ -473,7 +473,7 @@ namespace MarkupAttributes.Editor
                 }
                 using (new EditorGUI.DisabledScope(!enabled))
                 {
-                    using (new ScriptPropertyScope(false))
+                    using (new InlineEditorScope())
                     {
                         if (materialEditor)
                             editor.DrawHeader();
