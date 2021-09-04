@@ -22,20 +22,20 @@ namespace MarkupAttributes.Editor
             return tempContent;
         }
 
-        internal static bool DrawScriptProperty { get; private set; } = true;
+        public static bool DrawScriptPropertyInInspector { get; private set; } = true;
         public struct ScriptPropertyScope : IDisposable
         {
             private readonly bool cachedDrawScriptProperty;
 
             public ScriptPropertyScope(bool draw)
             {
-                cachedDrawScriptProperty = DrawScriptProperty;
-                DrawScriptProperty &= draw;
+                cachedDrawScriptProperty = DrawScriptPropertyInInspector;
+                DrawScriptPropertyInInspector &= draw;
             }
 
             public void Dispose()
             {
-                DrawScriptProperty = cachedDrawScriptProperty;
+                DrawScriptPropertyInInspector = cachedDrawScriptProperty;
             }
         }
 
