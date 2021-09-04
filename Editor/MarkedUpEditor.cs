@@ -131,14 +131,26 @@ namespace MarkupAttributes.Editor
             foreach (var prop in props)
             {
                 var editor = inlineEditors[prop].editor;
-                Material material = prop.objectReferenceValue as Material;
-                if (material != null)
+
+                if (prop.objectReferenceValue != serializedObject.targetObject)
                 {
-                    CreateCachedEditor(material, typeof(HeaderlessMaterialEditor), ref editor);
-                    inlineEditors[prop].enabled = AssetDatabase.GetAssetPath(material).StartsWith("Assets");
+                    Material material = prop.objectReferenceValue as Material;
+                    if (material != null)
+                    {
+                        CreateCachedEditor(material, typeof(HeaderlessMaterialEditor), ref editor);
+                        inlineEditors[prop].enabled = AssetDatabase.GetAssetPath(material).StartsWith("Assets");
+                    }
+                    else
+                        CreateCachedEditor(prop.objectReferenceValue, null, ref editor);
                 }
                 else
-                    CreateCachedEditor(prop.objectReferenceValue, null, ref editor);
+                {
+                    editor = null;
+                    prop.objectReferenceValue = null;
+                    Debug.LogError("Self reference in the InlinedEditor property is not allowed.");
+                }
+
+                
                 inlineEditors[prop].editor = editor;
             }
         }
