@@ -12,6 +12,6 @@ namespace MarkupAttributes.Samples
 
         [TitleGroup("Stripped")]
         [InlineEditor(InlineEditorMode.Stripped)]
-        public SomeData stripped1;
+        public SomeData stripped;
     }
 }
