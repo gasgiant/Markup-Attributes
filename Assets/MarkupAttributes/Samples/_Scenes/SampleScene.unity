@@ -535,7 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   someData: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
   someComponent: {fileID: 193942669}
-  stripped1: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
+  stripped: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
 --- !u!1 &539659650
 GameObject:
   m_ObjectHideFlags: 0
