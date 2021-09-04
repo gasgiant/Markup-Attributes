@@ -33,11 +33,11 @@ namespace MarkupAttributes.Editor
             {
                 layoutController.BeforeProperty(i);
                 
-                if (layoutController.ScopeVisible && layoutController.PropertyVisible(i))
+                if (layoutController.ScopeVisible && layoutController.IsPropertyVisible(i))
                 {
                     callbackManager.InvokeCallback(i, CallbackEvent.BeforeProperty);
                     using (new EditorGUI.DisabledScope(
-                        !layoutController.ScopeEnabled || !layoutController.PropertyEnabled(i)))
+                        !layoutController.ScopeEnabled || !layoutController.IsPropertyEnabled(i)))
                     {
                         if (!callbackManager.InvokeCallback(i, CallbackEvent.ReplaceProperty))
                             DrawProperty(materialEditor, properties[i]);

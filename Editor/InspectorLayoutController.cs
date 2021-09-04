@@ -8,10 +8,10 @@ namespace MarkupAttributes.Editor
     internal class InspectorLayoutController
     {
         public bool IncludeChildren(int index) => layoutData[index] == null || layoutData[index].includeChildren;
-        public bool PropertyVisible(int index) => layoutData[index] == null || layoutData[index].IsVisible();
-        public bool PropertyEnabled(int index) => layoutData[index] == null || layoutData[index].IsEnabled();
+        public bool IsPropertyVisible(int index) => layoutData[index] == null || layoutData[index].IsVisible();
+        public bool IsPropertyEnabled(int index) => layoutData[index] == null || layoutData[index].IsEnabled();
 
-        public bool TopLevel(int index) => layoutData[index] == null || layoutData[index].isTopLevel;
+        public bool IsTopLevel(int index) => layoutData[index] == null || layoutData[index].isTopLevel;
         public bool ScopeEnabled => groupsStack.Count == 0 || groupsStack.Peek().isEnabled;
         public bool ScopeVisible => groupsStack.Count == 0 || groupsStack.Peek().isVisible;
         
@@ -37,6 +37,7 @@ namespace MarkupAttributes.Editor
             prefsPrefix = defaultPrefsPrefix;
             localScopeStart = -1;
             activeTabName = null;
+            addSpaceBeforeHeader = false;
         }
 
         public void Finish()

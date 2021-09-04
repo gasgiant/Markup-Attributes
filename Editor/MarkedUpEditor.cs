@@ -65,34 +65,29 @@ namespace MarkupAttributes.Editor
 
             CreateInlineEditors();
             UpdateTargets();
-            int topLevelIndex = 0;
+            int topLevelIndex = 1;
             layoutController.Begin();
 
-            for (int i = 0; i < allProps.Length; i++)
+            if (MarkupGUI.DrawScriptProperty)
             {
-                if (allProps[i].name.Equals("m_Script"))
+                using (new EditorGUI.DisabledScope(true))
                 {
-                    if (MarkupGUI.DrawScriptProperty)
-                    {
-                        using (new EditorGUI.DisabledScope(true))
-                        {
-                            EditorGUILayout.PropertyField(allProps[i]);
-                        }
-                    }
+                    EditorGUILayout.PropertyField(allProps[0]);
                 }
-                else
+            }
+
+            for (int i = 1; i < allProps.Length; i++)
+            {
+                layoutController.BeforeProperty(i);
+                if (layoutController.ScopeVisible)
                 {
-                    layoutController.BeforeProperty(i);
-                    if (layoutController.ScopeVisible)
+                    using (new EditorGUI.DisabledScope(!layoutController.ScopeEnabled))
                     {
-                        using (new EditorGUI.DisabledScope(!layoutController.ScopeEnabled))
-                        {
-                            DrawProperty(i, topLevelIndex);
-                        }
+                        DrawProperty(i, topLevelIndex);
                     }
                 }
 
-                if (layoutController.TopLevel(i))
+                if (layoutController.IsTopLevel(i))
                     topLevelIndex += 1;
             }
             layoutController.Finish();
@@ -104,14 +99,14 @@ namespace MarkupAttributes.Editor
         private void DrawProperty(int index, int topLevelIndex)
         {
             var prop = allProps[index];
-            bool topLevel = layoutController.TopLevel(index);
+            bool topLevel = layoutController.IsTopLevel(index);
 
             if (topLevel) callbackManager.InvokeCallback(topLevelIndex, CallbackEvent.BeforeProperty);
             
 
-            using (new EditorGUI.DisabledScope(!layoutController.PropertyEnabled(index)))
+            using (new EditorGUI.DisabledScope(!layoutController.IsPropertyEnabled(index)))
             {
-                if (layoutController.PropertyVisible(index))
+                if (layoutController.IsPropertyVisible(index))
                 {
                     if (!topLevel || !callbackManager.InvokeCallback(index, CallbackEvent.ReplaceProperty))
                     {
