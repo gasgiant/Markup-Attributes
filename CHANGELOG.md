@@ -1,3 +1,18 @@
+# 0.4.0
+
+_(2021-September-4)_
+
+#### Features
+
+* Option for the title group to not be underlined
+
+#### Fixes
+
+* Self referential inlined editors are now catched and disallowed.
+* Sliders inside boxes in material editors now have (almost) proper width.
+* Removed spaces before titles, when they are placed directly below the title of some other group. 
+
+
 # 0.3.0
 
 _(2021-August-31)_

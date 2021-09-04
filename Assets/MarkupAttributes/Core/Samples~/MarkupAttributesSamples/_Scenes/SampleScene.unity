@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: 1dc37ff7453fa374fb31eea653d9a9ad, type: 3}
   material: {fileID: 2100000, guid: a0a42f0e48ae68d42b488269c5014930, type: 2}
 --- !u!1 &69887490
 GameObject:
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: e6a19833654f6af49b9a5c237536b2c3, type: 3}
   material: {fileID: 2100000, guid: 45fa9944b08923244a6d07158d2c7f9b, type: 2}
 --- !u!114 &69887493
 MonoBehaviour:
@@ -315,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: 076f3c2d1ed8b714d8652f71476af52b, type: 3}
   material: {fileID: 2100000, guid: 5f2869e37ea9e8f46b964364233717c9, type: 2}
 --- !u!1 &193942667
 GameObject:
@@ -423,7 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: b67f58bd7889758479b0e0a2ff20f233, type: 3}
   material: {fileID: 2100000, guid: 7c45fc88c46514844ac6b1858295cf60, type: 2}
 --- !u!1 &288245091
 GameObject:
@@ -469,7 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: 48a1954f5af5b25468412ca2cf23cce0, type: 3}
   material: {fileID: 2100000, guid: 96cbf1e911a46b34c8f43f02d0ba9553, type: 2}
 --- !u!114 &288245094
 MonoBehaviour:
@@ -535,7 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   someData: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
   someComponent: {fileID: 193942669}
-  stripped1: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
+  stripped: {fileID: 11400000, guid: 3fadf22745d7f6044a127896bc9e3ad8, type: 2}
 --- !u!1 &539659650
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: 8116151ce6eba004cb5b3ea7c319228a, type: 3}
   material: {fileID: 2100000, guid: 40416359a7cd9d941ae720f6f5643727, type: 2}
 --- !u!1 &625827870
 GameObject:
@@ -697,7 +697,7 @@ MonoBehaviour:
     two: 0
     three: 0
   noControl:
-    boolean: 0
+    boolean: 1
     one: 0
     two: 0
     three: 0
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: 834f7cfaaf6704a489f5cbee391f8bbf, type: 3}
   material: {fileID: 2100000, guid: 44692baff039d704fa8b6d7e8732066b, type: 2}
 --- !u!1 &1614494619
 GameObject:
@@ -891,7 +891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: e7b4d4a343a232843b06938766adb70c, type: 3}
   material: {fileID: 2100000, guid: 46df76bec9263464f98d49ef702ed049, type: 2}
 --- !u!1 &1790592131
 GameObject:
@@ -964,7 +964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: 64fb45d93ee4c34449dcf638736adbed, type: 3}
   material: {fileID: 2100000, guid: 8146d054ee5041f40ad3e8dd13115e1d, type: 2}
 --- !u!1 &1881921459
 GameObject:
@@ -1031,7 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cf98bbbb327f540a846b85cddf33dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 17, guid: 0000000000000000e000000000000000, type: 0}
+  shader: {fileID: 4800000, guid: f7112618d254c3445afdada3edef2381, type: 3}
   material: {fileID: 2100000, guid: d5ffe6d562349e94f99a692ad7b652d9, type: 2}
 --- !u!1 &2052686480
 GameObject:
