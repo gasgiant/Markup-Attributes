@@ -176,19 +176,19 @@ public int five;
 
 Unfortunately, ShaderLab does not allow any special symbols in property attributes. Because of that, we can't use `/` to write paths and have to replace them with spaces. Underscores then mark were you want actual spaces to be. Also, unlike in C#, you should not use quotes around the strings. For example, instead of
 
-`[Box("Parent Group/My Box")] ` 
+`[Box("Parent Group/My Box")]` 
 
 you would write 
 
-`[Box(Parent_Group My_Box)]` .
+`[Box(Parent_Group My_Box)]`.
 
 The same goes for shortcuts, so 
 
-`[Box("./My Box")] ` and `[Box("../My Box")] `
+`[Box("./My Box")]` and `[Box("../My Box")]`
 
 becomes
 
- `[Box(. MyBox)] ` and `[Box(.. My_Box)] ` .
+ `[Box(. MyBox)]` and `[Box(.. My_Box)]`.
 
 ## Layout Attributes
 
@@ -320,7 +320,7 @@ __TabScope__
 | Parameter       | Description                                                  |
 | --------------- | ------------------------------------------------------------ |
 | __string__ path | Path to the group (see [Nesting Groups](#nesting-groups)).   |
-| __string__ tabs | Names of the tabs separated by `|`in C# and by `space` in ShaderLab. |
+| __string__ tabs | Names of the tabs separated by <code>&#124;</code> in C# and by `space` in ShaderLab. |
 | __bool__ box    | Puts the tabs inside a box. Default: _false_.                |
 
 __Tab__
@@ -672,7 +672,7 @@ _AnyProperty("Any one will do", Float) = 0
   ```
 
 
-  Adds a callback to a specified `SerializedProperty ` at a specified `CallbackEvent `. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
+  Adds a callback to a specified `SerializedProperty ` at a specified `CallbackEvent`. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
 
 * ```c#
   protected virtual void OnCleanup()
@@ -733,7 +733,7 @@ public class MyComponentEditor : MarkedUpEditor
   protected void AddCallback(MaterialProperty property, CallbackEvent type, Action<MaterialEditor, MaterialProperty[], MaterialProperty> callback)
   ```
 
-  Adds a callback to a specified `MaterialProperty ` at a specified `CallbackEvent `. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
+  Adds a callback to a specified `MaterialProperty` at a specified `CallbackEvent`. Only one callback can be added for a given property at a given event. Should be used in `OnInitialize`.
 
 ```c#
 using UnityEditor;
