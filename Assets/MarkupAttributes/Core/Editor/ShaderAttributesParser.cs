@@ -23,7 +23,7 @@ namespace MarkupAttributes.Editor
             }
         }
 
-        public static bool GetDrawSystemPropertiesAttribute(string[][] allAttributes)
+        public static int GetDrawSystemPropertiesAttribute(string[][] allAttributes)
         {
             for (int i = 0; i < allAttributes.Length; i++)
             {
@@ -31,10 +31,10 @@ namespace MarkupAttributes.Editor
                 foreach (var attribute in attributes)
                 {
                     if (ParseAttribute(attribute, "DrawSystemProperties"))
-                        return true;
+                        return i;
                 }
             }
-            return false;
+            return -1;
         }
 
         public static PropertyLayoutData[] GetLayoutData(string[][] allAttributes,

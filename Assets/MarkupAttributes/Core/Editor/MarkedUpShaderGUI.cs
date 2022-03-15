@@ -14,7 +14,7 @@ namespace MarkupAttributes.Editor
         private static CallbackManager callbackManager;
         private static Shader shader;
         private static Material material;
-        private static bool drawSystemProperties;
+        private static int systemPropertiesIndex;
 
         protected virtual void OnInitialize(MaterialEditor materialEditor, MaterialProperty[] properties) { }
 
@@ -43,17 +43,16 @@ namespace MarkupAttributes.Editor
                             DrawProperty(materialEditor, properties[i]);
                     }
                     callbackManager.InvokeCallback(i, CallbackEvent.AfterProperty);
+
+                    if (i == systemPropertiesIndex)
+                    {
+                        EditorGUILayout.Space();
+                        DrawSystemProperties(materialEditor);
+                    }
+
                 }
             }
             layoutController.Finish();
-
-            if (drawSystemProperties)
-            {
-                EditorGUILayout.Space();
-                materialEditor.RenderQueueField();
-                materialEditor.EnableInstancingField();
-                materialEditor.DoubleSidedGIField();
-            }
         }
 
         private void Initialize(MaterialEditor materialEditor, MaterialProperty[] properties)
@@ -74,7 +73,7 @@ namespace MarkupAttributes.Editor
             layoutController = new InspectorLayoutController(shader.name,
                 ShaderAttributesParser.GetLayoutData(allAttributes, materialPropertiesWrapper, material));
             callbackManager = new CallbackManager(materialEditor, materialPropertiesWrapper);
-            drawSystemProperties = ShaderAttributesParser.GetDrawSystemPropertiesAttribute(allAttributes);
+            systemPropertiesIndex = ShaderAttributesParser.GetDrawSystemPropertiesAttribute(allAttributes);
             
             OnInitialize(materialEditor, properties);
         }
@@ -100,7 +99,12 @@ namespace MarkupAttributes.Editor
             EditorGUIUtility.hierarchyMode = hierarchyMode;
         }
 
-        
+        private void DrawSystemProperties(MaterialEditor materialEditor)
+        {
+            materialEditor.RenderQueueField();
+            materialEditor.EnableInstancingField();
+            materialEditor.DoubleSidedGIField();
+        }
 
         private static GUIContent TempLabel = new GUIContent();
         private static GUIContent MakeLabel(MaterialProperty property, string tooltip = null)
