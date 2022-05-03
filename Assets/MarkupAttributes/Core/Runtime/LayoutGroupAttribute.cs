@@ -9,6 +9,7 @@ namespace MarkupAttributes
         public MarkupHeaderFlags HeaderFlags { get; protected set; } 
         public MarkupBodyStyle BodyStyle { get; protected set; } 
         public float LabelWidth { get; protected set; }
+        public float Space { get; protected set; }
         public string[] Tabs { get; protected set; }
         public ConditionDescriptor Condition { get; protected set; }
         public bool Toggle { get; protected set; }

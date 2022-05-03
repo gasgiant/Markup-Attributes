@@ -227,8 +227,10 @@ namespace MarkupAttributes.Editor
             {
                 if (args.Length < 3)
                     return new TabScopeAttribute(GetPath(args[0]), GetTabs(args[1]));
-                else
+                if (args.Length < 4)
                     return new TabScopeAttribute(GetPath(args[0]), GetTabs(args[1]), GetBool(args[2]));
+                else
+                    return new TabScopeAttribute(GetPath(args[0]), GetTabs(args[1]), GetBool(args[2]), GetFloat(args[3]));
             }
             return null;
         }
@@ -246,7 +248,10 @@ namespace MarkupAttributes.Editor
             bool valid = ParseAttribute(attribute, "VerticalGroup", 1, out string[] args);
             if (valid)
             {
-                return new VerticalGroupAttribute(GetPath(args[0]));
+                if (args.Length < 2)
+                    return new VerticalGroupAttribute(GetPath(args[0]));
+                else
+                    return new VerticalGroupAttribute(GetPath(args[0]), GetFloat(args[1]));
             }  
             return null;
         }
@@ -255,7 +260,12 @@ namespace MarkupAttributes.Editor
         {
             bool valid = ParseAttribute(attribute, "HorizontalGroup", 2, out string[] args);
             if (valid)
-                return new HorizontalGroupAttribute(GetPath(args[0]), GetFloat(args[1]));
+            {
+                if (args.Length < 3)
+                    return new HorizontalGroupAttribute(GetPath(args[0]), GetFloat(args[1]));
+                else
+                    return new HorizontalGroupAttribute(GetPath(args[0]), GetFloat(args[1]), GetFloat(args[2]));
+            }
             return null;
         }
 
@@ -266,7 +276,10 @@ namespace MarkupAttributes.Editor
             {
                 if (args.Length < 2)
                     return new FoldoutAttribute(GetPath(args[0]));
-                return new FoldoutAttribute(GetPath(args[0]), GetBool(args[1]));
+                if (args.Length < 3)
+                    return new FoldoutAttribute(GetPath(args[0]), GetBool(args[1]));
+                else
+                    return new FoldoutAttribute(GetPath(args[0]), GetBool(args[1]), GetFloat(args[2]));
             }
             return null;
         }
@@ -294,7 +307,10 @@ namespace MarkupAttributes.Editor
                     return new TitleGroupAttribute(GetPath(args[0]));
                 if (args.Length < 3)
                     return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]));
-                return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]), GetBool(args[2]));
+                if (args.Length < 4)
+                    return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]), GetBool(args[2]));
+                else
+                    return new TitleGroupAttribute(GetPath(args[0]), GetBool(args[1]), GetBool(args[2]), GetFloat(args[3]));
             }
             return null;
         }
@@ -306,7 +322,10 @@ namespace MarkupAttributes.Editor
             {
                 if (args.Length < 2)
                     return new BoxAttribute(GetPath(args[0]));
-                return new BoxAttribute(GetPath(args[0]), GetBool(args[1]));
+                if (args.Length < 3)
+                    return new BoxAttribute(GetPath(args[0]), GetBool(args[1]));
+                else
+                    return new BoxAttribute(GetPath(args[0]), GetBool(args[1]), GetFloat(args[2]));
             }
             return null;
         }

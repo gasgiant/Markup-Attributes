@@ -171,7 +171,7 @@ MonoBehaviour:
   one: 0
   two: 0
   three: 0
-  anotherBoolean: 0
+  anotherBoolean: 1
   four: 0
   five: 0
   six: 0
