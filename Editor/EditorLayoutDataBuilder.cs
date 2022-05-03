@@ -106,7 +106,10 @@ namespace MarkupAttributes.Editor
                 if (sibling.propertyType == SerializedPropertyType.Generic
                     && fieldInfo != null)
                 {
-                    var markedUp = fieldInfo.GetCustomAttribute<MarkedUpFieldAttribute>();
+                    var markedUp = fieldInfo.GetCustomAttribute<MarkedUpTypeAttribute>();
+                    if (markedUp == null)
+                        markedUp = fieldInfo.FieldType.GetCustomAttribute<MarkedUpTypeAttribute>(true);
+
                     if (markedUp != null)
                     {
                         var subTarget = MarkupEditorUtils.GetTargetObjectOfProperty(sibling);
