@@ -17,9 +17,9 @@ namespace MarkupAttributes
             Space = space;
         }
 
-        public static ToggleGroupAttribute CreateForShader(string path, bool foldable, string shaderKeyword)
+        public static ToggleGroupAttribute CreateForShader(string path, bool foldable, bool box, string shaderKeyword)
         {
-            var value = new ToggleGroupAttribute(path, foldable);
+            var value = new ToggleGroupAttribute(path, foldable, box);
             value.ToggleShaderKeyword = shaderKeyword;
             return value;
         }
