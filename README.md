@@ -34,6 +34,7 @@ Markup Attributes is MIT licensed and relatively small, focusing exclusively on 
    * [HideIf, ShowIf, DisableIf, EnableIf](#conditionals)
    * [ToggleGroup](#togglegroup)
 4. [Special Attributes](#special-attributes)
+   * [MarkedUpType](#markeduptype)
    * [MarkedUpField](#markedupfield)
    * [InlineEditor](#inlineeditor)
    * [DrawSystemProperties](#drawsystemproperties)
@@ -78,9 +79,16 @@ internal class MarkedUpScriptableObjectEditor : MarkedUpEditor
 
 ### Serializable classes and structs
 
-To make the attributes work inside serialized classes or structs you need to add `MarkedUpField` attribute to the fields representing them:
+To make the attributes work inside serialized classes or structs you can add `MarkedUpType` to their definition or add `MarkedUpField` to the fields representing them:
 
 ```c#
+[MarkedUpType]
+[System.Serializable]
+struct MyStruct
+{
+    ...
+}
+
 [System.Serializable]
 class MyClass
 {
@@ -89,12 +97,14 @@ class MyClass
 
 class MyComponent : MonoBehaviour
 {
+    public MyStruct myStruct;
+
     [MarkedUpField]
     public MyClass myClass;
 }
 ```
 
-Note, that the attributes will work in marked up fields only inside `MarkedUpEditor`. You can nest marked up fields inside other marked up fields .
+Note, that the attributes will work in marked up types only inside `MarkedUpEditor`. Currently marked up types are not supported inside arrays and lists. You can nest marked up types inside other marked up types.
 
 ### Shaders
 
@@ -207,6 +217,7 @@ Starts a vertical group in a box.
 | :--------------- | ---------------------------------------------------------- |
 | __string__ path  | Path to the group (see [Nesting Groups](#nesting-groups)). |
 | __bool__ labeled | Adds a label to the box. Default: _true_.                  |
+| __float__ space  | Adds space before the group. Default: _0_.                 |
 
 ```c#
 // C#
@@ -245,6 +256,7 @@ Starts a vertical group with a title.
 | __string__ path     | Path to the group (see [Nesting Groups](#nesting-groups)). |
 | __bool__ contentBox | Adds a box around the group content. Default: _false_.     |
 | __bool__ underline  | Underlines the title. Default: _true_.                     |
+| __float__ space     | Adds space before the group. Default: _3_.                 |
 
 ```c#
 // C#
@@ -282,6 +294,7 @@ Starts a collapsible vertical group.
 | --------------- | ---------------------------------------------------------- |
 | __string__ path | Path to the group (see [Nesting Groups](#nesting-groups)). |
 | __bool__ box    | Puts the foldout inside a box. Default: true.              |
+| __float__ space | Adds space before the group. Default: _0_.                 |
 
 ```c#
 // C#
@@ -322,6 +335,7 @@ __TabScope__
 | __string__ path | Path to the group (see [Nesting Groups](#nesting-groups)).   |
 | __string__ tabs | Names of the tabs separated by <code>&#124;</code> in C# and by `space` in ShaderLab. |
 | __bool__ box    | Puts the tabs inside a box. Default: _false_.                |
+| __float__ space | Adds space before the group. Default: _0_.                   |
 
 __Tab__
 
@@ -378,6 +392,7 @@ __VerticalGroup__
 | Parameter       | Description                                                |
 | --------------- | ---------------------------------------------------------- |
 | __string__ path | Path to the group (see [Nesting Groups](#nesting-groups)). |
+| __float__ space | Adds space before the group. Default: _0_.                 |
 
 __HorizontalGroup__
 
@@ -385,6 +400,7 @@ __HorizontalGroup__
 | -------------------- | ---------------------------------------------------------- |
 | __string__ path      | Path to the group (see [Nesting Groups](#nesting-groups)). |
 | __float__ labelWidth | Label width inside the horizontal group.                   |
+| __float__ space      | Adds space before the group. Default: _0_.                 |
 
 ```c#
 // C#
@@ -554,6 +570,8 @@ In C# `ToggleGroup` should be used on a serialized `bool` field.
 | ----------------- | ---------------------------------------------------------- |
 | __string__ path   | Path to the group (see [Nesting Groups](#nesting-groups)). |
 | __bool__ foldable | Makes the group collapsible. Default: _false_.             |
+| __bool__ box      | Puts the group inside a box. Default: _true_.              |
+| __float__ space   | Adds space before the group. Default: _0_.                 |
 
 ```c#
 [ToggleGroup("Toggle Group")]
@@ -577,6 +595,7 @@ In ShaderLab `ToggleGroup` should be used on a `float` property.
 | ------------------------------- | ------------------------------------------------------------ |
 | __string__ path                 | Path to the group (see [Nesting Groups](#nesting-groups)).   |
 | __bool__ foldable               | Makes the group collapsible. Default: _false_.               |
+| __bool__ box                    | Puts the group inside a box. Default: _true_.                |
 | __string__ keyword _(optional)_ | Keyword to turn on and off (like the built-in Toggle drawer). |
 
 ```javascript
@@ -594,12 +613,31 @@ _Six("Six", Float) = 0
 ```
 
 ## Special Attributes
+### MarkedUpType
+
+_C# only_
+
+Makes attributes work inside serializable classes and structs. See [Usage: Serializable classes and structs](#serializable-classes-and-structs). Can optionally hide the target's control (foldout) and remove indent from target's children. 
+
+```c#
+[MarkedUpType]
+class SomeClass
+{
+    ...
+}
+
+[MarkedUpType(indentChildren: false)]
+struct SomeStruct
+{
+    ...
+}
+```
 
 ### MarkedUpField
 
 _C# only_
 
-Makes attributes work inside serializable classes and structs. See [Usage: Serializable classes and structs](#serializable-classes-and-structs). Can optionally hide the target's control (foldout) and remove indent from target's children. 
+Makes attributes work inside fields of serializable classes and structs. See [Usage: Serializable classes and structs](#serializable-classes-and-structs). Can optionally hide the target's control (foldout) and remove indent from target's children. 
 
 ```c#
 [MarkedUpField]
@@ -642,11 +680,11 @@ public SomeData stripped1;
 
 _ShaderLab only_
 
-Tells `MarkedUpShaderGUI` to draw Render Queue, Enable Instancing (if applicable) and Double Sided Global Illumination properties below the inspector.
+Tells `MarkedUpShaderGUI` to draw Render Queue, Enable Instancing (if applicable) and Double Sided Global Illumination properties below this property.
 
 ```javascript
 [DrawSystemProperties]
-_AnyProperty("Any one will do", Float) = 0
+_SomeProperty("Some Property", Float) = 0
 ```
 
 ## Custom Marked Up Inspectors

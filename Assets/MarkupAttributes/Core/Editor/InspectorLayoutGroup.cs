@@ -72,6 +72,7 @@ namespace MarkupAttributes.Editor
             public MarkupHeaderFlags HeaderStyle => headerStyle;
             public MarkupBodyStyle BodyStyle => bodyStyle;
             public float LabelWidth => labelWidth;
+            public float Space => space;
             public string[] Tabs => tabs;
 
             public readonly ConditionWrapper conditionWrapper;
@@ -81,6 +82,7 @@ namespace MarkupAttributes.Editor
             private readonly MarkupHeaderFlags headerStyle;
             private readonly MarkupBodyStyle bodyStyle;
             private readonly float labelWidth;
+            private readonly float space;
             private readonly string[] tabs;
 
             public Params(LayoutGroupAttribute attribute, ConditionWrapper conditionWrapper,
@@ -91,6 +93,7 @@ namespace MarkupAttributes.Editor
                 headerStyle = attribute.HeaderFlags;
                 bodyStyle = attribute.BodyStyle;
                 labelWidth = attribute.LabelWidth;
+                space = attribute.Space;
                 tabs = attribute.Tabs;
                 this.conditionWrapper = conditionWrapper;
                 this.togglableValueWrapper = togglableValueWrapper;

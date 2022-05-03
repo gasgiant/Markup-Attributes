@@ -8,7 +8,7 @@ Shader "MarkupAttributes/ToggleGroupSample"
         _Two("Two", Float) = 0
         _Three("Three", Float) = 0
 
-        [ToggleGroup(Toggle_Group_With_Keyword, true, MY_KEYWORD)]
+        [ToggleGroup(Toggle_Group_With_Keyword, true, true, MY_KEYWORD)]
         _AnotherToggle("Another Toggle", Float) = 0
         _Four("Four", Float) = 0
         _Five("Five", Float) = 0

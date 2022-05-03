@@ -22,7 +22,6 @@ namespace MarkupAttributes.Editor
         private string prefsPrefix = null;
         private int localScopeStart = -1;
         private string activeTabName;
-        private bool addSpaceBeforeHeader;
 
         public InspectorLayoutController(string prefsPrefix, PropertyLayoutData[] layoutData)
         {
@@ -37,7 +36,6 @@ namespace MarkupAttributes.Editor
             prefsPrefix = defaultPrefsPrefix;
             localScopeStart = -1;
             activeTabName = null;
-            addSpaceBeforeHeader = false;
         }
 
         public void Finish()
@@ -84,11 +82,13 @@ namespace MarkupAttributes.Editor
                 group.isEnabled = isEnabled;
                 groupsStack.Push(group);
             }
-            addSpaceBeforeHeader = true;
         }
 
         private void BeginGroup(InspectorLayoutGroup group, ref bool isVisible, ref bool isEnabled)
         {
+            if (group.data.Space > 0)
+                GUILayout.Space(group.data.Space);
+
             if (group.data.Type == LayoutGroupType.LocalScope)
             {
                 group.guiHandle = new MarkupGUI.GroupHandle(false, false);
@@ -137,8 +137,6 @@ namespace MarkupAttributes.Editor
                 string prefsName = GetPrefsName();
                 bool isExpanded = MarkupAttributesPrefs.GetBool(prefsName);
 
-                if (addSpaceBeforeHeader && group.data.BodyStyle != MarkupBodyStyle.Box)
-                    GUILayout.Space(MarkupGUI.SpaceBeforeHeader);
                 group.guiHandle = MarkupGUI.BeginGenericVerticalGroup(
                     ref isExpanded, ref isEnabled,
                     group.data.HeaderStyle, group.data.BodyStyle, group.name,
@@ -146,8 +144,6 @@ namespace MarkupAttributes.Editor
 
                 MarkupAttributesPrefs.SetBool(prefsName, isExpanded);
                 isVisible &= isExpanded;
-
-                addSpaceBeforeHeader = false;
             }
         }
         

@@ -2,9 +2,10 @@ Shader "MarkupAttributes/ShaderLabOnlySample"
 {
     Properties
     {
-        [DrawSystemProperties]
         _One("One", Float) = 0
         _Two("Two", Float) = 0
+
+        [DrawSystemProperties]
         _Three("Three", Float) = 0
     }
 
