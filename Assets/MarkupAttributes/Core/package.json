@@ -1,6 +1,6 @@
 {
     "name": "com.gasgiant.markupattributes",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "displayName": "Markup Attributes",
     "description": "Allows to control inspector layout with attributes in C# and in ShaderLab.",
     "unity": "2020.3",
