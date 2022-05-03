@@ -5,7 +5,7 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class ToggleGroupAttribute : LayoutGroupAttribute
     {
-        public ToggleGroupAttribute(string path, bool foldable = false, float space = 0)
+        public ToggleGroupAttribute(string path, bool foldable = false, bool box = true, float space = 0)
         {
             Path = path;
             Toggle = true;
@@ -13,7 +13,7 @@ namespace MarkupAttributes
             HeaderFlags = MarkupHeaderFlags.Label;
             if (foldable)
                 HeaderFlags |= MarkupHeaderFlags.Foldable;
-            BodyStyle = MarkupBodyStyle.Box;
+            BodyStyle = box ? MarkupBodyStyle.Box : MarkupBodyStyle.ContentBox;
             Space = space;
         }
 
