@@ -5,7 +5,7 @@ namespace MarkupAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class ToggleGroupAttribute : LayoutGroupAttribute
     {
-        public ToggleGroupAttribute(string path, bool foldable = false)
+        public ToggleGroupAttribute(string path, bool foldable = false, float space = 0)
         {
             Path = path;
             Toggle = true;
@@ -14,6 +14,7 @@ namespace MarkupAttributes
             if (foldable)
                 HeaderFlags |= MarkupHeaderFlags.Foldable;
             BodyStyle = MarkupBodyStyle.Box;
+            Space = space;
         }
 
         public static ToggleGroupAttribute CreateForShader(string path, bool foldable, string shaderKeyword)
