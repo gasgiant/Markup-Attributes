@@ -697,7 +697,7 @@ MonoBehaviour:
     two: 0
     three: 0
   noControl:
-    boolean: 1
+    boolean: 0
     one: 0
     two: 0
     three: 0

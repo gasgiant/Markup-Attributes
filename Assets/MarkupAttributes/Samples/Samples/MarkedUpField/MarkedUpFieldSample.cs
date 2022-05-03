@@ -4,17 +4,16 @@ namespace MarkupAttributes.Samples
 {
     public class MarkedUpFieldSample : SamplesBehaviour
     {
-        [MarkedUpField]
         public SomeSerializedClass normal;
 
         [MarkedUpField(indentChildren: false)]
         public SomeSerializedClass noChildrenIndent;
 
         [TitleGroup("No Control", contentBox: true)]
-        [MarkedUpField(showControl: false, indentChildren: false)]
         public SomeSerializedStruct noControl;
     }
 
+    [MarkedUpType]
     [System.Serializable]
     public class SomeSerializedClass
     {
@@ -27,6 +26,7 @@ namespace MarkupAttributes.Samples
         public int three;
     }
 
+    [MarkedUpType(showControl: false, indentChildren: false)]
     [System.Serializable]
     public struct SomeSerializedStruct
     {
