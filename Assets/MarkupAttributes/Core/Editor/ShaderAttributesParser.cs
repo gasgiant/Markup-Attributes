@@ -290,10 +290,12 @@ namespace MarkupAttributes.Editor
             if (valid)
             {
                 if (args.Length < 2)
-                    return ToggleGroupAttribute.CreateForShader(GetPath(args[0]), false, null);
+                    return ToggleGroupAttribute.CreateForShader(GetPath(args[0]), false, true, null);
                 if (args.Length < 3)
-                    return ToggleGroupAttribute.CreateForShader(GetPath(args[0]), GetBool(args[1]), null);
-                return ToggleGroupAttribute.CreateForShader(GetPath(args[0]), GetBool(args[1]), args[2]);
+                    return ToggleGroupAttribute.CreateForShader(GetPath(args[0]), GetBool(args[1]), true, null);
+                if (args.Length < 4)
+                    return ToggleGroupAttribute.CreateForShader(GetPath(args[0]), GetBool(args[1]), GetBool(args[2]), null);
+                return ToggleGroupAttribute.CreateForShader(GetPath(args[0]), GetBool(args[1]), GetBool(args[2]), args[3]);
             }
             return null;
         }
