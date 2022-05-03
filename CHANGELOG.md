@@ -1,3 +1,14 @@
+# 0.5.0
+
+_(2022-May-3)_
+
+#### Features
+
+* Added MarkedUpType attribute.
+* Added Space parameter to the relevant layout groups to allow configuring space between them.
+* Added non-boxed style for the ToggleGroup.
+* DrawSystemProperties now draws below the property it is specified on, instead of at the end of the inspector.
+
 # 0.4.0
 
 _(2021-September-4)_
