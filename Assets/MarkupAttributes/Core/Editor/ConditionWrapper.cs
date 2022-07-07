@@ -156,7 +156,7 @@ namespace MarkupAttributes.Editor
         private bool FromMemberValue(object value)
         {
             if (hasMemberValue)
-                return value.Equals(memberValue) ^ inverted;
+                return object.Equals(value, memberValue) ^ inverted;
             else
                 return (bool)value ^ inverted;
         }
