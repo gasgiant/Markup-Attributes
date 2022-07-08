@@ -28,6 +28,8 @@ namespace MarkupAttributes.Editor
         {
             Initialize(materialEditor, properties);
 
+            materialEditor.SetDefaultGUIWidths();
+            
             layoutController.Begin();
             for (int i = 0; i < properties.Length; i++)
             {
