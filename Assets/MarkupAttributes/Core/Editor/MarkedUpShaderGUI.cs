@@ -28,6 +28,8 @@ namespace MarkupAttributes.Editor
         {
             Initialize(materialEditor, properties);
 
+            materialEditor.SetDefaultGUIWidths();
+            
             layoutController.Begin();
             for (int i = 0; i < properties.Length; i++)
             {
@@ -53,6 +55,12 @@ namespace MarkupAttributes.Editor
                 }
             }
             layoutController.Finish();
+
+            if (UnityEngine.Rendering.SupportedRenderingFeatures.active.editableMaterialRenderQueue) {
+                materialEditor.RenderQueueField();
+            }
+            materialEditor.EnableInstancingField();
+            materialEditor.DoubleSidedGIField();
         }
 
         private void Initialize(MaterialEditor materialEditor, MaterialProperty[] properties)
