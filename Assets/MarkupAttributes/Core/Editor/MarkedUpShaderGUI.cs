@@ -55,6 +55,12 @@ namespace MarkupAttributes.Editor
                 }
             }
             layoutController.Finish();
+
+            if (UnityEngine.Rendering.SupportedRenderingFeatures.active.editableMaterialRenderQueue) {
+                materialEditor.RenderQueueField();
+            }
+            materialEditor.EnableInstancingField();
+            materialEditor.DoubleSidedGIField();
         }
 
         private void Initialize(MaterialEditor materialEditor, MaterialProperty[] properties)
